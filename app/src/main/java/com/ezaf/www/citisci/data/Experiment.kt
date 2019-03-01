@@ -1,5 +1,6 @@
 package com.ezaf.www.citisci.data
 
-class Experiment {
+class Experiment (val expScript: ExpScript,
+                  val expBasicData: ExpBasicData) {
 
 }

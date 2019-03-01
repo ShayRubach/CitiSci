@@ -2,7 +2,7 @@ package com.ezaf.www.citisci.data
 
 import java.util.*
 
-internal class ExpBasicData (
+class ExpBasicData (
         val id: String,
         val name: String,
         val startTime: Date,
