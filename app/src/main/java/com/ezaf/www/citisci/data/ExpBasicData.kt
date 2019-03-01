@@ -11,5 +11,5 @@ internal class ExpBasicData (
         private val desc: String,
         private val guide: String)
 {
-    
+
 }
