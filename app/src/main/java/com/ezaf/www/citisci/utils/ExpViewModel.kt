@@ -1,6 +1,7 @@
 package com.ezaf.www.citisci.utils
 
-import android.arch.lifecycle.ViewModel
+
+import androidx.lifecycle.ViewModel
 import com.ezaf.www.citisci.data.Experiment
 import com.ezaf.www.citisci.data.Repository
 
