@@ -1,6 +1,5 @@
 package com.ezaf.www.citisci
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -8,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
-import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.ezaf.www.citisci.utils.Logger
 import kotlinx.android.synthetic.main.activity_camera.*
@@ -19,43 +16,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class CameraActivity : AppCompatActivity() {
-
-    /*
-    val CAMERA_REQUEST_CODE = 0
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_camera)
-
-        //TODO: change to view bind using a CameraViewModel
-        takePictureBtn.setOnClickListener{
-            val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            if(callCameraIntent.resolveActivity(packageManager) != null){
-                startActivityForResult(callCameraIntent, CAMERA_REQUEST_CODE)
-
-            }
-        }
-    }
-
-    //TODO: move logic to CameraViewModel
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when(requestCode){
-
-            CAMERA_REQUEST_CODE ->{
-                if(resultCode == Activity.RESULT_OK && data != null){
-                    photoImgView.setImageBitmap(data.extras.get("data") as Bitmap)
-                }
-            }
-
-
-            else -> {
-                Toast.makeText(this, "Unrecognized request code", Toast.LENGTH_SHORT).show()
-
-            }
-        }
-    }
-    */
 
     private val REQUEST_IMAGE_CAPTURE = 1
     private val REQUEST_TAKE_PHOTO= 2
