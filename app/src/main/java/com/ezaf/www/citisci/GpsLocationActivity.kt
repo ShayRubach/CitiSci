@@ -11,7 +11,6 @@ import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.ezaf.www.citisci.utils.GpsUtils
-import com.ezaf.www.citisci.utils.Logger.log
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -50,30 +49,24 @@ class GpsLocationActivity: AppCompatActivity() {
 
         locationCallback = object:LocationCallback() {
             override fun onLocationResult(locationResult:LocationResult) {
-                if (locationResult == null)
-                {
+                if (locationResult == null) {
                     return
                 }
-                for (location in locationResult.getLocations())
-                {
-                    if (location != null)
-                    {
+                for (location in locationResult.getLocations()) {
+                    if (location != null) {
                         wayLatitude = location.getLatitude()
                         wayLongitude = location.getLongitude()
-                        if (!isContinue)
-                        {
+                        if (!isContinue) {
                             longtitude_tv.text = String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude)
                         }
-                        else
-                        {
+                        else {
                             stringBuilder!!.append(wayLatitude)
                             stringBuilder!!.append("-")
                             stringBuilder!!.append(wayLongitude)
                             stringBuilder!!.append("\n\n")
                             latitude_tv.setText(stringBuilder.toString())
                         }
-                        if (!isContinue && mFusedLocationClient != null)
-                        {
+                        if (!isContinue && mFusedLocationClient != null) {
                             mFusedLocationClient!!.removeLocationUpdates(locationCallback)
                         }
                     }
@@ -90,6 +83,7 @@ class GpsLocationActivity: AppCompatActivity() {
             getLocation()
         }
 
+        //TODO: remove dup code
         btnContinueLocation.setOnClickListener {
             //TODO: activate this func once needed. at this point, it just raises complexity of background processing..
             return@setOnClickListener
@@ -105,26 +99,27 @@ class GpsLocationActivity: AppCompatActivity() {
     }
     private fun getLocation() {
         if ((ActivityCompat.checkSelfPermission(this@GpsLocationActivity, Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(this@GpsLocationActivity, Manifest.permission.ACCESS_COARSE_LOCATION) !== PackageManager.PERMISSION_GRANTED))
-        {
+                        ActivityCompat.checkSelfPermission(this@GpsLocationActivity, Manifest.permission.ACCESS_COARSE_LOCATION) !== PackageManager.PERMISSION_GRANTED)) {
             ActivityCompat.requestPermissions(this@GpsLocationActivity, arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
                     GpsUtils.LOCATION_REQUEST)
         }
-        else
-        {
-            if (isContinue)
-            {
+        else {
+            //TODO: wrap if else in func and remove dup code below
+            if (isContinue) {
                 mFusedLocationClient!!.requestLocationUpdates(locationRequest, locationCallback, null)
             }
-            else
-            {
-                mFusedLocationClient!!.lastLocation.addOnSuccessListener(this@GpsLocationActivity) { location-> if (location != null) {
-                    wayLatitude = location.latitude
-                    wayLongitude = location.longitude
-                    longtitude_tv.text = String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude)
-                } else {
-                    mFusedLocationClient!!.requestLocationUpdates(locationRequest, locationCallback, null)
-                } }
+            else {
+                mFusedLocationClient!!.lastLocation.addOnSuccessListener(this@GpsLocationActivity) {
+                    location->
+                    if (location != null) {
+                        wayLatitude = location.latitude
+                        wayLongitude = location.longitude
+                        longtitude_tv.text = String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude)
+                    }
+                    else {
+                        mFusedLocationClient!!.requestLocationUpdates(locationRequest, locationCallback, null)
+                    }
+                }
             }
         }
     }
@@ -132,27 +127,28 @@ class GpsLocationActivity: AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode:Int, @NonNull permissions:Array<String>, @NonNull grantResults:IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            1000 -> {
+            GpsUtils.LOCATION_REQUEST -> {
                 // If request is cancelled, the result arrays are empty.
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED))
-                {
-                    if (isContinue)
-                    {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    //TODO: remove dup code
+                    if (isContinue) {
                         mFusedLocationClient!!.requestLocationUpdates(locationRequest, locationCallback, null)
                     }
-                    else
-                    {
-                        mFusedLocationClient!!.lastLocation.addOnSuccessListener(this@GpsLocationActivity) { location-> if (location != null) {
-                            wayLatitude = location.latitude
-                            wayLongitude = location.longitude
-                            longtitude_tv.text = String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude)
-                        } else {
-                            mFusedLocationClient!!.requestLocationUpdates(locationRequest, locationCallback, null)
-                        } }
+                    else {
+                        mFusedLocationClient!!.lastLocation.addOnSuccessListener(this@GpsLocationActivity) {
+                            location->
+                            if (location != null) {
+                                wayLatitude = location.latitude
+                                wayLongitude = location.longitude
+                                longtitude_tv.text = String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude)
+                            }
+                            else {
+                                mFusedLocationClient!!.requestLocationUpdates(locationRequest, locationCallback, null)
+                            }
+                        }
                     }
                 }
-                else
-                {
+                else {
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -160,10 +156,8 @@ class GpsLocationActivity: AppCompatActivity() {
     }
     override fun onActivityResult(requestCode:Int, resultCode:Int, data:Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK)
-        {
-            if (requestCode == GpsUtils.GPS_REQUEST)
-            {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == GpsUtils.GPS_REQUEST) {
                 isGPS = true // flag maintain before get location
             }
         }
