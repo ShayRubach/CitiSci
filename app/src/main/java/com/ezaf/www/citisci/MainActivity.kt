@@ -33,6 +33,12 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
+        goToGpsActivity.setOnClickListener {
+            startActivity(Intent(this, GpsLocationActivity::class.java))
+            finish()
+        }
+
+
 
 //        mainViewModel.editTextContent.observe(this, Observer {
 //            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
