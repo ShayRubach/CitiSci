@@ -52,10 +52,10 @@ class GpsLocationActivity: AppCompatActivity() {
                 if (locationResult == null) {
                     return
                 }
-                for (location in locationResult.getLocations()) {
+                for (location in locationResult.locations) {
                     if (location != null) {
-                        wayLatitude = location.getLatitude()
-                        wayLongitude = location.getLongitude()
+                        wayLatitude = location.latitude
+                        wayLongitude = location.longitude
                         if (!isContinue) {
                             longtitude_tv.text = String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude)
                         }
@@ -64,7 +64,7 @@ class GpsLocationActivity: AppCompatActivity() {
                             stringBuilder!!.append("-")
                             stringBuilder!!.append(wayLongitude)
                             stringBuilder!!.append("\n\n")
-                            latitude_tv.setText(stringBuilder.toString())
+                            latitude_tv.text = stringBuilder.toString()
                         }
                         if (!isContinue && mFusedLocationClient != null) {
                             mFusedLocationClient!!.removeLocationUpdates(locationCallback)
@@ -100,7 +100,7 @@ class GpsLocationActivity: AppCompatActivity() {
     private fun getLocation() {
         if ((ActivityCompat.checkSelfPermission(this@GpsLocationActivity, Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED &&
                         ActivityCompat.checkSelfPermission(this@GpsLocationActivity, Manifest.permission.ACCESS_COARSE_LOCATION) !== PackageManager.PERMISSION_GRANTED)) {
-            ActivityCompat.requestPermissions(this@GpsLocationActivity, arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+            ActivityCompat.requestPermissions(this@GpsLocationActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
                     GpsUtils.LOCATION_REQUEST)
         }
         else {

@@ -39,18 +39,15 @@ class GpsUtils(context:Context) {
         val builder = LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest)
         mLocationSettingsRequest = builder.build()
-        //**************************
         builder.setAlwaysShow(true) //this is the key ingredient
-        //**************************
     }
 
     // method for turn on GPS
     fun turnGPSOn(onGpsListener:onGpsListener) {
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
         {
-            if (onGpsListener != null)
-            {
-                onGpsListener.gpsStatus(true)
+            when {
+                onGpsListener != null -> onGpsListener.gpsStatus(true)
             }
         }
         else
@@ -63,7 +60,7 @@ class GpsUtils(context:Context) {
                             onGpsListener.gpsStatus(true)
                         }
                     }
-                    .addOnFailureListener(context as Activity) { e ->
+                    .addOnFailureListener(context) { e ->
                         val statusCode = (e as ApiException).statusCode
                         when (statusCode) {
                             LocationSettingsStatusCodes.RESOLUTION_REQUIRED ->
@@ -71,14 +68,14 @@ class GpsUtils(context:Context) {
                                     // Show the dialog by calling startResolutionForResult(), and check the
                                     // result in onActivityResult().
                                     val rae = e as ResolvableApiException
-                                    rae.startResolutionForResult(context as Activity, GPS_REQUEST)
+                                    rae.startResolutionForResult(context, GPS_REQUEST)
                                 } catch (sie:IntentSender.SendIntentException) {
                                     Log.i(TAG, "PendingIntent unable to execute request.")
                                 }
                             LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
                                 val errorMessage = ("Location settings are inadequate, and cannot be " + "fixed here. Fix in Settings.")
                                 Log.e(TAG, errorMessage)
-                                Toast.makeText(context as Activity, errorMessage, Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
                             }
                         }
                     }
