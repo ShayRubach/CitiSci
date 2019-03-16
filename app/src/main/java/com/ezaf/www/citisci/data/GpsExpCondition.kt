@@ -14,4 +14,10 @@ class GpsExpCondition(val baseCoord: Pair<Double,Double>,
     override fun isConditionMet(): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    override fun toString(): String {
+        return  "$id|" + baseCoord.toString().replace("(","").replace(")","").replace(" ","")+
+                "|$maxRadius" +
+                "|$sensorType"
+    }
 }
