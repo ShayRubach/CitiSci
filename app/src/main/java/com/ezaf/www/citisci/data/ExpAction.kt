@@ -11,4 +11,8 @@ class ExpAction (
 
     fun incSamples() = { samplesCollected += 1 }
 
+    override fun toString(): String {
+        return  "$captureInterval|$samplesToCollect|$duration|$sensorType"
+    }
+
 }
