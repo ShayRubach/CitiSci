@@ -16,8 +16,9 @@ class GpsExpCondition(val baseCoord: Pair<Double,Double>,
     }
 
     override fun toString(): String {
-        return  "$id|" + baseCoord.toString().replace("(","").replace(")","").replace(" ","")+
+        return  baseCoord.toString().replace("(","").replace(")","").replace(" ","")+
                 "|$maxRadius" +
+                "|$id" +
                 "|$sensorType"
     }
 }
