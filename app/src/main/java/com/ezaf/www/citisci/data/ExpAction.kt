@@ -16,7 +16,10 @@ class ExpAction (
     private var samplesCollected = 0
         get() = samplesCollected
 
-    fun incSamples() = { samplesCollected += 1 }
+    private fun updateSamplesStatus()  {
+        lastTimeCollected = Instant.now()
+        samplesCollected++
+    }
 
     fun allSamplesWereCollected() = samplesCollected == samplesToCollect
 
@@ -25,7 +28,7 @@ class ExpAction (
 
         if(timePassedFromLatestCapture >= captureInterval){
             DataCollecter.collect(sensorType, startTime)
-            incSamples()
+            updateSamplesStatus()
         }
     }
 
