@@ -1,11 +1,8 @@
 package com.ezaf.www.citisci.utils
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.room.TypeConverter
 import com.ezaf.www.citisci.data.*
 import com.ezaf.www.citisci.utils.Logger.log
-import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -49,7 +46,6 @@ class TypeConverterUtil {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @TypeConverter
     fun strToBasicData(str: String?): ExpBasicData? {
         str?.run{
