@@ -1,6 +1,6 @@
 package com.ezaf.www.citisci.data
 
-class DatabaseHandler(val url: String,
+class RemoteDbHandler(val url: String,
                       val dbName: String)
 {
     fun connect() {
