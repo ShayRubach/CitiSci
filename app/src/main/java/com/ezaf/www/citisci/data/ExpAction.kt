@@ -27,7 +27,7 @@ class ExpAction (
         val timePassedFromLatestCapture = Duration.between(lastTimeCollected, Instant.now()).seconds / TIME_DIVISOR
 
         if(timePassedFromLatestCapture >= captureInterval){
-            DataCollecter.collect(sensorType, startTime)
+            DataCollector.collect(sensorType, startTime)
             updateSamplesStatus()
         }
     }

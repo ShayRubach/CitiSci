@@ -3,7 +3,7 @@ package com.ezaf.www.citisci.data
 import org.json.JSONObject
 import java.time.Instant
 
-object DataCollecter {
+object DataCollector {
 
     fun collect(sensorType: SensorType, startTime: Instant) : JSONObject? {
         return when(sensorType){

@@ -16,7 +16,7 @@ import java.time.Instant
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        var db: LocalDatabase? = null
+        var db: LocalDbHandler? = null
     }
     var expDao: ExperimentDao? = null
 
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-        db = LocalDatabase.getLocalDb(context = this)
+        db = LocalDbHandler.getLocalDb(context = this)
         expDao = db?.experimentDao()
         testDbInsertionAndSelection()
 
