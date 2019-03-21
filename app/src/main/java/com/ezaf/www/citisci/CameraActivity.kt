@@ -9,6 +9,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import com.ezaf.www.citisci.utils.Logger
+import com.ezaf.www.citisci.utils.VerboseLevel.INFO_ERR
 import kotlinx.android.synthetic.main.activity_camera.*
 import java.io.File
 import java.io.IOException
@@ -57,7 +58,7 @@ class CameraActivity : AppCompatActivity() {
                     createImageFile()
                 } catch (ex: IOException) {
                     // Error occurred while creating the File
-                    Logger.log("dbg","error creating image file")
+                    Logger.log(INFO_ERR,"error creating image file")
                     null
                 }
                 // Continue only if the File was successfully created
@@ -67,7 +68,7 @@ class CameraActivity : AppCompatActivity() {
                             getString(R.string.fileprovider_path),
                             it
                     )
-                    Logger.log("dbg","successfully got a file from FileProvider")
+                    Logger.log(INFO_ERR,"successfully got a file from FileProvider")
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
                 }

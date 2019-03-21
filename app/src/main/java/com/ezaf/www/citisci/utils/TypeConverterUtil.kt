@@ -6,6 +6,7 @@ import com.ezaf.www.citisci.utils.Logger.log
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import com.ezaf.www.citisci.utils.VerboseLevel.INFO_ERR
 
 class TypeConverterUtil {
     @TypeConverter
@@ -18,7 +19,7 @@ class TypeConverterUtil {
     @TypeConverter
     fun strToScript(str: String): ExpScript? {
 
-        log("dbg", "strToScript: str=\n$str")
+        log(INFO_ERR, "strToScript: str=\n$str")
         var newStr = str.replace("[","").replace("]","")
         val seperator = newStr.indexOf("\n")
         var actionsStr = newStr.substring(0,seperator).split("|")
