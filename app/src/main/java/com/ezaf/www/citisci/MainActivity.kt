@@ -53,18 +53,23 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
+
     fun testDbInsertionAndSelection(){
+
+
+        var action = ExpAction(2.4,2,100,SensorType.GPS)
+        var cond = GpsExpCondition(Pair(100.0,100.0),500.0,"1234",SensorType.GPS)
+        var bdata = ExpBasicData("123","name", Instant.now(),"researcher",false,"desc","guide")
+        var exp = Experiment(123,ExpScript(expActions = mutableListOf(action),expConditions = mutableListOf(cond)),bdata)
+
+        var action2 = ExpAction(2.4,2,100,SensorType.GPS)
+        var cond2 = GpsExpCondition(Pair(100.0,100.0),500.0,"1234",SensorType.GPS)
+        var bdata2 = ExpBasicData("345","name", Instant.now(),"researcher",false,"desc","guide")
+        var exp2 = Experiment(678,ExpScript(expActions = mutableListOf(action2),expConditions = mutableListOf(cond2)),bdata2)
+
         Observable.fromCallable {
 
-            var action = ExpAction(2.4,2,100,SensorType.GPS)
-            var cond = GpsExpCondition(Pair(100.0,100.0),500.0,"1234",SensorType.GPS)
-            var bdata = ExpBasicData("123","name", Instant.now(),"researcher",false,"desc","guide")
-            var exp = Experiment(123,ExpScript(expActions = mutableListOf(action),expConditions = mutableListOf(cond)),bdata)
-
-            var action2 = ExpAction(2.4,2,100,SensorType.GPS)
-            var cond2 = GpsExpCondition(Pair(100.0,100.0),500.0,"1234",SensorType.GPS)
-            var bdata2 = ExpBasicData("345","name", Instant.now(),"researcher",false,"desc","guide")
-            var exp2 = Experiment(678,ExpScript(expActions = mutableListOf(action2),expConditions = mutableListOf(cond2)),bdata2)
 
 //            db?.clearAllTables()
 
@@ -78,10 +83,16 @@ class MainActivity : AppCompatActivity() {
             for(x:Experiment in it) {
                 var re = Regex("\\[|\\]")
                 var str = re.replace(x.toString(),"")
-                log("dbg", " \n##################\n$str\n##################\n")
+//                log("dbg", " \n##################\n$str\n##################\n")
             }
         }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
+
+        var interpreter = Interpreter
+        interpreter.playScripts(exp2.id.toString())
     }
+
+
+
 }
