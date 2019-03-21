@@ -1,6 +1,6 @@
 package com.ezaf.www.citisci.data
 
-import com.ezaf.www.citisci.utils.VerboseLevel.INFO_ERR
+import com.ezaf.www.citisci.utils.VerboseLevel.*
 import com.ezaf.www.citisci.utils.Logger.log
 import java.time.Duration
 import java.time.Instant
@@ -15,8 +15,7 @@ class ExpAction (
     private var lastTimeCollected = Instant.now()
 
     //TODO: add this to the typeconverter
-    private var samplesCollected = 0
-        get() = samplesCollected
+    private var samplesCollected: Int = 0
 
     private fun updateSamplesStatus()  {
         var fn = Throwable().stackTrace[0].methodName
