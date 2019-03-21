@@ -40,4 +40,13 @@ class ScriptRunner(
         }
 
     }
+
+    private fun playCameraScript(){
+        var fn = Throwable().stackTrace[0].methodName
+        log(INFO_ERR, "$fn: called.")
+    }
+    private fun playMicScript(){
+        var fn = Throwable().stackTrace[0].methodName
+        log(INFO_ERR, "$fn: called.")
+    }
 }
