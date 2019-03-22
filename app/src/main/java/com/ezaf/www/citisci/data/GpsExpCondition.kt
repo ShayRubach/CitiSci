@@ -1,18 +1,20 @@
 package com.ezaf.www.citisci.data
 
-class GpsExpCondition(val baseCoord: Pair<Double,Double>,
-                      val maxRadius: Double,
+import android.location.Location
+
+class GpsExpCondition(private val baseCoord: Pair<Double,Double>,
+                      private val maxRadius: Double,
                       _id: String,
                       _sensorType: SensorType) : ExpCondition
 {
     override val id = _id
-//        get() = super.id
-
     override val sensorType = _sensorType
-//        get() = super.sensorType
 
     override fun isConditionMet(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return true
+
+
     }
 
     override fun toString(): String {
@@ -20,5 +22,18 @@ class GpsExpCondition(val baseCoord: Pair<Double,Double>,
                 "|$maxRadius" +
                 "|$id" +
                 "|$sensorType"
+    }
+
+    private fun distanceBetweenCoordsInMeters(lat1: Double, long1: Double, lat2: Double, long2: Double) : Double
+    {
+        val loc1 = Location("")
+        loc1.latitude = lat1
+        loc1.longitude = long1
+
+        val loc2 = Location("")
+        loc2.latitude = lat2
+        loc2.longitude = long2
+
+        return loc1.distanceTo(loc2).toDouble()
     }
 }
