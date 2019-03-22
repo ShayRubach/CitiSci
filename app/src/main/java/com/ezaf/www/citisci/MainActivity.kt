@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         goToGpsActivity.setOnClickListener {
+            var interpreter = Interpreter
+            interpreter.stopAllScripts()
             startActivity(Intent(this, GpsLocationActivity::class.java))
             finish()
         }
