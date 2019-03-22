@@ -44,8 +44,6 @@ class ExpAction (
     }
 
     fun expDurationHasEnded(startTime: Instant): Boolean {
-        var fn = Throwable().stackTrace[0].methodName
-        log(INFO_ERR, "$fn: called.")
 
         val timeNow = Instant.now()
         val diff = Duration.between(startTime, timeNow)
