@@ -1,6 +1,8 @@
 package com.ezaf.www.citisci.data
 
 import android.location.Location
+import com.ezaf.www.citisci.utils.Logger.log
+import com.ezaf.www.citisci.utils.VerboseLevel
 
 class GpsExpCondition(private val baseCoord: Pair<Double,Double>,
                       private val maxRadius: Double,
@@ -12,9 +14,12 @@ class GpsExpCondition(private val baseCoord: Pair<Double,Double>,
 
     override fun isConditionMet(): Boolean {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        return true
-
-
+        return distanceBetweenCoordsInMeters(
+                LocationUpdateService.lastLocationCaptured.latitude,
+                LocationUpdateService.lastLocationCaptured.longitude,
+                baseCoord.first,
+                baseCoord.second
+        ) > maxRadius
     }
 
     override fun toString(): String {

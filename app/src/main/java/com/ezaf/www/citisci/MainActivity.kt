@@ -36,6 +36,9 @@ class MainActivity : AppCompatActivity() {
 //            this.viewmodel = mainViewModel
 //        }
 
+
+        startForegroundService(Intent(this, LocationUpdateService::class.java))
+
         goToCameraBtn.setOnClickListener{
             startActivity(Intent(this, CameraActivity::class.java))
             finish()
