@@ -1,17 +1,20 @@
 package com.ezaf.www.citisci
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.ezaf.www.citisci.utils.MainViewModel
 import androidx.lifecycle.ViewModelProviders
 import com.ezaf.www.citisci.data.*
-import com.ezaf.www.citisci.utils.Logger.log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_main.*
 import java.time.Instant
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     }
     var expDao: ExperimentDao? = null
 
+    private val REQUEST_PERMISSIONS_REQUEST_CODE = 34
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +41,10 @@ class MainActivity : AppCompatActivity() {
 //        }
 
 
+        if(checkPermissions()){
+            requestPermissions()
+        }
+
         startForegroundService(Intent(this, LocationUpdateService::class.java))
 
         goToCameraBtn.setOnClickListener{
@@ -53,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         db = LocalDbHandler.getLocalDb(context = this)
         expDao = db?.experimentDao()
-        testDbInsertionAndSelection()
+//        testDbInsertionAndSelection()
 
 
     }
@@ -98,6 +106,19 @@ class MainActivity : AppCompatActivity() {
         interpreter.playScripts(exp2.id.toString())
     }
 
+    private fun checkPermissions(): Boolean {
+        val permissionState = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+        return permissionState == PackageManager.PERMISSION_GRANTED
+    }
 
+    private fun requestPermissions() {
+            // Request permission. It's possible this can be auto answered if device policy
+            // sets the permission in a given state or the user denied the permission
+            // previously and checked "Never ask again".
+            ActivityCompat.requestPermissions(this@MainActivity,
+                    arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),
+                    REQUEST_PERMISSIONS_REQUEST_CODE)
 
+    }
 }
