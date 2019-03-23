@@ -1,7 +1,12 @@
 package com.ezaf.www.citisci.data
 
+import android.location.Location
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.VerboseLevel.*
+import com.ezaf.www.citisci.data.RemoteDbHandler.MsgType.*
+
+
+import com.google.gson.Gson
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -9,6 +14,7 @@ import java.time.Instant
 import java.util.concurrent.TimeUnit
 
 class ScriptRunner(
+        private val expId: String,
         private val action: ExpAction,
         private val conds: List<GpsExpCondition>,
         private val startTime: Instant
@@ -27,7 +33,7 @@ class ScriptRunner(
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe{
-                                    playGpsScript(action, conds, startTime)
+                                    playGpsScript(expId, action, conds, startTime)
                                 }
                 )
 
@@ -41,7 +47,7 @@ class ScriptRunner(
     /**
      *  called every n (interval) seconds and get the current GPS coordinate
      */
-    private fun playGpsScript(action: ExpAction, conds: List<GpsExpCondition>, startTime: Instant) {
+    private fun playGpsScript(expId: String, action: ExpAction, conds: List<GpsExpCondition>, startTime: Instant) {
         val fn = object{}.javaClass.enclosingMethod.name
         log(INFO,"$fn: called. [sensorType = ${action.sensorType}]")
 
@@ -55,11 +61,16 @@ class ScriptRunner(
                     //endExperiment()
                 }
                 else if(isIntervalPassedFromLastCapture()){
-                        log(INFO,"$fn: calling data collector")
-                        var coordGson = DataCollector.collect(sensorType)
-    //                    sendGsonToRemoteDb()
-    //                    sendGsonToLocalDb()
-                        updateSamplesStatus()
+                    log(INFO,"$fn: calling data collector")
+                    var location = DataCollector.collect(sensorType) as Location
+
+
+                    var jsonString = Gson().toJson(ExpGpsSample(LatLong(location.latitude,location.longitude)))
+                    log(INFO, "jsonString = \n$jsonString")
+
+
+                    RemoteDbHandler.sendMsg(SEND_GPS_SAMPLE, jsonString, expId)
+                    updateSamplesStatus()
 
                     }
                     else {
