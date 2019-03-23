@@ -17,7 +17,7 @@ class ExpAction (
     //TODO: add this to the typeconverter
     private var samplesCollected: Int = 0
 
-    private fun updateSamplesStatus()  {
+    fun updateSamplesStatus()  {
         var fn = Throwable().stackTrace[0].methodName
         log(INFO_ERR, "$fn: called.")
 
@@ -27,16 +27,13 @@ class ExpAction (
 
     fun allSamplesWereCollected() = samplesCollected == samplesToCollect
 
-    fun collectData(startTime: Instant) {
+    fun isIntervalPassedFromLastCapture()  : Boolean{
         var fn = Throwable().stackTrace[0].methodName
         log(INFO_ERR, "$fn: called.")
 
-        val timePassedFromLatestCapture = Duration.between(lastTimeCollected, Instant.now()).seconds / TIME_DIVISOR
-
-        if(timePassedFromLatestCapture >= captureInterval){
-            DataCollector.collect(sensorType, startTime)
-            updateSamplesStatus()
-        }
+        val timePassedFromLatestCapture = Duration.between(lastTimeCollected, Instant.now()).seconds
+        log(INFO_ERR, timePassedFromLatestCapture.toString())
+        return timePassedFromLatestCapture >= captureInterval
     }
 
     override fun toString(): String {
