@@ -6,6 +6,7 @@ import android.os.IBinder
 import com.ezaf.www.citisci.utils.Logger
 import com.ezaf.www.citisci.utils.VerboseLevel.*
 import android.R
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.pm.PackageManager
@@ -67,24 +68,24 @@ class LocationUpdateService : Service() {
         var lastLocationCaptured = Location("0.0")
     }
 
+    @SuppressLint("MissingPermission")
     private fun requestLocationUpdates() {
         var fn = "LocationUpdateService::"+Throwable().stackTrace[0].methodName
         Logger.log(INFO_ERR, "$fn: called.")
 
-        if((ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_COARSE_LOCATION) !== PackageManager.PERMISSION_GRANTED)){
+        if(checkPermissions()){
             Logger.log(INFO_ERR, "$fn: we need to request permissions and make sure they are enabled in settings...")
         }
             mFusedLocationClient!!.requestLocationUpdates(locationRequest, locationCallback, null)
 
     }
 
+    @SuppressLint("MissingPermission")
     private fun requestLastLocation(){
         var fn = "LocationUpdateService::"+Throwable().stackTrace[0].methodName
         Logger.log(INFO_ERR, "$fn: called.")
 
-        if((ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_COARSE_LOCATION) !== PackageManager.PERMISSION_GRANTED)){
+        if(checkPermissions()){
             mFusedLocationClient!!.lastLocation.addOnSuccessListener {
                 location->
                 if (location != null) {
@@ -101,15 +102,14 @@ class LocationUpdateService : Service() {
         var fn = "LocationUpdateService::"+Throwable().stackTrace[0].methodName
         Logger.log(INFO_ERR, "$fn: called.")
 
-        if((ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_COARSE_LOCATION) !== PackageManager.PERMISSION_GRANTED)){
+        if(checkPermissions()){
             mFusedLocationClient!!.removeLocationUpdates(locationCallback)
         }
     }
 
     private fun checkPermissions(): Boolean {
-        return (ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_COARSE_LOCATION) !== PackageManager.PERMISSION_GRANTED)
+        return (ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_FINE_LOCATION) and
+                        ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
     }
 
     override fun onBind(p0: Intent?): IBinder? {
