@@ -13,7 +13,9 @@ import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_main.*
 import java.time.Instant
 import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,11 +43,13 @@ class MainActivity : AppCompatActivity() {
 //        }
 
 
+
         if(checkPermissions()){
             requestPermissions()
         }
 
-        startForegroundService(Intent(this, LocationUpdateService::class.java))
+        //will be called on the permission result handler
+//        startForegroundService(Intent(this, LocationUpdateService::class.java))
 
         goToCameraBtn.setOnClickListener{
             startActivity(Intent(this, CameraActivity::class.java))
@@ -107,18 +111,52 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkPermissions(): Boolean {
-        val permissionState = ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-        return permissionState == PackageManager.PERMISSION_GRANTED
+        return (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.WRITE_CALENDAR)
+                != PackageManager.PERMISSION_GRANTED)
     }
 
-    private fun requestPermissions() {
-            // Request permission. It's possible this can be auto answered if device policy
-            // sets the permission in a given state or the user denied the permission
-            // previously and checked "Never ask again".
-            ActivityCompat.requestPermissions(this@MainActivity,
-                    arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),
-                    REQUEST_PERMISSIONS_REQUEST_CODE)
+    private val MY_PERMISSIONS_REQUEST_FINE_LOCATION = 100
 
+    private fun requestPermissions() {
+        // Should we show an explanation?
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this@MainActivity,
+                        Manifest.permission.READ_CONTACTS)) {
+            // Show an explanation to the user *asynchronously* -- don't block
+            // this thread waiting for the user's response! After the user
+            // sees the explanation, try again to request the permission.
+        } else {
+            // No explanation needed, we can request the permission.
+            ActivityCompat.requestPermissions(this@MainActivity,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    MY_PERMISSIONS_REQUEST_FINE_LOCATION)
+
+            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            MY_PERMISSIONS_REQUEST_FINE_LOCATION -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    startForegroundService(Intent(this, LocationUpdateService::class.java))
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return
+            }
+
+            // Add other 'when' lines to check for other
+            // permissions this app might request.
+            else -> {
+                // Ignore all other requests.
+            }
+        }
     }
 }
