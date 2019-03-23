@@ -26,36 +26,20 @@ object Interpreter {
         }.doOnNext{
             var actionList = it.expScript.expActions
             var condList = it.expScript.expConditions
+
+            //TODO("use all actions in list instead of the first one later on")
             playScriptFor(actionList[0],condList,it.expBasicData.startTime)
         }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
 
-        /*
-        Observable.fromCallable {
-            MainActivity.db?.experimentDao()?.getExpById(expId)!!
-        }.doOnNext {
-            var re = Regex("\\[|\\]")
-            var str = re.replace(it.toString(),"")
-
-            var actionList = it.expScript.expActions
-            var condList = it.expScript.expConditions
-
-            //TODO("use all actions in list instead of the first one later on")
-            playScriptFor(actionList[0],condList,it.expBasicData.startTime)
-        }.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
-        }
-
-        */
     }
 
 
 
-    fun stopScripts(expId: String) {
-        //TODO: playScripts() implemeted this - what happens on multiple experiments? does this thread hold the lock?
+    fun stopScript(expId: String) {
+        //TODO: stopScripts() implemeted this - what happens on multiple experiments? does this thread hold the lock?
         var fn = Throwable().stackTrace[0].methodName
         log(INFO_ERR, "$fn: called.")
     }
@@ -69,7 +53,7 @@ object Interpreter {
                 //add new task to the list and run the script
 //                tasks.add(ScriptRunner(action, condList.filter { it is GpsExpCondition } as MutableList<GpsExpCondition>, startTime))
 //                tasks[tasks.lastIndex].run()
-                ScriptRunner(action, condList.filter { it is GpsExpCondition } as MutableList<GpsExpCondition>, startTime).collect()
+                ScriptRunner(action, condList.filter { it is GpsExpCondition } as MutableList<GpsExpCondition>, startTime).playSript()
             }
             SensorType.Camera-> return //TODO("implement CameraExpCondition and invoke playCameraScript() from ScripRunner")
             SensorType.Michrophone-> return //TODO("implement MicExpCondition and invoke playCameraScript() from ScripRunner")
