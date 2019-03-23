@@ -16,39 +16,44 @@ import androidx.core.app.NotificationCompat
 import com.ezaf.www.citisci.utils.GpsUtils
 import com.ezaf.www.citisci.utils.Logger.log
 import com.google.android.gms.location.*
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 
 
 class LocationUpdateService : Service() {
 
-    private val LOCATION_SERVICE_OPERATION_INTERVAL = 5L
+    private val locationUpdateInterval: Long = 15000       // 15sec
+    private val locationUpdateFastInterval: Long = 5000  //  5sec
     private var mFusedLocationClient: FusedLocationProviderClient? = null
-    private var wayLatitude = 0.0
-    private var wayLongitude = 0.0
     private var locationRequest: LocationRequest? = null
     private var locationCallback: LocationCallback? = null
-    private var isContinue = false
     private var isGPS = false
-    var observablesManager =  CompositeDisposable()
 
     override fun onCreate() {
         var fn = Throwable().stackTrace[0].methodName
         Logger.log(INFO_ERR, "$fn: called.")
         super.onCreate()
 
-        //run the service
-        startMyOwnForeground()
-
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        startMyOwnForeground()
+        createLocationRequest()
+        createLocationCallback()
+        requestLocationUpdates()
+
+    }
+
+    private fun createLocationCallback() {
+        locationCallback = object:LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                var fn = Throwable().stackTrace[0].methodName
+                Logger.log(INFO_ERR, "$fn: called.")
+            }
+        }
+    }
+
+    private fun createLocationRequest() {
         locationRequest = LocationRequest.create()
         locationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        locationRequest!!.interval = 10 * 1000 // 10 seconds
-        locationRequest!!.fastestInterval = 5 * 1000 // 5 seconds
+        locationRequest!!.interval = locationUpdateInterval
+        locationRequest!!.fastestInterval = locationUpdateFastInterval
 
         GpsUtils(this).turnGPSOn(object: GpsUtils.onGpsListener {
             override fun gpsStatus(isGPSEnable:Boolean) {
@@ -56,68 +61,59 @@ class LocationUpdateService : Service() {
                 isGPS = isGPSEnable
             }
         })
-
-        locationCallback = object:LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-                //do nothing for now
-            }
-        }
-
-        observablesManager.add(
-                Observable.interval(LOCATION_SERVICE_OPERATION_INTERVAL, TimeUnit.SECONDS)
-                        .timeInterval()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe{
-                            getLocation()
-                        }
-        )
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        observablesManager.dispose()
     }
 
     companion object {
         var lastLocationCaptured = Location("0.0")
     }
 
-    fun getLocation() {
+    private fun requestLocationUpdates() {
         var fn = "LocationUpdateService::"+Throwable().stackTrace[0].methodName
         Logger.log(INFO_ERR, "$fn: called.")
 
-        if ((ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_COARSE_LOCATION) !== PackageManager.PERMISSION_GRANTED)) {
-            //request permission
+        if((ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_COARSE_LOCATION) !== PackageManager.PERMISSION_GRANTED)){
+            Logger.log(INFO_ERR, "$fn: we need to request permissions and make sure they are enabled in settings...")
         }
-        else {
-            if (isContinue) {
-                mFusedLocationClient!!.requestLocationUpdates(locationRequest, locationCallback, null)
-            }
-            else {
-                //TODO: we need to use requestLocationUpdates (GoogleApiClient, LocationRequest, PendingIntent) API instead of this and lose the Observable.interval..
-                mFusedLocationClient!!.lastLocation.addOnSuccessListener {
-                    location->
-                    if (location != null) {
-                        wayLatitude = location.latitude
-                        wayLongitude = location.longitude
-                        lastLocationCaptured.latitude = location.latitude
-                        lastLocationCaptured.longitude = location.longitude
+            mFusedLocationClient!!.requestLocationUpdates(locationRequest, locationCallback, null)
 
-                        log(INFO_ERR,"$fn: ${location.latitude} , ${location.longitude}")
-                    }
-                    else {
-                        mFusedLocationClient!!.requestLocationUpdates(locationRequest, locationCallback, null)
-                    }
+    }
+
+    private fun requestLastLocation(){
+        var fn = "LocationUpdateService::"+Throwable().stackTrace[0].methodName
+        Logger.log(INFO_ERR, "$fn: called.")
+
+        if((ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_COARSE_LOCATION) !== PackageManager.PERMISSION_GRANTED)){
+            mFusedLocationClient!!.lastLocation.addOnSuccessListener {
+                location->
+                if (location != null) {
+                    lastLocationCaptured.latitude = location.latitude
+                    lastLocationCaptured.longitude = location.longitude
+
+                    log(INFO_ERR,"$fn: ${location.latitude} , ${location.longitude}")
                 }
             }
         }
     }
 
+    fun removeLocationUpdates() {
+        var fn = "LocationUpdateService::"+Throwable().stackTrace[0].methodName
+        Logger.log(INFO_ERR, "$fn: called.")
+
+        if((ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_COARSE_LOCATION) !== PackageManager.PERMISSION_GRANTED)){
+            mFusedLocationClient!!.removeLocationUpdates(locationCallback)
+        }
+    }
+
+    private fun checkPermissions(): Boolean {
+        return (ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(this@LocationUpdateService, Manifest.permission.ACCESS_COARSE_LOCATION) !== PackageManager.PERMISSION_GRANTED)
+    }
+
     override fun onBind(p0: Intent?): IBinder? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return null
     }
 
     private fun startMyOwnForeground() {
