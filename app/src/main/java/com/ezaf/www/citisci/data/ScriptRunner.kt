@@ -14,7 +14,7 @@ class ScriptRunner(
         private val startTime: Instant
 ) {
 
-    fun collect() {
+    fun playSript() {
         val fn = object{}.javaClass.enclosingMethod.name
         log(INFO,"$fn: called. [sensorType = ${action.sensorType}]")
 
@@ -38,6 +38,9 @@ class ScriptRunner(
         }
     }
 
+    /**
+     *  called every n (interval) seconds and get the current GPS coordinate
+     */
     private fun playGpsScript(action: ExpAction, conds: List<GpsExpCondition>, startTime: Instant) {
         val fn = object{}.javaClass.enclosingMethod.name
         log(INFO,"$fn: called. [sensorType = ${action.sensorType}]")
@@ -51,11 +54,19 @@ class ScriptRunner(
                     //TODO: endExperiment(): implement
                     //endExperiment()
                 }
-                else{
-                    log(INFO,"$fn: calling data collector")
-                    //collectData()
+                else if(isIntervalPassedFromLastCapture()){
+                        log(INFO,"$fn: calling data collector")
+                        var coordGson = DataCollector.collect(sensorType)
+    //                    sendGsonToRemoteDb()
+    //                    sendGsonToLocalDb()
+                        updateSamplesStatus()
+
+                    }
+                    else {
+                        log(INFO,"$fn: interval halt time yet not over. retrying again in ${action.captureInterval} seconds")
+                    }
+
                 }
-            }
         }
         else{
             log(INFO,"$fn: conditions did not met. retrying again in ${action.captureInterval} seconds")
