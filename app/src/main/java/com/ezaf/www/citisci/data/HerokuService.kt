@@ -1,4 +1,5 @@
 package com.ezaf.www.citisci.data
+import okhttp3.RequestBody
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.*
@@ -17,19 +18,6 @@ interface HerokuService {
     fun createDummyExp(): Call<ResponseBody>
 
     @PUT("https://tempcitisci.herokuapp.com/experiment/addSamples/:{id}")
-    fun putSample(@Path("id")id: String): Call<ResponseBody>
+    fun putSample(@Path("id") id: String, @Body body: RequestBody): Call<ResponseBody>
 
-//    In the body of the msg send a json like:
-//    {
-//
-//        "samples":
-//        {
-//
-//            "x":45,
-//
-//            "y":15
-//
-//        }
-//
-//    }
 }
