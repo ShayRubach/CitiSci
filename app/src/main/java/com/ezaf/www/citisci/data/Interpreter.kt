@@ -28,7 +28,7 @@ object Interpreter {
             var condList = it.expScript.expConditions
 
             //TODO("use all actions in list instead of the first one later on")
-            playScriptFor(actionList[0],condList,it.expBasicData.startTime)
+            playScriptFor(expId, actionList[0],condList,it.expBasicData.startTime)
         }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -44,7 +44,7 @@ object Interpreter {
         log(INFO_ERR, "$fn: called.")
     }
 
-    private fun playScriptFor(action: ExpAction, condList: MutableList<ExpCondition>, startTime: Instant) {
+    private fun playScriptFor(expId: String, action: ExpAction, condList: MutableList<ExpCondition>, startTime: Instant) {
         var fn = Throwable().stackTrace[0].methodName
         log(INFO_ERR, "$fn: called.")
 
@@ -53,7 +53,7 @@ object Interpreter {
                 //add new task to the list and run the script
 //                tasks.add(ScriptRunner(action, condList.filter { it is GpsExpCondition } as MutableList<GpsExpCondition>, startTime))
 //                tasks[tasks.lastIndex].run()
-                ScriptRunner(action, condList.filter { it is GpsExpCondition } as MutableList<GpsExpCondition>, startTime).playSript()
+                ScriptRunner(expId, action, condList.filter { it is GpsExpCondition } as MutableList<GpsExpCondition>, startTime).playSript()
             }
             SensorType.Camera-> return //TODO("implement CameraExpCondition and invoke playCameraScript() from ScripRunner")
             SensorType.Michrophone-> return //TODO("implement MicExpCondition and invoke playCameraScript() from ScripRunner")
