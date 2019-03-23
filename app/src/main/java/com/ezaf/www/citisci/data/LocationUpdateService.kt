@@ -45,7 +45,9 @@ class LocationUpdateService : Service() {
         locationCallback = object:LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 var fn = Throwable().stackTrace[0].methodName
-                Logger.log(INFO_ERR, "$fn: called.")
+                lastLocationCaptured.latitude = locationResult.lastLocation.latitude
+                lastLocationCaptured.longitude = locationResult.lastLocation.longitude
+                Logger.log(INFO_ERR, "$fn: lastLocation=${locationResult.lastLocation.latitude}, ${locationResult.lastLocation.longitude}")
             }
         }
     }
