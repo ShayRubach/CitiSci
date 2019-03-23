@@ -1,28 +1,29 @@
 package com.ezaf.www.citisci.data
 
+import android.location.Location
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.VerboseLevel.*
-import org.json.JSONObject
-import java.time.Instant
 
 object DataCollector {
 
-    fun collect(sensorType: SensorType, startTime: Instant) : JSONObject? {
+    fun collect(sensorType: SensorType) : Any {
         var fn = Throwable().stackTrace[0].methodName
         log(INFO_ERR, "$fn: called.")
 
         return when(sensorType){
             SensorType.GPS-> collectGpsCoord()
-            SensorType.Camera-> null
-            SensorType.Michrophone-> null
-            SensorType.Unknown -> null
+            SensorType.Camera-> collectGpsCoord()
+            SensorType.Michrophone-> collectGpsCoord()
+            SensorType.Unknown -> collectGpsCoord()
         }
     }
 
-    private fun collectGpsCoord(): JSONObject? {
+    private fun collectGpsCoord(): Any {
         //TODO("not implemented")
         var fn = Throwable().stackTrace[0].methodName
         log(INFO_ERR, "$fn: called.")
-        return null
+
+        //copy the last location captures (avoid race conditions over the value)
+        return Location(LocationUpdateService.lastLocationCaptured)
     }
 }
