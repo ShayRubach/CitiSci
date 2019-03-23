@@ -13,7 +13,7 @@ object Logger {
 }
 
 enum class VerboseLevel(lvl: Int) {
-    PLACEHOLDER_1(1),
+    LOCATION(1),
     PLACEHOLDER_2(2),
     INFO(3),
     ERR(4),
