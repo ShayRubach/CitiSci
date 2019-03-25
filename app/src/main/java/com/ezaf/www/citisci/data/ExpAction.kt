@@ -9,13 +9,11 @@ class ExpAction (
         val captureInterval: Double,
         val samplesToCollect: Int,
         val duration: Int,
-        val sensorType: SensorType){
+        val sensorType: SensorType,
+        var samplesCollected: Int = 0){
 
     private val TIME_DIVISOR = 3600.0
     private var lastTimeCollected = Instant.now()
-
-    //TODO: add this to the typeconverter
-    private var samplesCollected: Int = 0
 
     fun updateSamplesStatus()  {
         var fn = Throwable().stackTrace[0].methodName
@@ -37,7 +35,7 @@ class ExpAction (
     }
 
     override fun toString(): String {
-        return  "$captureInterval|$samplesToCollect|$duration|$sensorType"
+        return  "$captureInterval|$samplesToCollect|$duration|$sensorType|$samplesCollected"
     }
 
     fun expDurationHasEnded(startTime: Instant): Boolean {

@@ -26,7 +26,7 @@ class TypeConverterUtil {
         var condsStr = newStr.substring(seperator).split("|")
 
 
-        var newAction = ExpAction(actionsStr[0].toDouble(),actionsStr[1].toInt(),actionsStr[2].toInt(), toSensorType(actionsStr[3]))
+        var newAction = ExpAction(actionsStr[0].toDouble(),actionsStr[1].toInt(),actionsStr[2].toInt(), toSensorType(actionsStr[3]), actionsStr[4].toInt())
         var newCond = when(newAction.sensorType){
             //todo: add the reset of the sensors here when implemented
             SensorType.GPS -> GpsExpCondition(
