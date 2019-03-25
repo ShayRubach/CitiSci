@@ -10,17 +10,22 @@ import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import com.ezaf.www.citisci.utils.Logger
 import com.ezaf.www.citisci.utils.VerboseLevel.INFO_ERR
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_camera.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.io.ByteArrayOutputStream
+
 
 class CameraActivity : AppCompatActivity() {
 
     private val REQUEST_IMAGE_CAPTURE = 1
-    private val REQUEST_TAKE_PHOTO= 2
     private var currentPhotoPath: String = "."
+    private var photoURI: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,14 +68,14 @@ class CameraActivity : AppCompatActivity() {
                 }
                 // Continue only if the File was successfully created
                 photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
+                    photoURI = FileProvider.getUriForFile(
                             this,
                             getString(R.string.fileprovider_path),
                             it
                     )
                     Logger.log(INFO_ERR,"successfully got a file from FileProvider")
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
                 }
             }
         }
@@ -78,9 +83,32 @@ class CameraActivity : AppCompatActivity() {
 
     //TODO: move logic to CameraViewModel
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Logger.log(INFO_ERR,"requestCode=$requestCode, resultCode=$resultCode, data=$data")
+
+        Logger.log(INFO_ERR,"photoURI=$photoURI")
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
+//            val imageBitmap = data?.getStringExtra("data") as Bitmap
+            val imageBitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, photoURI)
             photoImgView.setImageBitmap(imageBitmap)
+
+            toBase64Test(imageBitmap)
         }
+    }
+
+    private fun toBase64Test(imageBitmap: Bitmap?) {
+
+        Observable.fromCallable {
+            ByteArrayOutputStream()
+        }.doOnNext{
+            imageBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, it) //bm is the bitmap object
+            val b = it.toByteArray()
+            val encodedImage = Base64.getEncoder().encodeToString(b)
+            Logger.log(INFO_ERR,"base64pic [$encodedImage]")
+        }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+
     }
 }
