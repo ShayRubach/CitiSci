@@ -2,8 +2,9 @@ package com.ezaf.www.citisci.data
 
 import androidx.room.*
 
-const val Q_GET_EXP_BY_ID   = "SELECT * FROM Experiment WHERE id == :id"
+const val Q_GET_EXP_BY_ID   = "SELECT * FROM Experiment WHERE _id == :id"
 const val Q_GET_ALL_EXP     = "SELECT * FROM Experiment"
+
 
 @Dao
 interface ExperimentDao {
@@ -21,4 +22,5 @@ interface ExperimentDao {
 
     @Query(Q_GET_ALL_EXP)
     fun getAllExp(): List<Experiment>
+
 }
