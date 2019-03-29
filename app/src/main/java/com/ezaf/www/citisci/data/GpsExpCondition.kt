@@ -5,21 +5,17 @@ import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.VerboseLevel
 
 class GpsExpCondition(private val baseCoord: Pair<Double,Double>,
-                      private val maxRadius: Double,
-                      _id: String,
-                      _sensorType: SensorType) : ExpCondition
+                      private val maxRadius: Double) : ExpCondition
 {
-    override val id = _id
-    override val sensorType = _sensorType
 
     override fun isConditionMet(): Boolean {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val fn = Throwable().stackTrace[0].methodName
+
         return distanceBetweenCoordsInMeters(
                 LocationUpdateService.lastLocationCaptured.latitude,
                 LocationUpdateService.lastLocationCaptured.longitude,
                 baseCoord.first,
-                baseCoord.second
-        ) > maxRadius
+                baseCoord.second)  < maxRadius
     }
 
     override fun toString(): String {
@@ -40,5 +36,24 @@ class GpsExpCondition(private val baseCoord: Pair<Double,Double>,
         loc2.longitude = long2
 
         return loc1.distanceTo(loc2).toDouble()
+    }
+
+    companion object {
+        fun toExpConditionList(actionList: List<String>) : List<GpsExpCondition> {
+            val fn = Throwable().stackTrace[0].methodName
+
+            val delim = "$"
+            var splittedStr: List<String>
+            var newList: MutableList<GpsExpCondition> = mutableListOf()
+
+            for(str in actionList){
+                splittedStr = str.split(delim)
+                newList.add(GpsExpCondition(Pair(splittedStr[0].toDouble(),splittedStr[1].toDouble()), splittedStr[2].toDouble()))
+            }
+            if(newList.isEmpty()){
+                log(VerboseLevel.ERR,"$fn: empty list was generated")
+            }
+            return newList
+        }
     }
 }
