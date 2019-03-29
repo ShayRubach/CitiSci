@@ -92,7 +92,15 @@ class TypeConverterUtil {
                         type.samplesCollected))
     }
 
+    @TypeConverter
+    fun fromDouble(type: Double) : String {
+        return type.toString()
+    }
 
+    @TypeConverter
+    fun toDouble(type: String) : Double{
+        return type.toDouble()
+    }
 //
 //    @TypeConverter
 //    fun scriptToStr(script: ExpScript): String {

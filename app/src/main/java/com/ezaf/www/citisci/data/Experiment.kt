@@ -3,6 +3,7 @@ package com.ezaf.www.citisci.data
 import androidx.room.*
 import com.ezaf.www.citisci.MainActivity.Companion.db
 import com.ezaf.www.citisci.utils.Logger
+import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.TypeConverterUtil
 import com.ezaf.www.citisci.utils.VerboseLevel
 import io.reactivex.Observable
@@ -31,14 +32,18 @@ class Experiment (
                 attachActions()
         }
 
-        private fun attachActions() {
+        fun attachActions() {
+                val dao = db.expActionsDao()
                 Observable.fromCallable {
-                        db.expActionsDao()
-                }.doOnNext {
-                        for(actionID in actionIdList){
-                                actions.add(it.getActionById(actionID))
+                        dao.run {
+                                for(actionID in actionIdList){
+                                        val action = getActionById(actionID)
+                                        log(VerboseLevel.INFO,"ACTION = $action")
+                                        actions.add(action)
+                                }
                         }
                 }.doOnComplete {
+                        log(VerboseLevel.INFO_ERR, " \n##################\n$this\n##################\n")
                 }.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe()
@@ -53,7 +58,7 @@ class Experiment (
         }
 
         override fun toString(): String {
-                var builder = StringBuilder("$_id\n$basicData\n")
+                var builder = StringBuilder("$_id\n$basicData\n$actionIdList\n")
                 for(a in actions){
                         builder.append("$a\n")
                 }

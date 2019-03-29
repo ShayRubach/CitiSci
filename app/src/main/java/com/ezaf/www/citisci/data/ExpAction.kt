@@ -9,6 +9,7 @@ import java.time.Instant
 
 @Entity
 class ExpAction (
+        @TypeConverters(TypeConverterUtil::class)
         val captureInterval: Double,
         val duration: Int,
         val samplesRequired: Int,

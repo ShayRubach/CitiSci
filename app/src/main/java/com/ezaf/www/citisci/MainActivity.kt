@@ -87,54 +87,63 @@ class MainActivity : AppCompatActivity() {
 
         var action1 = ExpAction(2.4,2,100,"2", SensorType.GPS, listOf("123.0$234.5$100.0"))
         var action2 = ExpAction(4.4,4,200,"6", SensorType.GPS, listOf("13333.0$23334.5$1300.0"))
-        var action3 = ExpAction(1.4,132,10,"4", SensorType.GPS, listOf("221.0$11.5$12"))
+        var action3 = ExpAction(1.1,1,1,"4", SensorType.GPS, listOf("1.0$1.1$1"))
         var action4 = ExpAction(2.22,1,32,"234", SensorType.GPS, listOf("1.3$7.5$23"))
         var action5 = ExpAction(2.4,3,402,"2299", SensorType.GPS, listOf("3.3.0$234.5$722"))
 
-        action1.updateSamplesStatus()
-        action1.updateSamplesStatus()
-//        log(INFO, "exp:$exp")
+        var list:List<Experiment> = listOf()
 
         Observable.fromCallable {
-            db.clearAllTables()
+//            db.clearAllTables()
 
-            with(expActionDao){
-                this.insertAction(action1)
-                this.insertAction(action2)
-                this.insertAction(action3)
-                this.insertAction(action4)
-                this.insertAction(action5)
+            expActionDao.run {
+//                insertAction(action1)
+//                insertAction(action2)
+//                insertAction(action3)
+//                insertAction(action4)
+//                insertAction(action5)
+//                updateAction(action3)
+//                var test :List<ExpAction> = getAllActions()
+//                for(a in test) {
+//                    log(INFO_ERR, " \n##################\n$a\n##################\n")
+//                }
+
+//                var test = getActionById("6")
+//                log(INFO_ERR, " \n##################\n$test\n##################\n")
+
             }
-            var exp = Experiment("3",bdata, mutableListOf(action1._id,action2._id))
-            var exp2 = Experiment("4444",bdata2, mutableListOf(action3._id,action4._id,action5._id))
+//            var exp = Experiment("3",bdata, mutableListOf(action1._id,action2._id))
+//            var exp2 = Experiment("4444",bdata2, mutableListOf(action3._id,action4._id,action5._id))
 
 
-            log(INFO_ERR, " \n##################\n$exp\n##################")
-            log(INFO_ERR, " \n##################\n$exp2\n##################")
+//            log(INFO_ERR, " \n##################\n$exp\n##################")
+//            log(INFO_ERR, " \n##################\n$exp2\n##################")
+
             with(expDao){
-                this.insertExp(exp)
-                this.insertExp(exp2)
+//                this.insertExp(exp)
+//                this.insertExp(exp2)
             }
-//            db.experimentDao().getAllExp()
+            list = db.experimentDao().getAllExp()
+
+            for(x:Experiment in db.experimentDao().getAllExp()) {
+//                var re = Regex("\\[|\\]")
+//                var str = re.replace(x.toString(),"")
+                x.attachActions()
+            }
 //            db?.experimentDao()?.getActions(exp._id)
 //            db?.experimentDao()?.updateCollectedSamplesCount("2", 25)
 
 //            db?.experimentDao()?.insertAction(action)
-        }.doOnNext {
-//            log(INFO, "&&&&&&&&&&&:$it")
-//            for(x:Experiment in it) {
-//                var re = Regex("\\[|\\]")
-//                var str = re.replace(x.toString(),"")
-//                log(INFO_ERR, " \n##################\n$str\n##################\n")
-//            }
+        }.doOnNext{}
+                .doOnComplete {
 
-//                var jsonString = Gson().toJson(x)
-//                log(INFO, " \n$jsonString")
-//                var jsonString = "{\"_id\":\"000\",\"basicData\":{\"automatic\":false,\"guide\":\"guide\",\"description\":\"description\",\"name\":\"name\",\"_id\":\"123\",\"startTime\":{}},\"actions\":[{\"TIME_DIVISOR\":3600,\"_id\":\"1234\",\"captureInterval\":2.4,\"conditions\":[\"123.0\$234.5\$100.0\"],\"duration\":2,\"lastTimeCollected\":{},\"samplesCollected\":0,\"samplesRequired\":100,\"sensorType\":\"GPS\"}]}"
-//                log(INFO, "jsonString:\n$jsonString")
-//                var testExp = Gson().fromJson(jsonString, Experiment::class.java)
-//                log(INFO, "testExp:\n$testExp")
-        }.subscribeOn(Schedulers.io())
+
+//                    for(x in list){
+//                        x.attachActions()
+//                        log(INFO_ERR, " \n##################\n$x\n##################\n")
+//                    }
+                }
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
 
