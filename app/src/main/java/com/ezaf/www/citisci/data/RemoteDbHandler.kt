@@ -1,25 +1,16 @@
 package com.ezaf.www.citisci.data
 
-import com.ezaf.www.citisci.MainActivity
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import com.ezaf.www.citisci.data.RemoteDbHandler.MsgType.*
 import com.ezaf.www.citisci.utils.Logger
 import com.ezaf.www.citisci.utils.VerboseLevel
-import com.google.gson.Gson
 import com.google.gson.JsonElement
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
-import okhttp3.MediaType
-import okhttp3.RequestBody
 import retrofit2.converter.gson.GsonConverterFactory
-
 
 object RemoteDbHandler
 {
@@ -45,28 +36,25 @@ object RemoteDbHandler
     }
 
 
-    fun sendMsg(msgType: MsgType,jsonStr: String, expId: String = "") {
+    fun sendMsg(msgType: MsgType,sample: ExpSample) {
         val fn = Throwable().stackTrace[0].methodName
         Logger.log(VerboseLevel.INFO, "$fn: called.")
-
-        val body = RequestBody.create(MediaType.parse("application/json"), jsonStr)
-        Logger.log(VerboseLevel.INFO, "$fn: jsonStr=\n$jsonStr")
 
         Observable.fromCallable {
             service.run {
                 when(msgType){
-                    SEND_GPS_SAMPLE, SEND_CAM_SAMPLE, SEND_MIC_SAMPLE ->putSample(expId, jsonStr)
+                    SEND_GPS_SAMPLE, SEND_CAM_SAMPLE, SEND_MIC_SAMPLE ->putSample(sample.actionID, sample)
                     //SOME OTHER MSG TYPES HERE -> DO STUFF
                 }
             }
 
         }.doOnNext{
-            it.enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+            it.enqueue(object : Callback<ExpSample> {
+                override fun onResponse(call: Call<ExpSample>, response: Response<ExpSample>) {
                     Logger.log(VerboseLevel.INFO, "$fn: $msgType successfully sent.")
                 }
 
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                override fun onFailure(call: Call<ExpSample>, t: Throwable) {
                     Logger.log(VerboseLevel.INFO, "$fn: failed to send $msgType.")
                 }
             })
