@@ -1,11 +1,20 @@
 package com.ezaf.www.citisci.data
 
 import androidx.room.*
+import com.ezaf.www.citisci.MainActivity.Companion.localDbHandler
 import com.ezaf.www.citisci.utils.VerboseLevel.*
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.TypeConverterUtil
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.time.Duration
 import java.time.Instant
+import java.util.concurrent.TimeUnit
 
 @Entity
 class ExpAction (
@@ -28,12 +37,14 @@ class ExpAction (
     @Ignore var expId: String = ""
         private set
 
-    fun updateSamplesStatus()  {
+    fun updateSamplesStatus() = runBlocking {
         var fn = Throwable().stackTrace[0].methodName
         log(INFO_ERR, "$fn: called.")
 
         lastTimeCollected = Instant.now()
         samplesCollected++
+
+        GlobalScope.async {(localDbHandler.expActionsDao().updateAction(this@ExpAction))}
     }
 
     fun allSamplesWereCollected() = samplesCollected == samplesRequired
