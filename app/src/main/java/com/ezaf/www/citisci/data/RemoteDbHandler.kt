@@ -40,13 +40,19 @@ object RemoteDbHandler
 
 
     fun sendMsg(msgType: MsgType,jsonStr: String, expId: String = "") {
-        val fn = object{}.javaClass.enclosingMethod.name
+        val fn = Throwable().stackTrace[0].methodName
         Logger.log(VerboseLevel.INFO, "$fn: called.")
 
         val body = RequestBody.create(MediaType.parse("application/json"), jsonStr)
 
         Observable.fromCallable {
-            service.putSample(expId, body)
+            service.run {
+                when(msgType){
+                    SEND_GPS_SAMPLE, SEND_CAM_SAMPLE, SEND_MIC_SAMPLE ->putSample(expId, body)
+                    //SOME OTHER MSG TYPES HERE -> DO STUFF
+                }
+            }
+
         }.doOnNext{
             it.enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -60,6 +66,5 @@ object RemoteDbHandler
         }
                 .subscribeOn(Schedulers.io())
                 .subscribe()
-
     }
 }
