@@ -23,7 +23,7 @@ import com.google.gson.Gson
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        lateinit var db: LocalDbHandler
+        lateinit var localDbHandler: LocalDbHandler
     }
 
 
@@ -69,9 +69,9 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-        db = LocalDbHandler.getLocalDb(context = this)
-        expDao = db.experimentDao()
-        expActionDao = db.expActionsDao()
+        localDbHandler = LocalDbHandler.getLocalDb(context = this)
+        expDao = localDbHandler.experimentDao()
+        expActionDao = localDbHandler.expActionsDao()
         testDbInsertionAndSelection()
 
 
@@ -85,16 +85,16 @@ class MainActivity : AppCompatActivity() {
         var bdata = ExpBasicData("1","name", Instant.now(),false,"description","guide")
         var bdata2 = ExpBasicData("123","SHAY", Instant.now(),true,"descrddiption","gg")
 
-        var action1 = ExpAction(2.4,2,100,"2", SensorType.GPS, listOf("123.0$234.5$100.0"))
-        var action2 = ExpAction(4.4,4,200,"6", SensorType.GPS, listOf("13333.0$23334.5$1300.0"))
-        var action3 = ExpAction(1.1,1,1,"4", SensorType.GPS, listOf("1.0$1.1$1"))
-        var action4 = ExpAction(2.22,1,32,"234", SensorType.GPS, listOf("1.3$7.5$23"))
-        var action5 = ExpAction(2.4,3,402,"2299", SensorType.GPS, listOf("3.3.0$234.5$722"))
+        var action1 = ExpAction(1.0,60,20,"ACTION_1", SensorType.GPS, listOf("32.060709$34.812342$1000.0"))
+        var action2 = ExpAction(2.0,60,10,"ACTION_2", SensorType.GPS, listOf("32.060709$34.812342$1000.0"))
+        var action3 = ExpAction(3.0,1,1,"ACTION_3", SensorType.GPS, listOf("32.060709$34.812342$1000.0"))
+        var action4 = ExpAction(2.22,1,32,"ACTION_4", SensorType.GPS, listOf("1.3$7.5$23"))
+        var action5 = ExpAction(2.4,3,402,"ACTION_5", SensorType.GPS, listOf("3.3.0$234.5$722"))
 
         var list:List<Experiment> = listOf()
 
         Observable.fromCallable {
-//            db.clearAllTables()
+//            localDbHandler.clearAllTables()
 
             expActionDao.run {
 //                insertAction(action1)
@@ -112,43 +112,32 @@ class MainActivity : AppCompatActivity() {
 //                log(INFO_ERR, " \n##################\n$test\n##################\n")
 
             }
-//            var exp = Experiment("3",bdata, mutableListOf(action1._id,action2._id))
-//            var exp2 = Experiment("4444",bdata2, mutableListOf(action3._id,action4._id,action5._id))
+//            var exp = Experiment("EXP_1",bdata, mutableListOf(action1._id,action2._id))
+//            var exp2 = Experiment("EXP_2",bdata2, mutableListOf(action3._id))
 
 
 //            log(INFO_ERR, " \n##################\n$exp\n##################")
 //            log(INFO_ERR, " \n##################\n$exp2\n##################")
 
-            with(expDao){
-//                this.insertExp(exp)
-//                this.insertExp(exp2)
+            expDao.run{
+//                insertExp(exp)
+//                insertExp(exp2)
+                getAllExp()
             }
-            list = db.experimentDao().getAllExp()
 
-            for(x:Experiment in db.experimentDao().getAllExp()) {
-//                var re = Regex("\\[|\\]")
-//                var str = re.replace(x.toString(),"")
-                x.attachActions()
+
+        }.doOnNext{
+            for(a in it) {
+                log(INFO_ERR, " \n##################\n$a\n##################\n")
             }
-//            db?.experimentDao()?.getActions(exp._id)
-//            db?.experimentDao()?.updateCollectedSamplesCount("2", 25)
 
-//            db?.experimentDao()?.insertAction(action)
-        }.doOnNext{}
-                .doOnComplete {
-
-
-//                    for(x in list){
-//                        x.attachActions()
-//                        log(INFO_ERR, " \n##################\n$x\n##################\n")
-//                    }
-                }
+        }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
 
 //        var interpreter = Interpreter
-//        interpreter.playScripts(exp2._id.toString())
+//        interpreter.playScripts("EXP_1")
     }
 
     private fun checkPermissions(): Boolean {
