@@ -60,15 +60,11 @@ class ScriptRunner(
                     //endExperiment()
                 }
                 else if(isIntervalPassedFromLastCapture()){
-                    log(INFO,"$fn: calling data collector")
+                    log(INFO,"$fn: calling data collector.")
                     var location = DataCollector.collect(sensorType) as Location
 
-
-                    var jsonString = Gson().toJson(ExpGpsSample(LatLong(location.latitude,location.longitude)))
-                    log(INFO, "jsonString = \n$jsonString")
-
-
-//                    RemoteDbHandler.sendMsg(SEND_GPS_SAMPLE, jsonString, action.expId)
+                    val sample = ExpSample(action._id, listOf(LatLong(location.latitude,location.longitude)))
+                    RemoteDbHandler.sendMsg(SEND_GPS_SAMPLE, sample)
                     updateSamplesStatus()
 
 
