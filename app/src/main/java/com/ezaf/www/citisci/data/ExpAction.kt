@@ -25,9 +25,8 @@ class ExpAction (
 
     @Ignore private val TIME_DIVISOR = 3600.0
     @Ignore private var lastTimeCollected = Instant.now()
-    @Ignore private var expId: String = ""
-
-//    constructor() : this(0.0, 0,0,"",SensorType.Unknown,listOf(),0)
+    @Ignore var expId: String = ""
+        private set
 
     fun updateSamplesStatus()  {
         var fn = Throwable().stackTrace[0].methodName
