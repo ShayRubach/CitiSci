@@ -1,6 +1,8 @@
 package com.ezaf.www.citisci.data
 
-abstract class ExpSample(var sensorType: SensorType)
+abstract class ExpSample(var sensorType: SensorType){
+    val sender: String = "SOME_MAIL@SOME_DOMAIN.COM"
+}
 
 class ExpGpsSample(val data: LatLong) : ExpSample(SensorType.GPS)
 class ExpCameraSample(val data: String) : ExpSample(SensorType.Camera)
