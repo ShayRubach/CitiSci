@@ -68,8 +68,9 @@ class ScriptRunner(
                     log(INFO, "jsonString = \n$jsonString")
 
 
-//                    RemoteDbHandler.sendMsg(SEND_GPS_SAMPLE, jsonString, expId)
+//                    RemoteDbHandler.sendMsg(SEND_GPS_SAMPLE, jsonString, action.expId)
                     updateSamplesStatus()
+
 
                     }
                     else {
