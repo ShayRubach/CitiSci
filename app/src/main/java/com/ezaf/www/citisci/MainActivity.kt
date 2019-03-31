@@ -18,6 +18,13 @@ import androidx.core.content.ContextCompat
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.VerboseLevel.*
 import com.google.gson.Gson
+import com.google.gson.JsonElement
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.*
+import kotlin.concurrent.schedule
 
 
 class MainActivity : AppCompatActivity() {
@@ -73,28 +80,52 @@ class MainActivity : AppCompatActivity() {
         expDao = localDbHandler.experimentDao()
         expActionDao = localDbHandler.expActionsDao()
         testDbInsertionAndSelection()
+        getAllExpFromRemoteDb()
 
 
     }
 
+    private fun getAllExpFromRemoteDb() = runBlocking {
+        var list : List<Experiment> = listOf()
+        var interpreter = Interpreter
+
+        async {
+            list  = RemoteDbHandler.getAllExp()
+        }
+
+        //TODO: REMOVE THIS DELAY AND MANAGE CALLS WITH task.await() with a manager to invoke them by seq!!!!
+        Timer("SettingUp", false).schedule(3000) {
+            for(ex in list){
+                interpreter.playScripts(ex._id)
+            }
+        }
+//        val task2 = async {
+//            log(INFO_ERR, " \n################## IM DONE #################################### IM DONE ##################\n")
+//        }
+
+
+//        task1.await()
+//        task2.await()
+
+    }
 
 
     fun testDbInsertionAndSelection(){
 
 
-        var bdata = ExpBasicData("1","name", Instant.now(),false,"description","guide")
-        var bdata2 = ExpBasicData("123","SHAY", Instant.now(),true,"descrddiption","gg")
-
-        var action1 = ExpAction(1.0,60,20,"ACTION_1", SensorType.GPS, listOf("32.060709$34.812342$1000.0"))
-        var action2 = ExpAction(2.0,60,10,"ACTION_2", SensorType.GPS, listOf("32.060709$34.812342$1000.0"))
-        var action3 = ExpAction(3.0,1,1,"ACTION_3", SensorType.GPS, listOf("32.060709$34.812342$1000.0"))
-        var action4 = ExpAction(2.22,1,32,"ACTION_4", SensorType.GPS, listOf("1.3$7.5$23"))
-        var action5 = ExpAction(2.4,3,402,"ACTION_5", SensorType.GPS, listOf("3.3.0$234.5$722"))
-
-        var list:List<Experiment> = listOf()
+//        var bdata = ExpBasicData("1","name", Instant.now(),false,"description","guide")
+//        var bdata2 = ExpBasicData("123","SHAY", Instant.now(),true,"descrddiption","gg")
+//
+//        var action1 = ExpAction(1.0,60,500,"5c9f946ed032a1118c188bbe", SensorType.GPS, listOf("32.060709$34.812342$1000.0"))
+//        var action2 = ExpAction(2.0,60,10,"ACTION_2", SensorType.GPS, listOf("32.060709$34.812342$1000.0"))
+//        var action3 = ExpAction(3.0,1,1,"ACTION_3", SensorType.GPS, listOf("32.060709$34.812342$1000.0"))
+//        var action4 = ExpAction(2.22,1,32,"ACTION_4", SensorType.GPS, listOf("1.3$7.5$23"))
+//        var action5 = ExpAction(2.4,3,402,"ACTION_5", SensorType.GPS, listOf("3.3.0$234.5$722"))
+//
+//        var list:List<Experiment> = listOf()
 
         Observable.fromCallable {
-//            localDbHandler.clearAllTables()
+            localDbHandler.clearAllTables()
 
             expActionDao.run {
 //                insertAction(action1)
@@ -102,7 +133,7 @@ class MainActivity : AppCompatActivity() {
 //                insertAction(action3)
 //                insertAction(action4)
 //                insertAction(action5)
-//                updateAction(action3)
+//                updateAction(action1)
 //                var test :List<ExpAction> = getAllActions()
 //                for(a in test) {
 //                    log(INFO_ERR, " \n##################\n$a\n##################\n")
@@ -122,19 +153,21 @@ class MainActivity : AppCompatActivity() {
             expDao.run{
 //                insertExp(exp)
 //                insertExp(exp2)
-                getAllExp()
+//                getAllExp()
             }
+
 
 
         }.doOnNext{
-            for(a in it) {
-                log(INFO_ERR, " \n##################\n$a\n##################\n")
-            }
+//            for(a in it) {
+//                log(INFO_ERR, " \n##################\n$a\n##################\n")
+//            }
 
         }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
+
 
 //        var interpreter = Interpreter
 //        interpreter.playScripts("EXP_1")
