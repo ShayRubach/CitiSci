@@ -9,9 +9,9 @@ enum class SensorType {
 
 fun toSensorType(str:String): SensorType {
     return when(str){
-        SensorType.GPS.toString() -> SensorType.GPS
-        SensorType.Michrophone.toString() -> SensorType.Michrophone
-        SensorType.Camera.toString() -> SensorType.Camera
+        SensorType.GPS.toString(), "GPS" -> SensorType.GPS
+        SensorType.Michrophone.toString(), "MICROPHONE" -> SensorType.Michrophone
+        SensorType.Camera.toString(), "CAMERA" -> SensorType.Camera
         else -> SensorType.Unknown
     }
 }
