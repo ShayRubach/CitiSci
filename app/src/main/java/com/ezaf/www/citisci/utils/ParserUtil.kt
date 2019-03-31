@@ -1,44 +1,67 @@
 package com.ezaf.www.citisci.utils
 
 import com.ezaf.www.citisci.data.*
-import com.ezaf.www.citisci.utils.Logger.log
+import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.time.Instant
 
 object ParserUtil {
 
+    //dummy objects to be referenced as type
+    val ea = ExpAction(0.0,0,0,"DUMMMY_ID",SensorType.GPS, listOf(),0)
+    val ebd = ExpBasicData("DUMMMY_ID","", Instant.now(),false,"","")
+    val exp = Experiment("DUMMMY_ID",ebd, mutableListOf())
 
-    fun jsonToExpList(json: String) : MutableList<Experiment> {
 
-        val j = JSONObject(json).getJSONArray("message")
-        for (i in 0 until j.length()) {
-            val expStr = j.getJSONObject(i)
-//            Logger.log(VerboseLevel.INFO, "single  json =\n$expStr \n \n \n")
+    fun jsonToExpList(json: String, expList: MutableList<Experiment>) = runBlocking {
 
-            val bdataJson = JSONObject(expStr.toString()).get("basicData") as JSONObject
-            val bdata = fetchBasicData(bdataJson)
+        launch(Dispatchers.IO) {
+            val j = JSONObject(json).getJSONArray("message")
+            for (i in 0 until j.length()) {
+                val expJson = j.getJSONObject(i)
 
-            val actionsListJsonArray = JSONObject(expStr.toString()).getJSONArray("actions")
-            val actionList = fetchActions(actionsListJsonArray)
+                val actionsListJsonArray = JSONObject(expJson.toString()).getJSONArray("actions")
+                val actionList = fetchActions(actionsListJsonArray)
+                val actionListIds = getActionsId(actionList)
 
+                val bdataJson = JSONObject(expJson.toString()).get("basicData") as JSONObject
+                val bdata = fetchBasicData(bdataJson)
+
+
+                expJson.run {
+                    expList.add(Experiment(
+                            get(fieldNameAt(exp,0)).toString(),
+                            bdata,
+                            actionListIds
+                    ))
+                }
+            }
+            Logger.log(VerboseLevel.INFO, "EXP LIST= \n$expList")
         }
-        return mutableListOf()
+    }
+
+    private fun getActionsId(actionList: MutableList<ExpAction>): MutableList<String> {
+        val list = mutableListOf<String>()
+        list.run {
+            for(a in actionList){
+                add(a._id)
+            }
+        }
+        return list
     }
 
     private fun fetchBasicData(bdataJson: JSONObject): ExpBasicData {
-        val type = ExpBasicData("","", Instant.now(),false,"","")
 
-        fieldNameAt(type,0)
         bdataJson.run {
             return ExpBasicData(
 //                    get(fieldNameAt(type,0)).toString(),
                     "DEFAULT_BD_ID",
-                    get(fieldNameAt(type,5)).toString(),
+                    get(fieldNameAt(ebd,5)).toString(),
                     Instant.now(),
-                    get(fieldNameAt(type,1)).toString().toBoolean(),
-                    get(fieldNameAt(type,2)).toString(),
-                    get(fieldNameAt(type,4)).toString()
+                    get(fieldNameAt(ebd,1)).toString().toBoolean(),
+                    get(fieldNameAt(ebd,2)).toString(),
+                    get(fieldNameAt(ebd,4)).toString()
             )
         }
     }
@@ -46,22 +69,21 @@ object ParserUtil {
 
     private fun fetchActions(jsonList: JSONArray): MutableList<ExpAction> {
         val actionList = mutableListOf<ExpAction>()
-        val type = ExpAction(0.0,0,0,"",SensorType.GPS, listOf(),0)
 
         for(i in 0 until jsonList.length()){
             val json = jsonList.getJSONObject(i)
             json.run {
                 actionList.add(ExpAction(
-                        get(fieldNameAt(type,2)).toString().toDouble(),
-                        get(fieldNameAt(type,4)).toString().toInt(),
-                        get(fieldNameAt(type,8)).toString().toInt(),
-                        get(fieldNameAt(type,1)).toString(),
-                        toSensorType(get(fieldNameAt(type,9)).toString()),
+                        get(fieldNameAt(ea,2)).toString().toDouble(),
+                        get(fieldNameAt(ea,4)).toString().toInt(),
+                        get(fieldNameAt(ea,8)).toString().toInt(),
+                        get(fieldNameAt(ea,1)).toString(),
+                        toSensorType(get(fieldNameAt(ea,9)).toString()),
                         fetchConditions(jsonList.getJSONObject(i))
                 ))
             }
         }
-        log(VerboseLevel.INFO, "list of actions = \n$actionList\n")
+//        log(VerboseLevel.INFO, "list of actions = \n$actionList\n")
         return actionList
     }
 
