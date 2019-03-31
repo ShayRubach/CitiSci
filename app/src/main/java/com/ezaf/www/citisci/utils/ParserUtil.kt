@@ -1,10 +1,12 @@
 package com.ezaf.www.citisci.utils
 
+import com.ezaf.www.citisci.data.ExpAction
 import com.ezaf.www.citisci.data.Experiment
+import com.ezaf.www.citisci.data.SensorType
+import com.ezaf.www.citisci.data.toSensorType
 import com.ezaf.www.citisci.utils.Logger.log
 import org.json.JSONArray
 import org.json.JSONObject
-import java.lang.StringBuilder
 
 object ParserUtil {
 
@@ -29,40 +31,57 @@ object ParserUtil {
     }
 
 
-    private fun fetchActions(jsonList: JSONArray): MutableList<JSONObject> {
-        var list = getObjectsFromJsonArray(jsonList)
-        log(VerboseLevel.INFO, "LI = $list  \n \n")
+    private fun fetchActions(jsonList: JSONArray): MutableList<ExpAction> {
+        val actionList = mutableListOf<ExpAction>()
+        val type = ExpAction(0.0,0,0,"",SensorType.GPS, listOf(),0)
+
         for(i in 0 until jsonList.length()){
-            fetchConditions(jsonList.getJSONObject(i))
-//            list.add(Gson().fromJson(jsonList.getJSONObject(i).toString(),ExpAction::class.java))
-            log(VerboseLevel.INFO, "list of actions = \n \n${jsonList.getJSONObject(i)}")
+            val json = jsonList.getJSONObject(i)
+            json.run {
+                actionList.add(ExpAction(
+                        get(fieldNameAt(type,2)).toString().toDouble(),
+                        get(fieldNameAt(type,4)).toString().toInt(),
+                        get(fieldNameAt(type,8)).toString().toInt(),
+                        get(fieldNameAt(type,1)).toString(),
+                        toSensorType(get(fieldNameAt(type,9)).toString()),
+                        fetchConditions(jsonList.getJSONObject(i))
+                ))
+            }
         }
-        return list
+        log(VerboseLevel.INFO, "list of actions = \n$actionList\n")
+        return actionList
     }
 
     private fun fetchConditions(jsonList: JSONObject): MutableList<String> {
-        var list = getObjectsFromJsonArray(jsonList.getJSONArray("conditions"))
-        var condStrList : MutableList<String> = mutableListOf()
-        //answer.replace("[^0-9+.,]".toRegex(),"").replace(".","$")
+        val list = getObjectsFromJsonArray(jsonList.getJSONArray("conditions"))
+        val condStrList : MutableList<String> = mutableListOf()
         for(i in 0 until list.size){
             condStrList.add(list[i].toString().replace("[^0-9+.,]".toRegex(),"").replace(",","$"))
-//            log(VerboseLevel.INFO, "XXX = \n \n${list[i]}")
         }
-        log(VerboseLevel.INFO, "condStrList = $condStrList")
         return condStrList
     }
 
-//    private fun fetchConditions(array: JSONArray): MutableList<String> {
-//        var list = mutableListOf<String>()
-//    }
 
     private fun getObjectsFromJsonArray(array: JSONArray) : MutableList<JSONObject> {
-        var list = mutableListOf<JSONObject>()
+        val list = mutableListOf<JSONObject>()
 
         for(i in 0 until array.length()){
             list.add(array.getJSONObject(i))
-            log(VerboseLevel.INFO, "object in list = \n \n${array.getJSONObject(i)}")
         }
         return list
+    }
+
+    private fun fieldNameAt(obj: Any, i: Int): String {
+        //used to indicate field number, enable forloop to see indexes.
+        val fields = obj::class.java.declaredFields
+        /**
+        for(f in fields){
+            log(VerboseLevel.INFO, "fieldname = ${f.toString().substring(f.toString().lastIndexOf('.')+1)}")
+        }
+         **/
+
+        //return exact field by index:
+        val field = fields[i].toString()
+        return fields[i].toString().substring(field.lastIndexOf('.')+1)
     }
 }
