@@ -5,16 +5,12 @@ import com.ezaf.www.citisci.MainActivity.Companion.localDbHandler
 import com.ezaf.www.citisci.utils.VerboseLevel.*
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.TypeConverterUtil
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import com.ezaf.www.citisci.utils.VerboseLevel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import java.time.Duration
 import java.time.Instant
-import java.util.concurrent.TimeUnit
 
 @Entity
 class ExpAction (
@@ -37,6 +33,18 @@ class ExpAction (
     @Ignore var expId: String = ""
         private set
 
+    init {
+        insertToLocalDb()
+    }
+
+    private fun insertToLocalDb() = runBlocking {
+        log(VerboseLevel.INFO,"insertToLocalDb: called.\nthis=${this@ExpAction}")
+        val actionDao = localDbHandler.expActionsDao()
+        launch(Dispatchers.IO){
+            actionDao.insertAction(this@ExpAction)
+        }
+    }
+
     fun updateSamplesStatus() = runBlocking {
         var fn = Throwable().stackTrace[0].methodName
         log(INFO_ERR, "$fn: called.")
@@ -44,7 +52,7 @@ class ExpAction (
         lastTimeCollected = Instant.now()
         samplesCollected++
 
-        GlobalScope.async {(localDbHandler.expActionsDao().updateAction(this@ExpAction))}
+        launch(Dispatchers.IO){(localDbHandler.expActionsDao().updateAction(this@ExpAction))}
     }
 
     fun allSamplesWereCollected() = samplesCollected == samplesRequired
