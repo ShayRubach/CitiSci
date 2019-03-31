@@ -9,6 +9,9 @@ import com.ezaf.www.citisci.utils.VerboseLevel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.lang.StringBuilder
 import java.time.Instant
 
@@ -25,17 +28,24 @@ class Experiment (
         @Ignore
         val actions: MutableList<ExpAction> = mutableListOf()
 
-//        constructor() : this("DEF_ID",ExpBasicData("DEF_BD_ID","", Instant.now(),false,"",""), mutableListOf())
 
         init {
-//                log(VerboseLevel.INFO,"EXP: INIT CALEED")
                 publishExpId()
                 attachActions()
+                insertToLocalDb()
+        }
+
+        private fun insertToLocalDb() = runBlocking {
+                log(VerboseLevel.INFO,"EXP: insertToLocalDb: called.\nthis=${this@Experiment}")
+                val expDap = localDbHandler.experimentDao()
+                launch(Dispatchers.IO){
+                        expDap.insertExp(this@Experiment)
+                }
         }
 
 
         private fun attachActions() {
-//                log(VerboseLevel.INFO,"attachActions2: called.\nthis=$this")
+                log(VerboseLevel.INFO,"attachActions: called.\nthis=$this")
 
                 val actionDao = localDbHandler.expActionsDao()
                 actions.clear()
@@ -61,7 +71,7 @@ class Experiment (
                 for(a in actions){
                         builder.append("$a\n")
                 }
-
+                builder.append("\n\n")
                 return builder.toString()
         }
 }
