@@ -1,12 +1,10 @@
 package com.ezaf.www.citisci.utils
 
-import com.ezaf.www.citisci.data.ExpAction
-import com.ezaf.www.citisci.data.Experiment
-import com.ezaf.www.citisci.data.SensorType
-import com.ezaf.www.citisci.data.toSensorType
+import com.ezaf.www.citisci.data.*
 import com.ezaf.www.citisci.utils.Logger.log
 import org.json.JSONArray
 import org.json.JSONObject
+import java.time.Instant
 
 object ParserUtil {
 
@@ -18,16 +16,31 @@ object ParserUtil {
             val expStr = j.getJSONObject(i)
 //            Logger.log(VerboseLevel.INFO, "single  json =\n$expStr \n \n \n")
 
-            val bdataJson = JSONObject(expStr.toString()).get("basicData")
-//            Logger.log(VerboseLevel.INFO, "bdata   json =\n${JSONObject(expStr.toString()).get("basicData")} \n \n \n")
+            val bdataJson = JSONObject(expStr.toString()).get("basicData") as JSONObject
+            val bdata = fetchBasicData(bdataJson)
 
             val actionsListJsonArray = JSONObject(expStr.toString()).getJSONArray("actions")
-//            Logger.log(VerboseLevel.INFO, "AJ = ${JSONObject(expStr.toString()).getJSONArray("actions")} \n \n")
-
             val actionList = fetchActions(actionsListJsonArray)
 
         }
         return mutableListOf()
+    }
+
+    private fun fetchBasicData(bdataJson: JSONObject): ExpBasicData {
+        val type = ExpBasicData("","", Instant.now(),false,"","")
+
+        fieldNameAt(type,0)
+        bdataJson.run {
+            return ExpBasicData(
+//                    get(fieldNameAt(type,0)).toString(),
+                    "DEFAULT_BD_ID",
+                    get(fieldNameAt(type,5)).toString(),
+                    Instant.now(),
+                    get(fieldNameAt(type,1)).toString().toBoolean(),
+                    get(fieldNameAt(type,2)).toString(),
+                    get(fieldNameAt(type,4)).toString()
+            )
+        }
     }
 
 
@@ -77,8 +90,7 @@ object ParserUtil {
         /**
         for(f in fields){
             log(VerboseLevel.INFO, "fieldname = ${f.toString().substring(f.toString().lastIndexOf('.')+1)}")
-        }
-         **/
+        }*/
 
         //return exact field by index:
         val field = fields[i].toString()
