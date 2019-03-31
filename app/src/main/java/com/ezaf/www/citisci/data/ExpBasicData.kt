@@ -1,7 +1,6 @@
 package com.ezaf.www.citisci.data
 
 import androidx.room.*
-import androidx.room.ForeignKey.CASCADE
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -9,7 +8,7 @@ import java.time.format.DateTimeFormatter
 
 class ExpBasicData (
         @ColumnInfo(name = "bd_id")
-        val _id: String,
+        val _id: String = "DEF_VALUE_ID", //TODO: this id should be the expId. no need to hold additional expId field
         val name: String,
         val startTime: Instant,
         val automatic: Boolean,
