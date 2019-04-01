@@ -1,7 +1,8 @@
-package com.ezaf.www.citisci.data
+package com.ezaf.www.citisci.data.exp
 
 import androidx.room.*
-import com.ezaf.www.citisci.MainActivity.Companion.localDbHandler
+import com.ezaf.www.citisci.data.SensorType
+import com.ezaf.www.citisci.ui.MainActivity.Companion.localDbHandler
 import com.ezaf.www.citisci.utils.VerboseLevel.*
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.TypeConverterUtil

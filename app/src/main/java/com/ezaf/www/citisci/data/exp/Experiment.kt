@@ -1,19 +1,14 @@
-package com.ezaf.www.citisci.data
+package com.ezaf.www.citisci.data.exp
 
 import androidx.room.*
-import com.ezaf.www.citisci.MainActivity.Companion.localDbHandler
-import com.ezaf.www.citisci.utils.Logger
+import com.ezaf.www.citisci.ui.MainActivity.Companion.localDbHandler
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.TypeConverterUtil
 import com.ezaf.www.citisci.utils.VerboseLevel
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.lang.StringBuilder
-import java.time.Instant
 
 @Entity
 @SuppressWarnings(RoomWarnings.PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED)

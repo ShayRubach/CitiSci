@@ -1,4 +1,4 @@
-package com.ezaf.www.citisci.data
+package com.ezaf.www.citisci.data.exp
 
 
 class ExpScript(val actions: MutableList<ExpAction>)

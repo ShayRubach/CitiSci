@@ -1,6 +1,7 @@
-package com.ezaf.www.citisci.data
+package com.ezaf.www.citisci.data.dao
 
 import androidx.room.*
+import com.ezaf.www.citisci.data.exp.ExpAction
 
 const val Q_GET_ACTION_BY_ID   = "SELECT * FROM ExpAction WHERE _id == :id"
 const val Q_GET_ALL_ACTIONS     = "SELECT * FROM ExpAction"

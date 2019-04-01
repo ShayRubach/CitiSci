@@ -1,4 +1,6 @@
-package com.ezaf.www.citisci.data
+package com.ezaf.www.citisci.utils.db
+
+import com.ezaf.www.citisci.data.exp.Experiment
 
 class Repository private constructor(private val experimentDao: Experiment) {
 
@@ -16,7 +18,8 @@ class Repository private constructor(private val experimentDao: Experiment) {
 
         fun getInstance(experimentDao: Experiment) =
                 instance ?: synchronized(this){
-                    instance ?: Repository(experimentDao).also { instance = it }
+                    instance
+                            ?: Repository(experimentDao).also { instance = it }
                 }
     }
 }

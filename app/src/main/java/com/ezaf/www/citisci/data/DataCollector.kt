@@ -1,6 +1,7 @@
 package com.ezaf.www.citisci.data
 
 import android.location.Location
+import com.ezaf.www.citisci.utils.service.LocationUpdateService
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.VerboseLevel.*
 

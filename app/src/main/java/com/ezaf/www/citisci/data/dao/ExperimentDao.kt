@@ -1,6 +1,7 @@
-package com.ezaf.www.citisci.data
+package com.ezaf.www.citisci.data.dao
 
 import androidx.room.*
+import com.ezaf.www.citisci.data.exp.Experiment
 
 const val Q_GET_EXP_BY_ID   = "SELECT * FROM Experiment WHERE _id == :id"
 const val Q_GET_ALL_EXP     = "SELECT * FROM Experiment"

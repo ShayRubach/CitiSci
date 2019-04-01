@@ -1,4 +1,4 @@
-package com.ezaf.www.citisci
+package com.ezaf.www.citisci.ui
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
+import com.ezaf.www.citisci.R
 import com.ezaf.www.citisci.utils.Logger
 import com.ezaf.www.citisci.utils.VerboseLevel.INFO_ERR
 import io.reactivex.Observable
@@ -24,7 +25,7 @@ import java.io.ByteArrayOutputStream
 class CameraActivity : AppCompatActivity() {
 
     private val REQUEST_IMAGE_CAPTURE = 1
-    private var currentPhotoPath: String = "."
+    private var currentPhotoPath: String = ""
     private var photoURI: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

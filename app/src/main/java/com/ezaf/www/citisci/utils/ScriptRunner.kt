@@ -1,12 +1,16 @@
-package com.ezaf.www.citisci.data
+package com.ezaf.www.citisci.utils
 
 import android.location.Location
+import com.ezaf.www.citisci.data.*
+import com.ezaf.www.citisci.data.exp.ExpAction
+import com.ezaf.www.citisci.data.exp.ExpSample
+import com.ezaf.www.citisci.data.exp.GpsExpCondition
+import com.ezaf.www.citisci.data.exp.LatLong
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.VerboseLevel.*
-import com.ezaf.www.citisci.data.RemoteDbHandler.MsgType.*
+import com.ezaf.www.citisci.utils.db.RemoteDbHandler
+import com.ezaf.www.citisci.utils.db.RemoteDbHandler.MsgType.*
 
-
-import com.google.gson.Gson
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -23,7 +27,7 @@ class ScriptRunner(
         log(INFO,"$fn: called. [sensorType = ${action.sensorType}]")
 
         when(action.sensorType){
-            SensorType.GPS-> {
+            SensorType.GPS -> {
 
                 Interpreter.observablesManager.add(
                         Observable.interval(action.captureInterval.toLong(), TimeUnit.SECONDS)
@@ -36,8 +40,8 @@ class ScriptRunner(
                 )
 
             }
-            SensorType.Camera-> return
-            SensorType.Michrophone-> return
+            SensorType.Camera -> return
+            SensorType.Michrophone -> return
             SensorType.Unknown -> return
         }
     }
@@ -63,7 +67,7 @@ class ScriptRunner(
                     log(INFO,"$fn: calling data collector.")
                     var location = DataCollector.collect(sensorType) as Location
 
-                    val sample = ExpSample(action._id, listOf(LatLong(location.latitude,location.longitude)))
+                    val sample = ExpSample(action._id, listOf(LatLong(location.latitude, location.longitude)))
                     RemoteDbHandler.sendMsg(SEND_GPS_SAMPLE, sample)
                     updateSamplesStatus()
 

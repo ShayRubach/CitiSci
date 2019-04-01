@@ -1,9 +1,8 @@
-package com.ezaf.www.citisci.data
+package com.ezaf.www.citisci.utils.service
 
 import android.Manifest
 import android.content.Intent
 import android.os.IBinder
-import com.ezaf.www.citisci.utils.Logger
 import com.ezaf.www.citisci.utils.VerboseLevel.*
 import android.R
 import android.annotation.SuppressLint
@@ -14,7 +13,7 @@ import android.graphics.Color
 import android.location.Location
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import com.ezaf.www.citisci.utils.GpsUtils
+import com.ezaf.www.citisci.utils.Logger
 import com.ezaf.www.citisci.utils.Logger.log
 import com.google.android.gms.location.*
 

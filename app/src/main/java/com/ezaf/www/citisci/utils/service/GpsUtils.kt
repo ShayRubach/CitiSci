@@ -1,4 +1,4 @@
-package com.ezaf.www.citisci.utils
+package com.ezaf.www.citisci.utils.service
 
 import android.app.Activity
 import android.content.Context
@@ -43,7 +43,7 @@ class GpsUtils(context:Context) {
     }
 
     // method for turn on GPS
-    fun turnGPSOn(onGpsListener:onGpsListener) {
+    fun turnGPSOn(onGpsListener: onGpsListener) {
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
         {
             when {

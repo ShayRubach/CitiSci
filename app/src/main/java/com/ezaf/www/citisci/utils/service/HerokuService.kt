@@ -1,4 +1,5 @@
-package com.ezaf.www.citisci.data
+package com.ezaf.www.citisci.utils.service
+import com.ezaf.www.citisci.data.exp.ExpSample
 import com.google.gson.JsonElement
 import retrofit2.Call;
 import retrofit2.http.*

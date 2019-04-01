@@ -1,8 +1,9 @@
-package com.ezaf.www.citisci.data
+package com.ezaf.www.citisci.utils
 
-import com.ezaf.www.citisci.MainActivity.Companion.localDbHandler
+import com.ezaf.www.citisci.data.exp.ExpAction
+import com.ezaf.www.citisci.data.SensorType
+import com.ezaf.www.citisci.ui.MainActivity.Companion.localDbHandler
 import com.ezaf.www.citisci.utils.Logger.log
-import com.ezaf.www.citisci.utils.VerboseLevel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -26,7 +27,7 @@ object Interpreter {
             localDbHandler.experimentDao().getExpById(expId).run {
                 log(INFO, "$fn: action list size = ${actions.size}.")
                 for(a in actions){
-                    playScriptFor(a,basicData.startTime)
+                    playScriptFor(a, basicData.startTime)
                 }
             }
         }
@@ -49,14 +50,14 @@ object Interpreter {
         log(INFO_ERR, "$fn: called.")
 
         when(action.sensorType){
-            SensorType.GPS-> {
+            SensorType.GPS -> {
                 //add new task to the list and run the script
 //                tasks.add(ScriptRunner(action, condList.filter { it is GpsExpCondition } as MutableList<GpsExpCondition>, startTime))
 //                tasks[tasks.lastIndex].run()
                 ScriptRunner(action, startTime).playScript()
             }
-            SensorType.Camera-> return //TODO("implement CameraExpCondition and invoke playCameraScript() from ScripRunner")
-            SensorType.Michrophone-> return //TODO("implement MicExpCondition and invoke playCameraScript() from ScripRunner")
+            SensorType.Camera -> return //TODO("implement CameraExpCondition and invoke playCameraScript() from ScripRunner")
+            SensorType.Michrophone -> return //TODO("implement MicExpCondition and invoke playCameraScript() from ScripRunner")
             SensorType.Unknown -> return
         }
     }

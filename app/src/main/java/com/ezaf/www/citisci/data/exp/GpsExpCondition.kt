@@ -1,6 +1,7 @@
-package com.ezaf.www.citisci.data
+package com.ezaf.www.citisci.data.exp
 
 import android.location.Location
+import com.ezaf.www.citisci.utils.service.LocationUpdateService
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.VerboseLevel
 
@@ -48,7 +49,7 @@ class GpsExpCondition(private val baseCoord: Pair<Double,Double>,
 
             for(str in actionList){
                 splittedStr = str.split(delim)
-                newList.add(GpsExpCondition(Pair(splittedStr[0].toDouble(),splittedStr[1].toDouble()), splittedStr[2].toDouble()))
+                newList.add(GpsExpCondition(Pair(splittedStr[0].toDouble(), splittedStr[1].toDouble()), splittedStr[2].toDouble()))
             }
             if(newList.isEmpty()){
                 log(VerboseLevel.ERR,"$fn: empty list was generated")

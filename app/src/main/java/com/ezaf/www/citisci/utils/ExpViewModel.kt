@@ -2,8 +2,8 @@ package com.ezaf.www.citisci.utils
 
 
 import androidx.lifecycle.ViewModel
-import com.ezaf.www.citisci.data.Experiment
-import com.ezaf.www.citisci.data.Repository
+import com.ezaf.www.citisci.data.exp.Experiment
+import com.ezaf.www.citisci.utils.db.Repository
 
 class ExpViewModel(private val expRepository: Repository) : ViewModel() {
 

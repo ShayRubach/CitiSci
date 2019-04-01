@@ -1,17 +1,20 @@
-package com.ezaf.www.citisci.data
+package com.ezaf.www.citisci.utils.db
 
+import com.ezaf.www.citisci.data.exp.ExpSample
+import com.ezaf.www.citisci.data.exp.Experiment
+import com.ezaf.www.citisci.utils.Logger
+import com.ezaf.www.citisci.utils.ParserUtil
+import com.ezaf.www.citisci.utils.VerboseLevel
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.ezaf.www.citisci.data.RemoteDbHandler.MsgType.*
-import com.ezaf.www.citisci.utils.Logger
-import com.ezaf.www.citisci.utils.VerboseLevel
+import com.ezaf.www.citisci.utils.db.RemoteDbHandler.MsgType.*
+import com.ezaf.www.citisci.utils.service.HerokuService
 import com.google.gson.JsonElement
 import retrofit2.converter.gson.GsonConverterFactory
-import com.ezaf.www.citisci.utils.ParserUtil
 
 
 object RemoteDbHandler
@@ -38,7 +41,7 @@ object RemoteDbHandler
     }
 
 
-    fun sendMsg(msgType: MsgType,sample: ExpSample) {
+    fun sendMsg(msgType: MsgType, sample: ExpSample) {
         val fn = Throwable().stackTrace[0].methodName
         Logger.log(VerboseLevel.INFO, "$fn: called.")
 

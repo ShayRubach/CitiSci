@@ -2,6 +2,8 @@ package com.ezaf.www.citisci.utils
 
 import androidx.room.TypeConverter
 import com.ezaf.www.citisci.data.*
+import com.ezaf.www.citisci.data.exp.ExpAction
+import com.ezaf.www.citisci.data.exp.ExpBasicData
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -76,7 +78,7 @@ class TypeConverterUtil {
     }
 
     @TypeConverter
-    fun toExpAction(str: String) : ExpAction{
+    fun toExpAction(str: String) : ExpAction {
         return Gson().fromJson(str, ExpAction::class.java)
     }
 

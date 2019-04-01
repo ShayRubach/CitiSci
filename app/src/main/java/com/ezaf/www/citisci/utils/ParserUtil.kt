@@ -1,6 +1,9 @@
 package com.ezaf.www.citisci.utils
 
 import com.ezaf.www.citisci.data.*
+import com.ezaf.www.citisci.data.exp.ExpAction
+import com.ezaf.www.citisci.data.exp.ExpBasicData
+import com.ezaf.www.citisci.data.exp.Experiment
 import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -9,9 +12,9 @@ import java.time.Instant
 object ParserUtil {
 
     //dummy objects to be referenced as type
-    val ea = ExpAction(0.0,0,0,"DUMMMY_ID",SensorType.GPS, listOf(),0)
-    val ebd = ExpBasicData("DUMMMY_ID","", Instant.now(),false,"","")
-    val exp = Experiment("DUMMMY_ID",ebd, mutableListOf())
+    val ea = ExpAction(0.0, 0, 0, "DUMMMY_ID", SensorType.GPS, listOf(), 0)
+    val ebd = ExpBasicData("DUMMMY_ID", "", Instant.now(), false, "", "")
+    val exp = Experiment("DUMMMY_ID", ebd, mutableListOf())
 
 
     fun jsonToExpList(json: String, expList: MutableList<Experiment>) = runBlocking {
@@ -31,7 +34,7 @@ object ParserUtil {
 
                 expJson.run {
                     expList.add(Experiment(
-                            get(fieldNameAt(exp,0)).toString(),
+                            get(fieldNameAt(exp, 0)).toString(),
                             bdata,
                             actionListIds
                     ))
@@ -57,11 +60,11 @@ object ParserUtil {
             return ExpBasicData(
 //                    get(fieldNameAt(type,0)).toString(),
                     "DEFAULT_BD_ID",
-                    get(fieldNameAt(ebd,5)).toString(),
+                    get(fieldNameAt(ebd, 5)).toString(),
                     Instant.now(),
-                    get(fieldNameAt(ebd,1)).toString().toBoolean(),
-                    get(fieldNameAt(ebd,2)).toString(),
-                    get(fieldNameAt(ebd,4)).toString()
+                    get(fieldNameAt(ebd, 1)).toString().toBoolean(),
+                    get(fieldNameAt(ebd, 2)).toString(),
+                    get(fieldNameAt(ebd, 4)).toString()
             )
         }
     }
@@ -74,11 +77,11 @@ object ParserUtil {
             val json = jsonList.getJSONObject(i)
             json.run {
                 actionList.add(ExpAction(
-                        get(fieldNameAt(ea,2)).toString().toDouble(),
-                        get(fieldNameAt(ea,4)).toString().toInt(),
-                        get(fieldNameAt(ea,8)).toString().toInt(),
-                        get(fieldNameAt(ea,1)).toString(),
-                        toSensorType(get(fieldNameAt(ea,9)).toString()),
+                        get(fieldNameAt(ea, 2)).toString().toDouble(),
+                        get(fieldNameAt(ea, 4)).toString().toInt(),
+                        get(fieldNameAt(ea, 8)).toString().toInt(),
+                        get(fieldNameAt(ea, 1)).toString(),
+                        toSensorType(get(fieldNameAt(ea, 9)).toString()),
                         fetchConditions(jsonList.getJSONObject(i))
                 ))
             }

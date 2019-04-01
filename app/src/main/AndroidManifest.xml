@@ -28,11 +28,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service  android:name=".data.LocationUpdateService"/>
-        <activity android:name=".GpsLocationActivity"></activity>
-        <activity android:name=".CameraActivity" />
+        <service  android:name=".utils.service.LocationUpdateService"/>
+        <activity android:name=".ui.GpsLocationActivity"></activity>
+        <activity android:name=".ui.CameraActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.ezaf.www.citisci.data
+package com.ezaf.www.citisci.data.exp
 
 import androidx.room.*
 import java.time.Instant
@@ -23,7 +23,7 @@ class ExpBasicData (
         const val TIME_PATTERN = "yyyy-MM-dd@HH:mm:ss.SSSSSS"
 
         fun toInstant(str: String) : Instant {
-            return LocalDateTime.parse(str, DateTimeFormatter.ofPattern(ExpBasicData.TIME_PATTERN)).atZone(ZoneId.systemDefault()).toInstant()
+            return LocalDateTime.parse(str, DateTimeFormatter.ofPattern(TIME_PATTERN)).atZone(ZoneId.systemDefault()).toInstant()
         }
     }
 

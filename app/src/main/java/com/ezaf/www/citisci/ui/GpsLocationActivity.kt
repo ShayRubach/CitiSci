@@ -1,4 +1,4 @@
-package com.ezaf.www.citisci
+package com.ezaf.www.citisci.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -10,7 +10,8 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.ezaf.www.citisci.utils.GpsUtils
+import com.ezaf.www.citisci.R
+import com.ezaf.www.citisci.utils.service.GpsUtils
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -40,7 +41,7 @@ class GpsLocationActivity: AppCompatActivity() {
         locationRequest!!.interval = 10 * 1000 // 10 seconds
         locationRequest!!.fastestInterval = 5 * 1000 // 5 seconds
 
-        GpsUtils(this).turnGPSOn(object:GpsUtils.onGpsListener {
+        GpsUtils(this).turnGPSOn(object: GpsUtils.onGpsListener {
             override fun gpsStatus(isGPSEnable:Boolean) {
                 // turn on GPS
                 isGPS = isGPSEnable
