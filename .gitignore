@@ -66,3 +66,7 @@ fastlane/readme.md
 
 # json files
 *.JSON
+
+#Misc
+*.xml
+*.idea/vcs.xml
