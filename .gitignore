@@ -68,5 +68,4 @@ fastlane/readme.md
 *.JSON
 
 #Misc
-*.xml
-*.idea/vcs.xml
+*.idea/*.xml
