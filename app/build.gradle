@@ -87,6 +87,9 @@ dependencies {
 
     //Room
     implementation "android.arch.persistence.room:runtime:$room_version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0-beta01'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-beta01'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
     kapt "android.arch.persistence.room:compiler:$room_version"
 
     kapt "com.android.databinding:compiler:$gradle_version"
