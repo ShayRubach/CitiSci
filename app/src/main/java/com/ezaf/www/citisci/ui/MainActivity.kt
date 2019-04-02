@@ -10,8 +10,13 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.pm.PackageManager
+import android.view.Menu
+import android.view.MenuItem
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
 import com.ezaf.www.citisci.R
 import com.ezaf.www.citisci.data.dao.ExpActionDao
 import com.ezaf.www.citisci.data.dao.ExperimentDao
@@ -44,44 +49,86 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        val mainViewModel = ViewModelProviders.of(this)
-//                .get(MainViewModel::class.java)
 
-//        DataBindingUtil.setContentView<ActivityMainBinding>(
-//                this, R.layout.activity_main
-//        ).apply {
-//            this.setLifecycleOwner(this@MainActivity)
-//            this.viewmodel = mainViewModel
+        setSupportActionBar(toolbar)
+
+        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+
+
+        setupBottomNavMenu(navController)
+        setupSideNavigationMenu(navController)
+        setupActionBar(navController)
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        goToCameraBtn.setOnClickListener{
+//            startActivity(Intent(this, CameraActivity::class.java))
+//            finish()
 //        }
 
-
+//        goToGpsActivity.setOnClickListener {
+////            var interpreter = Interpreter
+////            interpreter.stopAllScripts()
+//            startActivity(Intent(this, GpsLocationActivity::class.java))
+//            finish()
+//        }
 
         if(checkPermissions()){
             requestPermissions()
         }
-
         //will be called on the permission result handler
 //        startForegroundService(Intent(this, LocationUpdateService::class.java))
-
-        goToCameraBtn.setOnClickListener{
-            startActivity(Intent(this, CameraActivity::class.java))
-            finish()
-        }
-
-        goToGpsActivity.setOnClickListener {
-//            var interpreter = Interpreter
-//            interpreter.stopAllScripts()
-            startActivity(Intent(this, GpsLocationActivity::class.java))
-            finish()
-        }
 
         localDbHandler = LocalDbHandler.getLocalDb(context = this)
         expDao = localDbHandler.experimentDao()
         expActionDao = localDbHandler.expActionsDao()
-        testDbInsertionAndSelection()
+//        testDbInsertionAndSelection()
         getAllExpFromRemoteDb()
 
 
+    }
+
+    private fun setupBottomNavMenu(navController: NavController) {
+        bottom_nav?.let {
+            NavigationUI.setupWithNavController(it, navController)
+        }
+    }
+
+    private fun setupSideNavigationMenu(navController: NavController) {
+        nav_view?.let {
+            NavigationUI.setupWithNavController(it, navController)
+        }
+    }
+
+    private fun setupActionBar(navController: NavController) {
+        NavigationUI.setupActionBarWithNavController(this, navController, drawer_layout)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+        val navigated = NavigationUI.onNavDestinationSelected(item!!, navController)
+        return navigated || super.onOptionsItemSelected(item)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return NavigationUI.navigateUp(
+                Navigation.findNavController(this, R.id.nav_host_fragment),
+                drawer_layout)
     }
 
     private fun getAllExpFromRemoteDb() = runBlocking {
@@ -93,11 +140,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         //TODO: REMOVE THIS DELAY AND MANAGE CALLS WITH task.await() with a manager to invoke them by seq!!!!
-        Timer("SettingUp", false).schedule(3000) {
-            for(ex in list){
-                interpreter.playScripts(ex._id)
-            }
-        }
+//        Timer("SettingUp", false).schedule(3000) {
+//            for(ex in list){
+//                interpreter.playScripts(ex._id)
+//            }
+//        }
+
 //        val task2 = async {
 //            log(INFO_ERR, " \n################## IM DONE #################################### IM DONE ##################\n")
 //        }
@@ -107,7 +155,6 @@ class MainActivity : AppCompatActivity() {
 //        task2.await()
 
     }
-
 
     fun testDbInsertionAndSelection(){
 
