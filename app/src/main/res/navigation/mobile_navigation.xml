@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/destination_my_experiments">
+
+    <fragment
+        android:id="@+id/destination_feed_page"
+        android:name="com.ezaf.www.citisci.FeedPage"
+        android:label="feed_page_fragment"
+        tools:layout="@layout/feed_page_fragment">
+        <action
+            android:id="@+id/next_action"
+            app:destination="@id/destination_my_experiments" />
+    </fragment>
+    <fragment
+        android:id="@+id/destination_my_experiments"
+        android:name="com.ezaf.www.citisci.MyExperiments"
+        android:label="my_experiments_fragment"
+        tools:layout="@layout/my_experiments_fragment" >
+        <action
+            android:id="@+id/next_action"
+            app:destination="@id/destination_feed_page" />
+    </fragment>
+</navigation>

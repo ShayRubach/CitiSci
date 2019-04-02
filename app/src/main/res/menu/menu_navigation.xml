@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/destination_feed_page"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="FeedPage" />
+    <item
+        android:id="@+id/destination_my_experiments"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="MyExperiments" />
+</menu>
