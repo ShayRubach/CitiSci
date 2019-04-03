@@ -4,5 +4,11 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="fileprovider_path">com.ezaf.www.citisci.fileprovider</string>
+    <string name="experiment_name">Experiment Name</string>
+    <string name="exp_percentage_completed">100%</string>
+    <string name="participants_count">Participants: 0/0</string>
+    <string name="samples_acquired">Samples Acquired: 0/0</string>
+    <string name="lorem_ipsum_exp_description">"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy.." </string>
+    <string name="exp_researcher">Rick James</string>
 
 </resources>
