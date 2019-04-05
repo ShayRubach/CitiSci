@@ -1,4 +1,4 @@
-package com.ezaf.www.citisci
+package com.ezaf.www.citisci.ui
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
+import com.ezaf.www.citisci.R
+import com.ezaf.www.citisci.utils.viewmodel.MyExperimentsViewModel
 import kotlinx.android.synthetic.main.my_experiments_fragment.*
 import java.util.*
 

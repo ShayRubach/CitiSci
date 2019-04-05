@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/destination_feed_page"
-        android:name="com.ezaf.www.citisci.FeedPage"
+        android:name="com.ezaf.www.citisci.ui.FeedPage"
         android:label="feed_page_fragment"
         tools:layout="@layout/feed_page_fragment">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/destination_my_experiments"
-        android:name="com.ezaf.www.citisci.MyExperiments"
+        android:name="com.ezaf.www.citisci.ui.MyExperiments"
         android:label="my_experiments_fragment"
         tools:layout="@layout/my_experiments_fragment" >
         <action

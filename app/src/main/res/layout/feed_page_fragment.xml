@@ -3,12 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FeedPage">
+    tools:context=".ui.FeedPage">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_feed_page"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="go to my exp" />
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_feed_page"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="go to my exp" />-->
 </FrameLayout>

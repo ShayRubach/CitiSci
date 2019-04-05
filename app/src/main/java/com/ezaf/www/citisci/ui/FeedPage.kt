@@ -1,4 +1,4 @@
-package com.ezaf.www.citisci
+package com.ezaf.www.citisci.ui
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
+import com.ezaf.www.citisci.R
+import com.ezaf.www.citisci.utils.viewmodel.FeedPageViewModel
 import kotlinx.android.synthetic.main.feed_page_fragment.*
 
 
@@ -26,9 +28,10 @@ class FeedPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btn_feed_page.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.destination_my_experiments)
-        }
+
+//        btn_feed_page.setOnClickListener {
+//            Navigation.findNavController(it).navigate(R.id.destination_my_experiments)
+//        }
 
         //get safe arg from activity: (add args and rebuild)
 //        arguments?.let{

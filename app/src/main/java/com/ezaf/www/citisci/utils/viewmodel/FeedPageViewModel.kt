@@ -1,4 +1,4 @@
-package com.ezaf.www.citisci
+package com.ezaf.www.citisci.utils.viewmodel
 
 import androidx.lifecycle.ViewModel;
 
