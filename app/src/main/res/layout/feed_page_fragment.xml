@@ -9,13 +9,9 @@
         android:id="@+id/feedPageRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layoutAnimation="@anim/layout_animation_fall_down"
         android:scrollbars="vertical" >
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <!--<Button-->
-        <!--android:id="@+id/btn_feed_page"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="go to my exp" />-->
 </FrameLayout>

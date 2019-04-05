@@ -16,8 +16,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import androidx.recyclerview.widget.DividerItemDecoration
-
-
+import android.view.animation.AnimationUtils
 
 
 class FeedPage : Fragment() {
@@ -47,6 +46,7 @@ class FeedPage : Fragment() {
                         layoutManager = LinearLayoutManager(context)
                         adapter = ExpAdapter(it, context)
                         addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
+                        runLayoutAnimation(this)
                     }
                 }
 
@@ -71,6 +71,15 @@ class FeedPage : Fragment() {
 //            val safeArgs = MyExperimentsArgs.fromBundle(it)
 //            someTextView.text = safeArgs.field
 //        }
+    }
+
+    private fun runLayoutAnimation(recyclerView: RecyclerView) {
+        val context = recyclerView.context
+        val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
+
+        recyclerView.layoutAnimation = controller
+        recyclerView.adapter!!.notifyDataSetChanged()
+        recyclerView.scheduleLayoutAnimation()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
