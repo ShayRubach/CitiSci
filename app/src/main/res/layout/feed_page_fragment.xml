@@ -6,8 +6,10 @@
     tools:context=".ui.FeedPage">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/feedPageRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" >
 
     </androidx.recyclerview.widget.RecyclerView>
 
