@@ -1,6 +1,7 @@
 package com.ezaf.www.citisci.data.exp
 
 import androidx.room.*
+import com.ezaf.www.citisci.data.SensorType
 import com.ezaf.www.citisci.ui.MainActivity.Companion.localDbHandler
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.TypeConverterUtil
@@ -59,6 +60,12 @@ class Experiment (
                         a.consumeExpIdOnce(_id)
                 }
 
+        }
+
+        fun getUniqueParticipatingSensorType() : MutableSet<SensorType> {
+                val types :MutableSet<SensorType> = mutableSetOf()
+                actions.forEach{ types.add(it.sensorType) }
+                return types
         }
 
         override fun toString(): String {
