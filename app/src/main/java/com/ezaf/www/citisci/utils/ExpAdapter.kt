@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezaf.www.citisci.R
 import com.ezaf.www.citisci.data.SensorType
 import com.ezaf.www.citisci.data.exp.Experiment
+import com.ezaf.www.citisci.utils.Logger.log
 import kotlinx.android.synthetic.main.experiment_row.view.*
 import java.lang.Integer.min
 
@@ -35,6 +36,7 @@ class ExpAdapter(private val items : List<Experiment>, val context: Context) : R
 
 class ExpViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
+    private val mView = view
     private val mName = view.allExp_expName
     private val mResearcher = view.allExp_previewResearcherName
     private val mDescription = view.allExp_previewExpDescription
@@ -49,6 +51,7 @@ class ExpViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
 
     fun bind(exp: Experiment) {
+
         exp.basicData.run {
             mName.text = name
             mResearcher.text = "Researcher Name"
@@ -58,6 +61,10 @@ class ExpViewHolder (view: View) : RecyclerView.ViewHolder(view) {
         }
 
         setSensorImageResouce(mSensors, exp.getUniqueParticipatingSensorType())
+
+        mView.setOnClickListener {
+
+        }
     }
 
     private fun trimAndQuote(description: String): CharSequence? {
