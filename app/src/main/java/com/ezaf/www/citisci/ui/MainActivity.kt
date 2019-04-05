@@ -18,8 +18,11 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.ezaf.www.citisci.R
+import com.ezaf.www.citisci.data.SensorType
 import com.ezaf.www.citisci.data.dao.ExpActionDao
 import com.ezaf.www.citisci.data.dao.ExperimentDao
+import com.ezaf.www.citisci.data.exp.ExpAction
+import com.ezaf.www.citisci.data.exp.ExpBasicData
 import com.ezaf.www.citisci.data.exp.Experiment
 import com.ezaf.www.citisci.utils.Interpreter
 import com.ezaf.www.citisci.utils.db.LocalDbHandler
@@ -27,6 +30,7 @@ import com.ezaf.www.citisci.utils.service.LocationUpdateService
 import com.ezaf.www.citisci.utils.db.RemoteDbHandler
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import java.time.Instant
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -35,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         lateinit var localDbHandler: LocalDbHandler
+        var list : MutableList<Experiment> = mutableListOf()
     }
 
 
@@ -92,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         localDbHandler = LocalDbHandler.getLocalDb(context = this)
         expDao = localDbHandler.experimentDao()
         expActionDao = localDbHandler.expActionsDao()
-//        testDbInsertionAndSelection()
+        testDbInsertionAndSelection()
         getAllExpFromRemoteDb()
 
 
@@ -132,11 +137,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getAllExpFromRemoteDb() = runBlocking {
-        var list : List<Experiment> = listOf()
         var interpreter = Interpreter
 
         async {
-            list  = RemoteDbHandler.getAllExp()
+            list  = RemoteDbHandler.getAllExp().toMutableList()
         }
 
         //TODO: REMOVE THIS DELAY AND MANAGE CALLS WITH task.await() with a manager to invoke them by seq!!!!
@@ -159,55 +163,29 @@ class MainActivity : AppCompatActivity() {
     fun testDbInsertionAndSelection(){
 
 
-//        var bdata = ExpBasicData("1","name", Instant.now(),false,"description","guide")
-//        var bdata2 = ExpBasicData("123","SHAY", Instant.now(),true,"descrddiption","gg")
-//
-//        var action1 = ExpAction(1.0,60,500,"5c9f946ed032a1118c188bbe", SensorType.GPS, listOf("32.060709$34.812342$1000.0"))
-//        var action2 = ExpAction(2.0,60,10,"ACTION_2", SensorType.GPS, listOf("32.060709$34.812342$1000.0"))
-//        var action3 = ExpAction(3.0,1,1,"ACTION_3", SensorType.GPS, listOf("32.060709$34.812342$1000.0"))
-//        var action4 = ExpAction(2.22,1,32,"ACTION_4", SensorType.GPS, listOf("1.3$7.5$23"))
-//        var action5 = ExpAction(2.4,3,402,"ACTION_5", SensorType.GPS, listOf("3.3.0$234.5$722"))
-//
-//        var list:List<Experiment> = listOf()
+        val desc1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        val desc2 = "Risus in hendrerit gravida rutrum quisque non tellus orci. Laoreet sit amet cursus sit amet dictum. Sapien faucibus et molestie ac feugiat sed lectus vestibulum mattis. Neque vitae tempus quam pellentesque nec nam aliquam sem. Urna nec tincidunt praesent semper feugiat nibh. Blandit cursus risus at ultrices. Sed lectus vestibulum mattis ullamcorper velit. Varius duis at consectetur lorem donec massa sapien faucibus. Viverra vitae congue eu consequat ac felis. Faucibus nisl tincidunt eget nullam non nisi est. Turpis egestas sed tempus urna et pharetra pharetra massa massa. Purus sit amet volutpat consequat. Malesuada proin libero nunc consequat interdum. Sed cras ornare arcu dui. Morbi blandit cursus risus at ultrices. A iaculis at erat pellentesque adipiscing commodo elit. Pulvinar elementum integer enim neque. Risus feugiat in ante metus dictum at tempor. Risus pretium quam vulputate dignissim suspendisse in."
+
 
         Observable.fromCallable {
             localDbHandler.clearAllTables()
 
-            expActionDao.run {
-//                insertAction(action1)
-//                insertAction(action2)
-//                insertAction(action3)
-//                insertAction(action4)
-//                insertAction(action5)
-//                updateAction(action1)
-//                var test :List<ExpAction> = getAllActions()
-//                for(a in test) {
-//                    log(INFO_ERR, " \n##################\n$a\n##################\n")
-//                }
+        }.doOnNext {
+            var bdata = ExpBasicData("1","Morning Glory", Instant.now(),false,desc1,"guide")
+            var bdata2 = ExpBasicData("123","How far?", Instant.now(),true,desc2,"gg")
 
-//                var test = getActionById("6")
-//                log(INFO_ERR, " \n##################\n$test\n##################\n")
+            var action1 = ExpAction(1.0,60,500,"ACTION_1", SensorType.GPS, listOf("32.060709$34.812342$1000.0"))
+            var action2 = ExpAction(2.0,60,10,"ACTION_2", SensorType.Camera, listOf("32.060709$34.812342$1000.0"))
+            var action3 = ExpAction(3.0,1,1,"ACTION_3", SensorType.Michrophone, listOf("32.060709$34.812342$1000.0"))
+            var action4 = ExpAction(2.22,1,32,"ACTION_4", SensorType.Michrophone, listOf("1.3$7.5$23"))
+            var action5 = ExpAction(2.4,3,402,"ACTION_5", SensorType.Camera, listOf("3.3.0$234.5$722"))
 
-            }
-//            var exp = Experiment("EXP_1",bdata, mutableListOf(action1._id,action2._id))
-//            var exp2 = Experiment("EXP_2",bdata2, mutableListOf(action3._id))
+            var exp1 = Experiment("23sdf78sd",bdata, mutableListOf(action1._id,action2._id,action3._id))
+            var exp2 = Experiment("9sdf87122",bdata2, mutableListOf(action4._id,action5._id))
 
+            MainActivity.list.add(exp1)
+            MainActivity.list.add(exp2)
 
-//            log(INFO_ERR, " \n##################\n$exp\n##################")
-//            log(INFO_ERR, " \n##################\n$exp2\n##################")
-
-            expDao.run{
-//                insertExp(exp)
-//                insertExp(exp2)
-//                getAllExp()
-            }
-
-
-
-        }.doOnNext{
-//            for(a in it) {
-//                log(INFO_ERR, " \n##################\n$a\n##################\n")
-//            }
 
         }
                 .subscribeOn(Schedulers.io())
