@@ -6,13 +6,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ezaf.www.citisci.R
+import com.ezaf.www.citisci.ui.MainActivity.Companion.localDbHandler
+import com.ezaf.www.citisci.utils.ExpAdapter
 import com.ezaf.www.citisci.utils.viewmodel.FeedPageViewModel
-import kotlinx.android.synthetic.main.feed_page_fragment.*
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import androidx.recyclerview.widget.DividerItemDecoration
+
+
 
 
 class FeedPage : Fragment() {
+
+    lateinit var recyclerView: RecyclerView
 
     companion object {
         fun newInstance() = FeedPage()
@@ -22,11 +32,34 @@ class FeedPage : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.feed_page_fragment, container, false)
+
+        val rootView = inflater.inflate(R.layout.feed_page_fragment, container, false)
+
+        Observable.fromCallable {
+            localDbHandler.experimentDao().getAllExp()
+        }.doOnNext {
+            recyclerView = rootView.findViewById(R.id.feedPageRecyclerView)
+        }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    recyclerView.run {
+                        layoutManager = LinearLayoutManager(context)
+                        adapter = ExpAdapter(it, context)
+                        addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
+                    }
+                }
+
+
+
+        return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
 
 
 //        btn_feed_page.setOnClickListener {
