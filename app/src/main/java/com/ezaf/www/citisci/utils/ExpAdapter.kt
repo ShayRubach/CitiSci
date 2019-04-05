@@ -11,6 +11,12 @@ import com.ezaf.www.citisci.data.SensorType
 import com.ezaf.www.citisci.data.exp.Experiment
 import kotlinx.android.synthetic.main.experiment_row.view.*
 
+
+
+
+
+
+
 class ExpAdapter(private val items : List<Experiment>, val context: Context) : RecyclerView.Adapter<ExpViewHolder>() {
 
     // Gets the number of animals in the list
@@ -25,6 +31,7 @@ class ExpAdapter(private val items : List<Experiment>, val context: Context) : R
 
     // Binds each animal in the ArrayList to a view
     override fun onBindViewHolder(holder: ExpViewHolder, position: Int) {
+
         val exp: Experiment = items[position]
         holder.bind(exp)
     }
@@ -44,15 +51,25 @@ class ExpViewHolder (view: View) : RecyclerView.ViewHolder(view) {
             view.allExp_sensorType4)
 
 
+
     fun bind(exp: Experiment) {
         exp.basicData.run {
             mName.text = name
             mResearcher.text = "Researcher Name"
             mDescription.text = description
             mProgress.text = "999%"
-            mType.setImageResource(if (automatic) R.drawable.ic_automatic else R.drawable.ic_manual)
+            setExpTypeImageResource(mType, automatic)
         }
+
         setSensorImageResouce(mSensors, exp.getUniqueParticipatingSensorType())
+    }
+
+    private fun setExpTypeImageResource(mType: ImageView, automatic: Boolean) {
+        mType.run {
+            setImageResource(if (automatic) R.drawable.ic_automatic else R.drawable.ic_manual)
+            layoutParams.height = 100 //TODO: fetch real imageview size here
+            layoutParams.width = 100
+        }
     }
 
     private fun setSensorImageResouce(sensors: List<ImageView>, uniqueParticipatingSensorType: MutableSet<SensorType>) {
@@ -66,6 +83,9 @@ class ExpViewHolder (view: View) : RecyclerView.ViewHolder(view) {
             if(type != null){
                 it.setImageResource(toSensorIcon(type))
                 it.visibility = View.VISIBLE
+                it.layoutParams.height = 100 //TODO: fetch real imageview size here
+                it.layoutParams.width= 100
+
                 uniqueParticipatingSensorType.remove(type)
             }
         }
