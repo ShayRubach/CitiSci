@@ -10,11 +10,7 @@ import com.ezaf.www.citisci.R
 import com.ezaf.www.citisci.data.SensorType
 import com.ezaf.www.citisci.data.exp.Experiment
 import kotlinx.android.synthetic.main.experiment_row.view.*
-
-
-
-
-
+import java.lang.Integer.min
 
 
 class ExpAdapter(private val items : List<Experiment>, val context: Context) : RecyclerView.Adapter<ExpViewHolder>() {
@@ -56,12 +52,22 @@ class ExpViewHolder (view: View) : RecyclerView.ViewHolder(view) {
         exp.basicData.run {
             mName.text = name
             mResearcher.text = "Researcher Name"
-            mDescription.text = description
+            mDescription.text = trimAndQuote(description)
             mProgress.text = "999%"
             setExpTypeImageResource(mType, automatic)
         }
 
         setSensorImageResouce(mSensors, exp.getUniqueParticipatingSensorType())
+    }
+
+    private fun trimAndQuote(description: String): CharSequence? {
+        val maxDescriptionChars = 140
+        val sb = StringBuilder(description.substring(0, min(maxDescriptionChars, description.length)))
+        sb.substring(0, sb.lastIndexOf(" ")+1)
+        sb.insert(0,"\"")
+        sb.insert(sb.length,"...\"")
+
+        return sb
     }
 
     private fun setExpTypeImageResource(mType: ImageView, automatic: Boolean) {
