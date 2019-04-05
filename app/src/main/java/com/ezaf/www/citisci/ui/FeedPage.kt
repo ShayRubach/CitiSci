@@ -33,26 +33,27 @@ class FeedPage : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         val rootView = inflater.inflate(R.layout.feed_page_fragment, container, false)
+        setupRecycler(rootView)
+        return rootView
+    }
+
+    private fun setupRecycler(rootView: View) {
 
         Observable.fromCallable {
             localDbHandler.experimentDao().getAllExp()
-        }.doOnNext {
-            recyclerView = rootView.findViewById(R.id.feedPageRecyclerView)
-        }
-                .subscribeOn(Schedulers.io())
+        }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
+                    recyclerView = rootView.findViewById(R.id.feedPageRecyclerView)
                     recyclerView.run {
                         layoutManager = LinearLayoutManager(context)
                         adapter = ExpAdapter(it, context)
                         addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
                         runLayoutAnimation(this)
-                    }
                 }
+        }
+        //TODO: dispose
 
-
-
-        return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
