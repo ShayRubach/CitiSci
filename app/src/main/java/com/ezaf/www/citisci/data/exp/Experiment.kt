@@ -23,6 +23,7 @@ class Experiment (
 ) {
         @Ignore
         val actions: MutableList<ExpAction> = mutableListOf()
+        var participating: Boolean = false
 
 
         init {
@@ -32,16 +33,21 @@ class Experiment (
         }
 
         private fun insertToLocalDb() = runBlocking {
-                log(VerboseLevel.INFO,"EXP: insertToLocalDb: called.\nthis=${this@Experiment}")
-                val expDap = localDbHandler.experimentDao()
-                launch(Dispatchers.IO){
-                        expDap.insertExp(this@Experiment)
+                var fn = Throwable().stackTrace[0].methodName
+                log(VerboseLevel.INFO,"$fn: called.\nthis=${this@Experiment}")
+
+                if(_id != DUMMMY_ID){
+                        val expDap = localDbHandler.experimentDao()
+                        launch(Dispatchers.IO){
+                                expDap.insertExp(this@Experiment)
+                        }
                 }
         }
 
 
         private fun attachActions() {
-                log(VerboseLevel.INFO,"attachActions: called.\nthis=$this")
+                var fn = Throwable().stackTrace[0].methodName
+                log(VerboseLevel.INFO,"$fn: called.\nthis=$this")
 
                 val actionDao = localDbHandler.expActionsDao()
                 actions.clear()

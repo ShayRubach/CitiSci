@@ -1,6 +1,7 @@
 package com.ezaf.www.citisci.utils
 
 import com.ezaf.www.citisci.data.*
+import com.ezaf.www.citisci.data.exp.DUMMMY_ID
 import com.ezaf.www.citisci.data.exp.ExpAction
 import com.ezaf.www.citisci.data.exp.ExpBasicData
 import com.ezaf.www.citisci.data.exp.Experiment
@@ -12,9 +13,9 @@ import java.time.Instant
 object ParserUtil {
 
     //dummy objects to be referenced as type
-    val ea = ExpAction(0.0, 0, 0, "DUMMMY_ID", SensorType.GPS, listOf(), 0)
-    val ebd = ExpBasicData("DUMMMY_ID", "", Instant.now(), false, "", "")
-    val exp = Experiment("DUMMMY_ID", ebd, mutableListOf())
+    val ea = ExpAction(0.0, 0, 0, DUMMMY_ID, SensorType.GPS, listOf(), 0)
+    val ebd = ExpBasicData(DUMMMY_ID, "", Instant.now(), false, "", "")
+    val exp = Experiment(DUMMMY_ID, ebd, mutableListOf())
 
 
     fun jsonToExpList(json: String, expList: MutableList<Experiment>) = runBlocking {

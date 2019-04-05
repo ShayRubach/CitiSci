@@ -39,10 +39,13 @@ class ExpAction (
     }
 
     private fun insertToLocalDb() = runBlocking {
-        log(VerboseLevel.INFO,"insertToLocalDb: called.\nthis=${this@ExpAction}")
-        val actionDao = localDbHandler.expActionsDao()
-        launch(Dispatchers.IO){
-            actionDao.insertAction(this@ExpAction)
+        var fn = Throwable().stackTrace[0].methodName
+        log(VerboseLevel.INFO,"$fn: called.\nthis=${this@ExpAction}")
+        if(_id != DUMMMY_ID){
+            val actionDao = localDbHandler.expActionsDao()
+            launch(Dispatchers.IO){
+                actionDao.insertAction(this@ExpAction)
+            }
         }
     }
 
