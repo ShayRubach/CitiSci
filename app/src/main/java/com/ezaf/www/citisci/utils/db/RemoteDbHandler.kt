@@ -41,14 +41,15 @@ object RemoteDbHandler
     }
 
 
-    fun sendMsg(msgType: MsgType, sample: ExpSample) {
+    fun sendMsg(expId: String, msgType: MsgType, sample: ExpSample) {
         val fn = Throwable().stackTrace[0].methodName
         Logger.log(VerboseLevel.INFO, "$fn: called.")
 
         Observable.fromCallable {
             service.run {
                 when(msgType){
-                    SEND_GPS_SAMPLE, SEND_CAM_SAMPLE, SEND_MIC_SAMPLE ->putSample(sample.actionID, sample)
+                    SEND_GPS_SAMPLE, SEND_CAM_SAMPLE, SEND_MIC_SAMPLE ->putSample(expId, sample)
+//                    SEND_GPS_SAMPLE, SEND_CAM_SAMPLE, SEND_MIC_SAMPLE ->putSample(sample.actionID, sample)
                     //SOME OTHER MSG TYPES HERE -> DO STUFF
                 }
             }
