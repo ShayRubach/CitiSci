@@ -1,5 +1,6 @@
 package com.ezaf.www.citisci.ui
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -17,6 +18,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import androidx.recyclerview.widget.DividerItemDecoration
 import android.view.animation.AnimationUtils
+import android.widget.Toast
+import androidx.navigation.Navigation
+import com.ezaf.www.citisci.data.exp.Experiment
+import com.ezaf.www.citisci.data.exp.SharedDataHelper
+import com.ezaf.www.citisci.utils.Logger
+import com.ezaf.www.citisci.utils.VerboseLevel
 
 
 class FeedPage : Fragment() {
@@ -37,8 +44,9 @@ class FeedPage : Fragment() {
         return rootView
     }
 
+    @SuppressLint("CheckResult")
     private fun setupRecycler(rootView: View) {
-
+        var fn = Throwable().stackTrace[0].methodName
         Observable.fromCallable {
             localDbHandler.experimentDao().getAllExp()
         }.subscribeOn(Schedulers.io())
@@ -47,7 +55,18 @@ class FeedPage : Fragment() {
                     recyclerView = rootView.findViewById(R.id.feedPageRecyclerView)
                     recyclerView.run {
                         layoutManager = LinearLayoutManager(context)
-                        adapter = ExpAdapter(it, context)
+
+                        //set click listener for item clicked in list
+                        val itemOnClick: (Int,Experiment) -> Unit = { position, exp ->
+//                            this.adapter!!.notifyDataSetChanged()
+                            SharedDataHelper.focusedExp = exp
+                            val nextAction = FeedPageDirections.nextAction()
+                            Navigation.findNavController(rootView).navigate(nextAction)
+                            Logger.log(VerboseLevel.INFO, "$fn: called.\n clicked item no. $position")
+
+                        }
+
+                        adapter = ExpAdapter(it, context, itemOnClick)
                         addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
                         runLayoutAnimation(this)
                 }
@@ -59,19 +78,6 @@ class FeedPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
-
-
-//        btn_feed_page.setOnClickListener {
-//            Navigation.findNavController(it).navigate(R.id.destination_my_experiments)
-//        }
-
-        //get safe arg from activity: (add args and rebuild)
-//        arguments?.let{
-//            val safeArgs = MyExperimentsArgs.fromBundle(it)
-//            someTextView.text = safeArgs.field
-//        }
     }
 
     private fun runLayoutAnimation(recyclerView: RecyclerView) {
