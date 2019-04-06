@@ -11,14 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ezaf.www.citisci.R
 import com.ezaf.www.citisci.ui.MainActivity.Companion.localDbHandler
-import com.ezaf.www.citisci.utils.ExpAdapter
+import com.ezaf.www.citisci.utils.adapter.FeedPageAdapter
 import com.ezaf.www.citisci.utils.viewmodel.FeedPageViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import androidx.recyclerview.widget.DividerItemDecoration
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.navigation.Navigation
 import com.ezaf.www.citisci.data.exp.Experiment
 import com.ezaf.www.citisci.data.exp.SharedDataHelper
@@ -66,7 +65,7 @@ class FeedPage : Fragment() {
 
                         }
 
-                        adapter = ExpAdapter(it, context, itemOnClick)
+                        adapter = FeedPageAdapter(it, context, itemOnClick)
                         addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
                         runLayoutAnimation(this)
                 }

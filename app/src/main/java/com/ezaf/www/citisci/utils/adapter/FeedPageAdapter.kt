@@ -1,4 +1,4 @@
-package com.ezaf.www.citisci.utils
+package com.ezaf.www.citisci.utils.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.experiment_row.view.*
 import java.lang.Integer.min
 
 
-class ExpAdapter(private val items : List<Experiment>, val context: Context, private val itemClickListener: (Int, Experiment) -> Unit) : RecyclerView.Adapter<ExpViewHolder>() {
+class FeedPageAdapter(private val items : List<Experiment>, val context: Context, private val itemClickListener: (Int, Experiment) -> Unit) : RecyclerView.Adapter<FeedPageViewHolder>() {
 
     // Gets the number of animals in the list
     override fun getItemCount(): Int {
@@ -21,19 +21,19 @@ class ExpAdapter(private val items : List<Experiment>, val context: Context, pri
     }
 
     // Inflates the item views
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpViewHolder{
-        return ExpViewHolder(LayoutInflater.from(context).inflate(R.layout.experiment_row, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedPageViewHolder {
+        return FeedPageViewHolder(LayoutInflater.from(context).inflate(R.layout.experiment_row, parent, false))
     }
 
     // Binds each animal in the ArrayList to a view
-    override fun onBindViewHolder(holder: ExpViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FeedPageViewHolder, position: Int) {
 
         val exp: Experiment = items[position]
         holder.bind(exp, itemClickListener)
     }
 }
 
-class ExpViewHolder (view: View) : RecyclerView.ViewHolder(view) {
+class FeedPageViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
     private val mView = view
     private val mName = view.allExp_expName
