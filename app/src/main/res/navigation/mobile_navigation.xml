@@ -12,8 +12,15 @@
         tools:layout="@layout/feed_page_fragment">
         <action
             android:id="@+id/next_action"
-            app:destination="@id/destination_my_experiments" />
+            app:destination="@id/destination_detailed_experiment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/destination_detailed_experiment"
+        android:name="com.ezaf.www.citisci.ui.SingleExperimentDetails"
+        android:label="single_experiment_details_fragment"
+        tools:layout="@layout/single_experiment_details_fragment"/>
+
     <fragment
         android:id="@+id/destination_my_experiments"
         android:name="com.ezaf.www.citisci.ui.MyExperiments"
