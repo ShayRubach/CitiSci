@@ -26,4 +26,8 @@ abstract class LocalDbHandler : RoomDatabase() {
     }
 
 
+    fun joinExp(exp: Experiment) {
+        experimentDao().joinExp(exp._id)
+    }
+
 }
