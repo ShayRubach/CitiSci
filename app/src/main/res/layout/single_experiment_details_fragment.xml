@@ -8,9 +8,9 @@
 
     <ScrollView
         android:id="@+id/detExp_scrollView"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/detExp_linearLayout"
@@ -24,13 +24,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Experiment Name"
-                android:textSize="40sp"
-                android:paddingBottom="20dp"
                 android:paddingTop="20dp"
+                android:paddingBottom="20dp"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                />
+                android:textSize="40sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/detExp_sensorsLinearLayout"
@@ -75,8 +74,8 @@
                     android:id="@+id/detExp_automatic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="100dp"
+                    android:layout_weight="1"
                     app:srcCompat="@drawable/ic_automatic" />
 
                 <ImageView
@@ -94,79 +93,78 @@
                 android:id="@+id/detExp_descriptionTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:paddingTop="15sp"
-                android:textSize="30sp"
                 android:text="Description"
+                android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                />
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/detExp_descriptionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:paddingTop="15sp"
-                android:textSize="20sp"
-                android:textStyle="italic"
                 android:hint="this is where we describe our experiment in few sentences. no more than 3 or so"
-                />
+                android:paddingTop="15sp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/detExp_guideTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:paddingTop="15sp"
-                android:textSize="30sp"
                 android:text="Guide"
+                android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                />
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/detExp_guideText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="textStart"
-                android:paddingTop="15sp"
-                android:paddingStart="25sp"
-                android:paddingEnd="25sp"
-                android:textSize="20sp"
-                android:textStyle="italic"
                 android:hint="1. do this\n2. do that\n3. do more things\n4. capture this"
-                />
+                android:paddingStart="25sp"
+                android:paddingTop="15sp"
+                android:paddingEnd="25sp"
+                android:textAlignment="textStart"
+                android:textSize="20sp"
+                android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/detExp_samplesRequiredTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:paddingTop="15sp"
-                android:textSize="30sp"
                 android:text="Samples Required"
+                android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                />
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/detExp_samplesRequiredText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="30sp"
                 android:hint="0/100"
-                />
-
-
-
-
+                android:textAlignment="center"
+                android:textSize="30sp" />
 
 
         </LinearLayout>
 
     </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:clickable="true"
+        android:src="@android:drawable/ic_input_add" />
 
 </FrameLayout>
 

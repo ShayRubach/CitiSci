@@ -42,7 +42,7 @@ class SingleExperimentDetails : Fragment() {
     }
 
     private fun fillExpDetails() {
-        val greyColor= (Color.argb(150, 200, 200, 200))
+        val greyColor= (Color.argb(220, 200, 200, 200))
 
         exp.basicData.run {
             detExp_expName.text = name
