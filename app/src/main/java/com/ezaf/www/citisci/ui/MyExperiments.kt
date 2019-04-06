@@ -28,14 +28,6 @@ class MyExperiments : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        my_exp_btn.setOnClickListener {
-            val random = Random()
-            val nextAction = MyExperimentsDirections.nextAction()
-
-            //Navigation.findNavController(it).navigate(R.id.destination_feed_page)
-            Navigation.findNavController(it).navigate(nextAction)
-
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
