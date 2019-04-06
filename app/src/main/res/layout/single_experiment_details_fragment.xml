@@ -6,148 +6,163 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.SingleExperimentDetails">
 
-    <LinearLayout
-        android:id="@+id/detExp_linearLayout"
+    <ScrollView
+        android:id="@+id/detExp_scrollView"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/detExp_expName"
+        <LinearLayout
+            android:id="@+id/detExp_linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Experiment Name"
-            android:textSize="40sp"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:textAlignment="center"
-            android:textStyle="bold"
-            />
+            android:orientation="vertical">
 
-        <LinearLayout
-        android:id="@+id/detExp_sensorsLinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="76dp"
-        android:orientation="horizontal"
-        android:paddingTop="15sp"
-        android:paddingBottom="15sp">
 
-        <ImageView
-            android:id="@+id/detExp_sensorCam"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/ic_sensor_cam" />
-
-        <ImageView
-            android:id="@+id/detExp_sensorMic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/ic_sensor_mic" />
-
-        <ImageView
-            android:id="@+id/detExp_sensorGps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/ic_sensor_gps" />
-
-    </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/detExp_typeLinearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="76dp"
-            android:orientation="horizontal"
-            android:paddingTop="15sp"
-            android:paddingBottom="15sp">
-
-            <ImageView
-                android:id="@+id/detExp_automatic"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/detExp_expName"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="100dp"
-                app:srcCompat="@drawable/ic_automatic" />
+                android:hint="Experiment Name"
+                android:textSize="40sp"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                />
 
-            <ImageView
-                android:id="@+id/detExp_manual"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/detExp_sensorsLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:orientation="horizontal"
+                android:paddingTop="15sp"
+                android:paddingBottom="15sp">
+
+                <ImageView
+                    android:id="@+id/detExp_sensorCam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_sensor_cam" />
+
+                <ImageView
+                    android:id="@+id/detExp_sensorMic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_sensor_mic" />
+
+                <ImageView
+                    android:id="@+id/detExp_sensorGps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_sensor_gps" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/detExp_typeLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:orientation="horizontal"
+                android:paddingTop="15sp"
+                android:paddingBottom="15sp">
+
+                <ImageView
+                    android:id="@+id/detExp_automatic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="100dp"
+                    app:srcCompat="@drawable/ic_automatic" />
+
+                <ImageView
+                    android:id="@+id/detExp_manual"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="100dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_manual" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/detExp_descriptionTitle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="100dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/ic_manual" />
+                android:textAlignment="center"
+                android:paddingTop="15sp"
+                android:textSize="30sp"
+                android:text="Description"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/detExp_descriptionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:paddingTop="15sp"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                android:hint="this is where we describe our experiment in few sentences. no more than 3 or so"
+                />
+
+            <TextView
+                android:id="@+id/detExp_guideTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:paddingTop="15sp"
+                android:textSize="30sp"
+                android:text="Guide"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/detExp_guideText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="textStart"
+                android:paddingTop="15sp"
+                android:paddingStart="25sp"
+                android:paddingEnd="25sp"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                android:hint="1. do this\n2. do that\n3. do more things\n4. capture this"
+                />
+
+            <TextView
+                android:id="@+id/detExp_samplesRequiredTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:paddingTop="15sp"
+                android:textSize="30sp"
+                android:text="Samples Required"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/detExp_samplesRequiredText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:hint="0/100"
+                />
+
+
+
+
 
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/detExp_descriptionTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:paddingTop="15sp"
-            android:textSize="30sp"
-            android:text="Description"
-            android:textStyle="bold"
-            />
-
-        <TextView
-            android:id="@+id/detExp_descriptionText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:paddingTop="15sp"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            android:hint="this is where we describe our experiment in few sentences. no more than 3 or so"
-            />
-
-        <TextView
-            android:id="@+id/detExp_guideTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:paddingTop="15sp"
-            android:textSize="30sp"
-            android:text="Guide"
-            android:textStyle="bold"
-            />
-
-        <TextView
-            android:id="@+id/detExp_guideText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="textStart"
-            android:paddingTop="15sp"
-            android:paddingStart="25sp"
-            android:paddingEnd="25sp"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            android:hint="1. do this\n2. do that\n3. do more things\n4. capture this"
-            />
-
-        <TextView
-            android:id="@+id/detExp_samplesRequiredTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:paddingTop="15sp"
-            android:textSize="30sp"
-            android:text="Samples Required"
-            android:textStyle="bold"
-            />
-
-        <TextView
-            android:id="@+id/detExp_samplesRequiredText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="30sp"
-            android:hint="0/100"
-            />
-    </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>
 
