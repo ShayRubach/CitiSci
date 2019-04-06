@@ -6,7 +6,6 @@
     <color name="expRowBaseColor">#AFD2FF</color>
     <color name="expRowBottomColor">#CCE6FF</color>
     <color name="progressColor">#4CAF50</color>
-
-
+    <color name="black">#000000</color>
 
 </resources>
