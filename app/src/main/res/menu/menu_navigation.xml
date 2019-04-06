@@ -8,4 +8,10 @@
         android:id="@+id/destination_my_experiments"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="MyExperiments" />
+
+    <!--<item-->
+        <!--android:id="@+id/destination_detailed_experiment"-->
+        <!--android:icon="@drawable/ic_dashboard_black_24dp"-->
+        <!--android:title="SingleExperimentDetails" />-->
+
 </menu>
