@@ -9,12 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezaf.www.citisci.R
 import com.ezaf.www.citisci.data.SensorType
 import com.ezaf.www.citisci.data.exp.Experiment
-import com.ezaf.www.citisci.utils.Logger.log
 import kotlinx.android.synthetic.main.experiment_row.view.*
 import java.lang.Integer.min
 
 
-class ExpAdapter(private val items : List<Experiment>, val context: Context) : RecyclerView.Adapter<ExpViewHolder>() {
+class ExpAdapter(private val items : List<Experiment>, val context: Context, private val itemClickListener: (Int, Experiment) -> Unit) : RecyclerView.Adapter<ExpViewHolder>() {
 
     // Gets the number of animals in the list
     override fun getItemCount(): Int {
@@ -30,7 +29,7 @@ class ExpAdapter(private val items : List<Experiment>, val context: Context) : R
     override fun onBindViewHolder(holder: ExpViewHolder, position: Int) {
 
         val exp: Experiment = items[position]
-        holder.bind(exp)
+        holder.bind(exp, itemClickListener)
     }
 }
 
@@ -50,7 +49,7 @@ class ExpViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
 
 
-    fun bind(exp: Experiment) {
+    fun bind(exp: Experiment, itemClickListener: (Int, Experiment) -> Unit) {
 
         exp.basicData.run {
             mName.text = name
@@ -62,9 +61,8 @@ class ExpViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
         setSensorImageResouce(mSensors, exp.getUniqueParticipatingSensorType())
 
-        mView.setOnClickListener {
+        mView.setOnClickListener { itemClickListener(adapterPosition, exp) }
 
-        }
     }
 
     private fun trimAndQuote(description: String): CharSequence? {
