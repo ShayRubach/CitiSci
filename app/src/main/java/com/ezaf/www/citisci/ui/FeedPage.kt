@@ -25,9 +25,9 @@ import com.ezaf.www.citisci.utils.Logger
 import com.ezaf.www.citisci.utils.VerboseLevel
 
 
-class FeedPage : Fragment() {
+open class FeedPage : Fragment() {
 
-    lateinit var recyclerView: RecyclerView
+    open lateinit var recyclerView: RecyclerView
 
     companion object {
         fun newInstance() = FeedPage()
@@ -44,7 +44,7 @@ class FeedPage : Fragment() {
     }
 
     @SuppressLint("CheckResult")
-    private fun setupRecycler(rootView: View) {
+    open fun setupRecycler(rootView: View) {
         var fn = Throwable().stackTrace[0].methodName
         Observable.fromCallable {
             localDbHandler.experimentDao().getAllExp()
@@ -74,12 +74,7 @@ class FeedPage : Fragment() {
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
-    private fun runLayoutAnimation(recyclerView: RecyclerView) {
+    protected fun runLayoutAnimation(recyclerView: RecyclerView) {
         val context = recyclerView.context
         val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
 
