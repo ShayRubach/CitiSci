@@ -5,10 +5,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.MyExperiments">
 
-    <Button
-        android:id="@+id/my_exp_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button" />
+    <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/MyExperimentsRecyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutAnimation="@anim/layout_animation_fall_down"
+    android:scrollbars="vertical" >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
 
 </FrameLayout>
