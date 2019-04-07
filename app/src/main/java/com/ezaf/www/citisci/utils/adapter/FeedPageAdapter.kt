@@ -13,7 +13,8 @@ import kotlinx.android.synthetic.main.experiment_row.view.*
 import java.lang.Integer.min
 
 
-class FeedPageAdapter(private val items : List<Experiment>, val context: Context, private val itemClickListener: (Int, Experiment) -> Unit) : RecyclerView.Adapter<FeedPageViewHolder>() {
+class FeedPageAdapter(protected val items : List<Experiment>, val context: Context, protected val itemClickListener: (Int, Experiment) -> Unit)
+    : RecyclerView.Adapter<FeedPageViewHolder>() {
 
     // Gets the number of animals in the list
     override fun getItemCount(): Int {
@@ -25,7 +26,7 @@ class FeedPageAdapter(private val items : List<Experiment>, val context: Context
         return FeedPageViewHolder(LayoutInflater.from(context).inflate(R.layout.experiment_row, parent, false))
     }
 
-    // Binds each animal in the ArrayList to a view
+    // Binds each item in the ArrayList to a view
     override fun onBindViewHolder(holder: FeedPageViewHolder, position: Int) {
 
         val exp: Experiment = items[position]
@@ -33,15 +34,15 @@ class FeedPageAdapter(private val items : List<Experiment>, val context: Context
     }
 }
 
-class FeedPageViewHolder (view: View) : RecyclerView.ViewHolder(view) {
+open class FeedPageViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
-    private val mView = view
-    private val mName = view.allExp_expName
-    private val mResearcher = view.allExp_previewResearcherName
-    private val mDescription = view.allExp_previewExpDescription
-    private val mProgress = view.allExp_expProgress
-    private val mType = view.allExp_expType
-    private val mSensors = listOf(
+    open val mView = view
+    open val mName = view.allExp_expName
+    open val mResearcher = view.allExp_previewResearcherName
+    open val mDescription = view.allExp_previewExpDescription
+    open val mProgress = view.allExp_expProgress
+    open val mType = view.allExp_expType
+    open val mSensors = listOf(
             view.allExp_sensorType1,
             view.allExp_sensorType2,
             view.allExp_sensorType3,
@@ -49,7 +50,7 @@ class FeedPageViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
 
 
-    fun bind(exp: Experiment, itemClickListener: (Int, Experiment) -> Unit) {
+    open fun bind(exp: Experiment, itemClickListener: (Int, Experiment) -> Unit) {
 
         exp.basicData.run {
             mName.text = name
@@ -75,7 +76,7 @@ class FeedPageViewHolder (view: View) : RecyclerView.ViewHolder(view) {
         return sb
     }
 
-    private fun setExpTypeImageResource(mType: ImageView, automatic: Boolean) {
+    protected fun setExpTypeImageResource(mType: ImageView, automatic: Boolean) {
         mType.run {
             setImageResource(if (automatic) R.drawable.ic_automatic else R.drawable.ic_manual)
             layoutParams.height = 100 //TODO: fetch real imageview size here
@@ -83,7 +84,7 @@ class FeedPageViewHolder (view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    private fun setSensorImageResouce(sensors: List<ImageView>, uniqueParticipatingSensorType: MutableSet<SensorType>) {
+    protected fun setSensorImageResouce(sensors: List<ImageView>, uniqueParticipatingSensorType: MutableSet<SensorType>) {
 
         //initially - hide all sensors
         sensors.forEach { it.visibility = View.INVISIBLE}
