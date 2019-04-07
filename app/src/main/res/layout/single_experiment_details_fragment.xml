@@ -89,6 +89,26 @@
 
             </LinearLayout>
 
+
+            <TextView
+                android:id="@+id/detExp_samplesRequiredTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="15sp"
+                android:text="Samples Required"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/detExp_samplesRequiredText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="0/100"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+
             <TextView
                 android:id="@+id/detExp_descriptionTitle"
                 android:layout_width="match_parent"
@@ -132,26 +152,6 @@
                 android:textAlignment="textStart"
                 android:textSize="20sp"
                 android:textStyle="italic" />
-
-            <TextView
-                android:id="@+id/detExp_samplesRequiredTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="15sp"
-                android:text="Samples Required"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="30sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/detExp_samplesRequiredText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="0/100"
-                android:textAlignment="center"
-                android:textSize="30sp" />
-
 
         </LinearLayout>
 
