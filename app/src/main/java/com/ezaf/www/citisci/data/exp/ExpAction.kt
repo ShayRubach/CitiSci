@@ -18,7 +18,7 @@ class ExpAction (
         @TypeConverters(TypeConverterUtil::class)
         val captureInterval: Double,
         val duration: Int,
-        val samplesRequired: Int,
+        var samplesRequired: Int,
         @PrimaryKey
         @ColumnInfo(name = "_id")
         val _id: String,

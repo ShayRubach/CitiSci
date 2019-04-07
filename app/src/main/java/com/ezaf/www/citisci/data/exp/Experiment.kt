@@ -29,7 +29,18 @@ class Experiment (
         init {
                 publishExpId()
                 attachActions()
+                calculateSamplesRequired()
                 insertToLocalDb()
+        }
+
+        private fun calculateSamplesRequired() {
+                if(basicData.automatic){
+                        actions.forEach {
+                                if(it.captureInterval != 0.0){
+                                        it.samplesRequired = it.duration/it.captureInterval.toInt()
+                                }
+                        }
+                }
         }
 
         private fun insertToLocalDb() = runBlocking {
@@ -81,5 +92,16 @@ class Experiment (
                 }
                 builder.append("\n\n")
                 return builder.toString()
+        }
+
+        fun getSamplesForDisplay() : Pair<Int,Int> {
+                var totalSamplesRequired = 0
+                var totalSamplesCollected = 0
+
+                actions.forEach {
+                        totalSamplesRequired  += it.samplesRequired
+                        totalSamplesCollected += it.samplesCollected
+                }
+                return Pair(totalSamplesCollected,totalSamplesRequired)
         }
 }
