@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         expActionDao = localDbHandler.expActionsDao()
 //        testDbInsertionAndSelection()
 
-        getAllExpFromRemoteDb()
+//        getAllExpFromRemoteDb()
 
 
     }
@@ -143,7 +143,6 @@ class MainActivity : AppCompatActivity() {
                         override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
                             ParserUtil.jsonToExpList(response.body().toString(), list)
                             Logger.log(VerboseLevel.INFO, "got all experiments.")
-                            localDbHandler.insertExpList(list)
                         }
 
                         override fun onFailure(call: Call<JsonElement>, t: Throwable) {
