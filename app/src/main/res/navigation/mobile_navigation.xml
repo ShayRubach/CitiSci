@@ -28,6 +28,6 @@
         tools:layout="@layout/my_experiments_fragment" >
         <action
             android:id="@+id/next_action"
-            app:destination="@id/destination_feed_page" />
+            app:destination="@id/destination_detailed_experiment" />
     </fragment>
 </navigation>
