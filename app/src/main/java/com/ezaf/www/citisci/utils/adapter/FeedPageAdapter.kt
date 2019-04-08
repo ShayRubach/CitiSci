@@ -54,7 +54,7 @@ open class FeedPageViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
         exp.basicData.run {
             mName.text = name
-            mResearcher.text = "Researcher Name"
+            mResearcher.text = researcher
             mDescription.text = trimAndQuote(description)
             mProgress.text = "999%"
             setExpTypeImageResource(mType, automatic)
