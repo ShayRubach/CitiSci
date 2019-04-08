@@ -5,6 +5,7 @@ import com.ezaf.www.citisci.data.exp.DUMMMY_ID
 import com.ezaf.www.citisci.data.exp.ExpAction
 import com.ezaf.www.citisci.data.exp.ExpBasicData
 import com.ezaf.www.citisci.data.exp.Experiment
+import com.ezaf.www.citisci.utils.Logger.log
 import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -34,11 +35,9 @@ object ParserUtil {
 
 
                 expJson.run {
-                    expList.add(Experiment(
-                            get(fieldNameAt(exp, 0)).toString(),
-                            bdata,
-                            actionListIds
-                    ))
+                    val exp = Experiment(get(fieldNameAt(exp, 0)).toString(), bdata, actionListIds)
+                    exp.actions = actionList
+                    expList.add(exp)
                 }
             }
             Logger.log(VerboseLevel.INFO, "EXP LIST= \n$expList")
@@ -59,13 +58,14 @@ object ParserUtil {
 
         bdataJson.run {
             return ExpBasicData(
-//                    get(fieldNameAt(type,0)).toString(),
                     "DEFAULT_BD_ID",
                     get(fieldNameAt(ebd, 5)).toString(),
                     Instant.now(),
                     get(fieldNameAt(ebd, 1)).toString().toBoolean(),
                     get(fieldNameAt(ebd, 2)).toString(),
-                    get(fieldNameAt(ebd, 4)).toString()
+                    get(fieldNameAt(ebd, 4)).toString(),
+                    get(fieldNameAt(ebd, 6)).toString()
+
             )
         }
     }
@@ -87,7 +87,6 @@ object ParserUtil {
                 ))
             }
         }
-//        log(VerboseLevel.INFO, "list of actions = \n$actionList\n")
         return actionList
     }
 

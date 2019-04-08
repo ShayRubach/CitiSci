@@ -13,7 +13,8 @@ class ExpBasicData (
         val startTime: Instant,
         val automatic: Boolean,
         val description: String,
-        val guide: String)
+        val guide: String,
+        val researcher: String = "researcher name")
 {
     @Ignore private var expId: String = ""
 
