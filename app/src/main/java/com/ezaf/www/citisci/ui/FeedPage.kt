@@ -50,24 +50,33 @@ open class FeedPage : Fragment() {
             localDbHandler.experimentDao().getAllExp()
         }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    recyclerView = rootView.findViewById(R.id.feedPageRecyclerView)
-                    recyclerView.run {
-                        layoutManager = LinearLayoutManager(context)
-
-                        //set click listener for item clicked in list
-                        val itemOnClick: (Int,Experiment) -> Unit = { position, exp ->
-//                            this.adapter!!.notifyDataSetChanged()
-                            SharedDataHelper.focusedExp = exp
-                            val nextAction = FeedPageDirections.nextAction()
-                            Navigation.findNavController(rootView).navigate(nextAction)
-                            Logger.log(VerboseLevel.INFO, "$fn: called.\n clicked item no. $position")
-
+                .subscribe { expList ->
+                    Observable.fromCallable {
+                        expList .forEach {
+                            it.attachActions()
                         }
+                    }.subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe {
+                                Logger.log(VerboseLevel.INFO, "$fn: it.attachActions() DONE")
+                                recyclerView = rootView.findViewById(R.id.feedPageRecyclerView)
+                                recyclerView.run {
+                                    layoutManager = LinearLayoutManager(context)
 
-                        adapter = FeedPageAdapter(it, context, itemOnClick)
-                        addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
-                        runLayoutAnimation(this)
+                                    //set click listener for item clicked in list
+                                    val itemOnClick: (Int,Experiment) -> Unit = { position, exp ->
+                                        //                            this.adapter!!.notifyDataSetChanged()
+                                        SharedDataHelper.focusedExp = exp
+                                        val nextAction = FeedPageDirections.nextAction()
+                                        Navigation.findNavController(rootView).navigate(nextAction)
+                                        Logger.log(VerboseLevel.INFO, "$fn: called.\n clicked item no. $position exp=$exp")
+
+                                    }
+
+                                    adapter = FeedPageAdapter(expList , context, itemOnClick)
+                                    addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
+                                    runLayoutAnimation(this)
+                            }
                 }
         }
         //TODO: dispose
