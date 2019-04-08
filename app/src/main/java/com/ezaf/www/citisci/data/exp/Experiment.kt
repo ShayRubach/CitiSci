@@ -22,50 +22,39 @@ class Experiment (
         var actionIdList: MutableList<String> = mutableListOf()
 ) {
         @Ignore
-        val actions: MutableList<ExpAction> = mutableListOf()
+        var actions: MutableList<ExpAction> = mutableListOf()
         var participating: Boolean = false
 
 
         init {
                 publishExpId()
-                attachActions()
                 calculateSamplesRequired()
-                insertToLocalDb()
         }
 
         private fun calculateSamplesRequired() {
                 if(basicData.automatic){
                         actions.forEach {
-                                if(it.captureInterval != 0.0){
+                                if(it.captureInterval > 0.0 && it.duration > 0.0 ){
                                         it.samplesRequired = it.duration/it.captureInterval.toInt()
+                                }
+                                else{
+                                        log(VerboseLevel.INFO,"samples required aren't defined! it can not be 0!")
+                                        it.samplesRequired = 1
+
                                 }
                         }
                 }
         }
 
-        private fun insertToLocalDb() = runBlocking {
+        fun attachActions() {
                 var fn = Throwable().stackTrace[0].methodName
-                log(VerboseLevel.INFO,"$fn: called.\nthis=${this@Experiment}")
-
-                if(_id != DUMMMY_ID){
-                        val expDap = localDbHandler.experimentDao()
-                        launch(Dispatchers.IO){
-                                expDap.insertExp(this@Experiment)
-                        }
-                }
-        }
-
-
-        private fun attachActions() {
-                var fn = Throwable().stackTrace[0].methodName
-                log(VerboseLevel.INFO,"$fn: called.\nthis=$this")
+                log(VerboseLevel.INFO,"$fn: called.\nexp_id=${this._id}")
 
                 val actionDao = localDbHandler.expActionsDao()
                 actions.clear()
                 actionDao.run {
                         for(actionID in actionIdList){
                                 val action = getActionById(actionID)
-//                                log(VerboseLevel.INFO,"ACTION = $action")
                                 actions.add(action)
                         }
                 }

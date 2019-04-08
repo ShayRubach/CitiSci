@@ -34,21 +34,6 @@ class ExpAction (
     @Ignore var expId: String = ""
         private set
 
-    init {
-        insertToLocalDb()
-    }
-
-    private fun insertToLocalDb() = runBlocking {
-        var fn = Throwable().stackTrace[0].methodName
-        log(VerboseLevel.INFO,"$fn: called.\nthis=${this@ExpAction}")
-        if(_id != DUMMMY_ID){
-            val actionDao = localDbHandler.expActionsDao()
-            launch(Dispatchers.IO){
-                actionDao.insertAction(this@ExpAction)
-            }
-        }
-    }
-
     fun updateSamplesStatus() = runBlocking {
         var fn = Throwable().stackTrace[0].methodName
         log(INFO_ERR, "$fn: called.")
