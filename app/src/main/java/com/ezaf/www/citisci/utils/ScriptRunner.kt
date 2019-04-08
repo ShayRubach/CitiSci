@@ -67,8 +67,8 @@ class ScriptRunner(
                     log(INFO,"$fn: calling data collector.")
                     var location = DataCollector.collect(sensorType) as Location
 
-                    val sample = ExpSample(action._id, listOf(LatLong(location.latitude, location.longitude)))
-                    RemoteDbHandler.sendMsg(action.expId, SEND_GPS_SAMPLE, sample)
+                    val samples = listOf(ExpSample(action._id, (LatLong(location.latitude, location.longitude))))
+                    RemoteDbHandler.sendMsg(action.expId, SEND_GPS_SAMPLE, samples)
                     updateSamplesStatus()
 
 
