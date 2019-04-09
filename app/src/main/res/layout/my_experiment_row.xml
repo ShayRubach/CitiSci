@@ -18,7 +18,7 @@
         <TextView
             android:id="@+id/myExp_progressRect"
             android:layout_width="12dp"
-            android:layout_height="198dp"
+            android:layout_height="wrap_content"
             android:background="@color/progressColor"
             app:layout_constraintStart_toStartOf="@+id/myExp_samplesAcquired"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="193dp"
             android:hint="@string/experiment_name"
-            android:paddingTop="10dp"
+            android:paddingTop="22dp"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="30sp"
