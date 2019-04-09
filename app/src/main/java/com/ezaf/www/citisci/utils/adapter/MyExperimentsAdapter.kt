@@ -4,15 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.RecyclerView
 import com.ezaf.www.citisci.R
 import com.ezaf.www.citisci.data.exp.Experiment
 import com.ezaf.www.citisci.data.exp.SAMPLES_ACQUIRED_PREFIX
-import com.ezaf.www.citisci.utils.Logger
-import com.ezaf.www.citisci.utils.VerboseLevel
+import com.ezaf.www.citisci.ui.MyExperimentsDirections
 import kotlinx.android.synthetic.main.my_experiment_row.view.*
 
-class MyExperimentsAdapter(private val items: List<Experiment>, val context: Context, private val itemClickListener: (Int, Experiment) -> Unit)
+class MyExperimentsAdapter(private val items: List<Experiment>, val context: Context, private val itemClickListener: (Int, Experiment, NavDirections) -> Unit)
     : RecyclerView.Adapter<MyExperimentViewHolder>() {
 
     override fun getItemCount(): Int {
@@ -45,7 +45,7 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
             view.myExp_sensorType4)
 
 
-    override fun bind(exp: Experiment, itemClickListener: (Int, Experiment) -> Unit) {
+    override fun bind(exp: Experiment, itemClickListener: (Int, Experiment, NavDirections) -> Unit) {
 
         val samplesStatus = exp.getSamplesForDisplay()
         var percentageCompleted = 0
@@ -64,7 +64,7 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
 
         mProgressRect.width = mView.width * percentageCompleted
         setSensorImageResouce(mSensors, exp.getUniqueParticipatingSensorType())
-        mView.setOnClickListener { itemClickListener(adapterPosition, exp) }
+        mView.setOnClickListener { itemClickListener(adapterPosition, exp, MyExperimentsDirections.nextAction()) }
     }
 
     private fun toFixedSamplesAcquiredDisplay(samplesForDisplay: Pair<Int, Int>): String {

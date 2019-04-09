@@ -1,7 +1,6 @@
 package com.ezaf.www.citisci.ui
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -17,6 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import androidx.recyclerview.widget.DividerItemDecoration
 import android.view.animation.AnimationUtils
+import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.ezaf.www.citisci.data.exp.Experiment
 import com.ezaf.www.citisci.data.exp.SharedDataHelper
@@ -39,25 +39,24 @@ open class FeedPage : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         val rootView = inflater.inflate(R.layout.feed_page_fragment, container, false)
-        setupRecycler(rootView)
+        setupRecycler(rootView, R.id.feedPageRecyclerView)
         return rootView
     }
 
-    //TODO: refactor and use in MyExperiments as well - code dupe:
     @SuppressLint("CheckResult")
-    open fun setupRecycler(rootView: View) {
+    protected fun setupRecycler(rootView: View, recyclerId: Int) {
         var fn = Throwable().stackTrace[0].methodName
 
-        if(SharedDataHelper.list.isEmpty()) {
+        if(SharedDataHelper.listOfAllExp.isEmpty()) {
             RemoteDbHandler.getAllExp()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
                         it.enqueue(object : Callback<JsonElement> {
                             override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
-                                ParserUtil.jsonToExpList(response.body().toString(), SharedDataHelper.list)
+                                ParserUtil.jsonToExpList(response.body().toString(), SharedDataHelper.listOfAllExp)
                                 Logger.log(VerboseLevel.INFO, "got all experiments.")
-                                setupRecyclerProperties(rootView, SharedDataHelper.list)
+                                setupRecyclerProperties(rootView, SharedDataHelper.listOfAllExp, recyclerId)
                             }
 
                             override fun onFailure(call: Call<JsonElement>, t: Throwable) {
@@ -67,35 +66,38 @@ open class FeedPage : Fragment() {
                     }
         }
         else{
-            setupRecyclerProperties(rootView, SharedDataHelper.list)
+            setupRecyclerProperties(rootView, SharedDataHelper.listOfAllExp, recyclerId)
         }
     }
 
-    private fun setupRecyclerProperties(rootView: View, expList: List<Experiment>){
+    open fun setupRecyclerProperties(rootView: View, expList: List<Experiment>, recyclerId: Int){
         var fn = Throwable().stackTrace[0].methodName
 
-        recyclerView = rootView.findViewById(R.id.feedPageRecyclerView)
+        recyclerView = rootView.findViewById(recyclerId)
         recyclerView.run {
             layoutManager = LinearLayoutManager(context)
 
-            //set click listener for item clicked in list
-            val itemOnClick: (Int, Experiment) -> Unit = { position, exp ->
+            //set click listener for item clicked in listOfAllExp
+            val itemOnClick: (Int, Experiment, NavDirections) -> Unit = { position, exp, nextAction ->
                 //                            this.adapter!!.notifyDataSetChanged()
                 SharedDataHelper.focusedExp = exp
-                val nextAction = FeedPageDirections.nextAction()
                 Navigation.findNavController(rootView).navigate(nextAction)
                 Logger.log(VerboseLevel.INFO, "$fn: called.\n clicked item no. $position , exp=$exp")
 
             }
 
-            adapter = FeedPageAdapter(expList, context, itemOnClick)
+            attachAdapter(recyclerView, expList, itemOnClick)
             addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
             runLayoutAnimation(this)
         }
     }
 
+    open fun attachAdapter(recycler: RecyclerView, expList: List<Experiment>, itemOnClick: (Int, Experiment, NavDirections) -> Unit) {
+        recycler.adapter = FeedPageAdapter(expList, recycler.context, itemOnClick)
+    }
 
-    protected fun runLayoutAnimation(recyclerView: RecyclerView) {
+
+    private fun runLayoutAnimation(recyclerView: RecyclerView) {
         val context = recyclerView.context
         val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
 

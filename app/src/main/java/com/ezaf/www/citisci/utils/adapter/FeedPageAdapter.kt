@@ -5,18 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.RecyclerView
 import com.ezaf.www.citisci.R
 import com.ezaf.www.citisci.data.SensorType
 import com.ezaf.www.citisci.data.exp.Experiment
+import com.ezaf.www.citisci.ui.FeedPageDirections
 import kotlinx.android.synthetic.main.experiment_row.view.*
 import java.lang.Integer.min
 
 
-class FeedPageAdapter(protected val items : List<Experiment>, val context: Context, protected val itemClickListener: (Int, Experiment) -> Unit)
+class FeedPageAdapter(protected val items: List<Experiment>, val context: Context, protected val itemClickListener: (Int, Experiment, NavDirections) -> Unit)
     : RecyclerView.Adapter<FeedPageViewHolder>() {
 
-    // Gets the number of animals in the list
+    // Gets the number of animals in the listOfAllExp
     override fun getItemCount(): Int {
         return items.size
     }
@@ -50,7 +52,7 @@ open class FeedPageViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
 
 
-    open fun bind(exp: Experiment, itemClickListener: (Int, Experiment) -> Unit) {
+    open fun bind(exp: Experiment, itemClickListener: (Int, Experiment, NavDirections) -> Unit) {
 
         exp.basicData.run {
             mName.text = name
@@ -62,7 +64,7 @@ open class FeedPageViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
         setSensorImageResouce(mSensors, exp.getUniqueParticipatingSensorType())
 
-        mView.setOnClickListener { itemClickListener(adapterPosition, exp) }
+        mView.setOnClickListener { itemClickListener(adapterPosition, exp, FeedPageDirections.nextAction()) }
 
     }
 
