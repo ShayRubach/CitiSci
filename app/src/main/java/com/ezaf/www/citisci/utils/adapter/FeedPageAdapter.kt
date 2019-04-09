@@ -78,7 +78,7 @@ open class FeedPageViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
     protected fun setExpTypeImageResource(mType: ImageView, automatic: Boolean) {
         mType.run {
-            setImageResource(if (automatic) R.drawable.ic_automatic else R.drawable.ic_manual)
+            setImageResource(if (automatic) R.drawable.ic_automatic2 else R.drawable.ic_manual)
             layoutParams.height = 100 //TODO: fetch real imageview size here
             layoutParams.width = 100
         }
