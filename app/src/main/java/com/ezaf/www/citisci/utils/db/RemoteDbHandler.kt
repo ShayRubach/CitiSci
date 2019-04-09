@@ -4,6 +4,7 @@ import android.widget.Toast
 import com.ezaf.www.citisci.data.exp.ExpAction
 import com.ezaf.www.citisci.data.exp.ExpSample
 import com.ezaf.www.citisci.data.exp.Experiment
+import com.ezaf.www.citisci.data.exp.SharedDataHelper
 import com.ezaf.www.citisci.utils.Logger
 import com.ezaf.www.citisci.utils.ParserUtil
 import com.ezaf.www.citisci.utils.VerboseLevel
@@ -77,6 +78,21 @@ object RemoteDbHandler
 
         return Observable.fromCallable {
             service.getAllExperiments()
+        }
+    }
+
+    fun getMyExp() : Observable<Call<JsonElement>> {
+        val fn = Throwable().stackTrace[0].methodName
+        Logger.log(VerboseLevel.INFO, "$fn: called.")
+
+        return Observable.fromCallable {
+            service.getMyExperiments("email1002")
+        }
+    }
+
+    fun joinExp(expId: String): Observable<Call<JsonElement>>{
+        return Observable.fromCallable {
+            service.joinExp(expId, "my_email")
         }
     }
 
