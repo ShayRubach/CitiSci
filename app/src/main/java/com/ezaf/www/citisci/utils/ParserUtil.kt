@@ -19,7 +19,9 @@ object ParserUtil {
     const val time = "{TIS}"
     const val durationTime = "{DT}"
     const val samples = "{SM}"
-    var gpsBaseStr  = "- Capturing $sensor every $time seconds for $durationTime minutes"
+
+    var gpsBaseStrAuto  = "- Capturing $sensor every $time seconds for $durationTime minutes"
+    var gpsBaseStrManual  = "- Capture $samples $sensor at the requested locations in guide"
     var camBaseStr = "- Take $samples pictures of subject requested in guide"
 
     fun jsonToExpList(json: String, expList: MutableList<Experiment>) = runBlocking {
@@ -135,10 +137,17 @@ object ParserUtil {
         var baseStr: String
         return when(action.sensorType){
             SensorType.GPS -> {
-                baseStr = gpsBaseStr
-                baseStr = baseStr.replace(sensor,"GPS coordinate")
-                baseStr = baseStr.replace(time,(action.captureInterval/60).toString())
-                baseStr = baseStr.replace(durationTime, (action.duration).toString())
+                if(action.duration != DURATION_IGNORABLE){
+                    baseStr = gpsBaseStrAuto
+                    baseStr = baseStr.replace(sensor,"GPS coordinate")
+                    baseStr = baseStr.replace(time,(action.captureInterval/60).toString())
+                    baseStr = baseStr.replace(durationTime, (action.duration).toString())
+                }
+                else{
+                    baseStr = gpsBaseStrManual
+                    baseStr = baseStr.replace(samples, action.samplesRequired.toString())
+                    baseStr = baseStr.replace(sensor, "GPS coordinates")
+                }
                 baseStr
             }
             SensorType.Camera -> {
