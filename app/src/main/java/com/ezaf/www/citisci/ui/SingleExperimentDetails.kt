@@ -30,15 +30,12 @@ class SingleExperimentDetails : Fragment() {
                               savedInstanceState: Bundle?): View? {
         var fn = Throwable().stackTrace[0].methodName
         exp = SharedDataHelper.focusedExp
-
-
-
         return inflater.inflate(R.layout.single_experiment_details_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         detExp_btnJoinExp.setOnClickListener {
-            viewModel.joinExp(exp, notifyUserWithSuccess(exp.basicData.name))
+            viewModel.joinExp(exp, notifyUserWithSuccessJoin(exp.basicData.name))
         }
         viewModel = ViewModelProviders.of(this).get(SingleExperimentDetailsViewModel::class.java)
         fillExpDetails()
@@ -99,7 +96,7 @@ class SingleExperimentDetails : Fragment() {
             detExp_sensorGps.setColorFilter(greyColor)
     }
 
-    private val notifyUserWithSuccess: (String) -> Unit  = {
+    private val notifyUserWithSuccessJoin: (String) -> Unit  = {
         Toast.makeText(context, "Successfully joined $it", Toast.LENGTH_LONG).show()
         //TODO: move to my exp with this exp focused
     }
