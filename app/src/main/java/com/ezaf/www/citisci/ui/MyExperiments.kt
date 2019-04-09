@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezaf.www.citisci.R
 import com.ezaf.www.citisci.data.exp.Experiment
 import com.ezaf.www.citisci.data.exp.SharedDataHelper
-import com.ezaf.www.citisci.ui.MainActivity.Companion.list
 import com.ezaf.www.citisci.utils.Logger
 import com.ezaf.www.citisci.utils.ParserUtil
 import com.ezaf.www.citisci.utils.VerboseLevel
+import com.ezaf.www.citisci.utils.adapter.FeedPageAdapter
 import com.ezaf.www.citisci.utils.adapter.MyExperimentsAdapter
 import com.ezaf.www.citisci.utils.db.RemoteDbHandler
 import com.ezaf.www.citisci.utils.viewmodel.MyExperimentsViewModel
@@ -44,41 +44,52 @@ class MyExperiments : FeedPage() {
     override fun setupRecycler(rootView: View) {
         var fn = Throwable().stackTrace[0].methodName
 
-        list.clear()
-        RemoteDbHandler.getAllExp()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    it.enqueue(object : Callback<JsonElement> {
-                        override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
-                            ParserUtil.jsonToExpList(response.body().toString(), list)
-                            Logger.log(VerboseLevel.INFO, "got all experiments.")
 
-                            recyclerView = rootView.findViewById(R.id.MyExperimentsRecyclerView)
-                            recyclerView.run {
-                                layoutManager = LinearLayoutManager(context)
+        if(SharedDataHelper.list.isEmpty()) {
+            RemoteDbHandler.getAllExp()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        it.enqueue(object : Callback<JsonElement> {
+                            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                                ParserUtil.jsonToExpList(response.body().toString(), SharedDataHelper.list)
+                                Logger.log(VerboseLevel.INFO, "got all experiments.")
 
-                                //set click listener for item clicked in list
-                                val itemOnClick: (Int, Experiment) -> Unit = { position, exp ->
-                                    //                            this.adapter!!.notifyDataSetChanged()
-                                    SharedDataHelper.focusedExp = exp
-                                    val nextAction = MyExperimentsDirections.nextAction()
-                                    Navigation.findNavController(rootView).navigate(nextAction)
-                                    Logger.log(VerboseLevel.INFO, "$fn: called.\n clicked item no. $position , exp=$exp")
-
-                                }
-
-                                adapter = MyExperimentsAdapter(list, context, itemOnClick)
-                                addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
-                                runLayoutAnimation(this)
+                                setupRecyclerProperties(rootView, SharedDataHelper.list)
                             }
-                        }
 
-                        override fun onFailure(call: Call<JsonElement>, t: Throwable) {
-                            Logger.log(VerboseLevel.INFO, "failed to get all experiments.")
-                        }
-                    })
-                }
+                            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                                Logger.log(VerboseLevel.INFO, "failed to get all experiments.")
+                            }
+                        })
+                    }
+        }
+        else{
+            setupRecyclerProperties(rootView, SharedDataHelper.list)
+        }
+    }
+
+    private fun setupRecyclerProperties(rootView: View, expList: List<Experiment>){
+        var fn = Throwable().stackTrace[0].methodName
+
+        recyclerView = rootView.findViewById(R.id.MyExperimentsRecyclerView)
+        recyclerView.run {
+            layoutManager = LinearLayoutManager(context)
+
+            //set click listener for item clicked in list
+            val itemOnClick: (Int, Experiment) -> Unit = { position, exp ->
+                //                            this.adapter!!.notifyDataSetChanged()
+                SharedDataHelper.focusedExp = exp
+                val nextAction = MyExperimentsDirections.nextAction()
+                Navigation.findNavController(rootView).navigate(nextAction)
+                Logger.log(VerboseLevel.INFO, "$fn: called.\n clicked item no. $position , exp=$exp")
+
+            }
+
+            adapter = MyExperimentsAdapter(expList, context, itemOnClick)
+            addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
+            runLayoutAnimation(this)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

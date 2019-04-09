@@ -24,6 +24,8 @@ import com.ezaf.www.citisci.data.dao.ExperimentDao
 import com.ezaf.www.citisci.data.exp.ExpAction
 import com.ezaf.www.citisci.data.exp.ExpBasicData
 import com.ezaf.www.citisci.data.exp.Experiment
+import com.ezaf.www.citisci.data.exp.SharedDataHelper
+import com.ezaf.www.citisci.data.exp.SharedDataHelper.list
 import com.ezaf.www.citisci.utils.Interpreter
 import com.ezaf.www.citisci.utils.Logger
 import com.ezaf.www.citisci.utils.Logger.log
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         lateinit var localDbHandler: LocalDbHandler
-        var list : MutableList<Experiment> = mutableListOf()
+
     }
 
 
@@ -134,24 +136,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun getAllExpFromRemoteDb() = runBlocking {
 
+        if(SharedDataHelper.list.isEmpty()) {
 
-        RemoteDbHandler.getAllExp()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    it.enqueue(object : Callback<JsonElement> {
-                        override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
-                            ParserUtil.jsonToExpList(response.body().toString(), list)
-                            Logger.log(VerboseLevel.INFO, "got all experiments.")
-                        }
+            RemoteDbHandler.getAllExp()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        it.enqueue(object : Callback<JsonElement> {
+                            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                                ParserUtil.jsonToExpList(response.body().toString(), list)
+                                Logger.log(VerboseLevel.INFO, "got all experiments.")
+                            }
 
-                        override fun onFailure(call: Call<JsonElement>, t: Throwable) {
-                            Logger.log(VerboseLevel.INFO, "failed to get all experiments.")
-                        }
-                    })
+                            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                                Logger.log(VerboseLevel.INFO, "failed to get all experiments.")
+                            }
+                        })
+                    }
 
-
-                }
+        }
     }
 
     fun testDbInsertionAndSelection(){
