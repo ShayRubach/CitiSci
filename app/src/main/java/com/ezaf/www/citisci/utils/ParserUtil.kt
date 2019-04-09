@@ -18,6 +18,12 @@ object ParserUtil {
     val ebd = ExpBasicData(DUMMMY_ID, "", Instant.now(), false, "", "")
     val exp = Experiment(DUMMMY_ID, ebd, mutableListOf())
 
+    const val sensor = "{ST}"
+    const val time = "{TIS}"
+    const val durationTime = "{DT}"
+    const val samples = "{SM}"
+    var gpsBaseStr  = "- Capturing $sensor every $time seconds for $durationTime minutes"
+    var camBaseStr = "- Take $samples pictures of subject requested in guide"
 
     fun jsonToExpList(json: String, expList: MutableList<Experiment>) = runBlocking {
 
@@ -120,5 +126,24 @@ object ParserUtil {
         //return exact field by index:
         val field = fields[i].toString()
         return fields[i].toString().substring(field.lastIndexOf('.')+1)
+    }
+
+    fun actionParametersToText(action: ExpAction): String {
+
+        var baseStr: String
+        return when(action.sensorType){
+            SensorType.GPS -> {
+                baseStr = gpsBaseStr
+                baseStr = baseStr.replace(sensor,"GPS coordinate")
+                baseStr = baseStr.replace(time,(action.captureInterval/60).toString())
+                baseStr = baseStr.replace(durationTime, (action.duration).toString())
+                baseStr
+            }
+            SensorType.Camera -> {
+                baseStr = camBaseStr
+                baseStr .replace(samples, action.samplesRequired.toString())
+            }
+            else -> ""
+        }
     }
 }

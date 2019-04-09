@@ -12,20 +12,16 @@ import com.ezaf.www.citisci.data.exp.Experiment
 import com.ezaf.www.citisci.data.exp.SharedDataHelper
 import kotlinx.android.synthetic.main.single_experiment_details_fragment.*
 import android.graphics.Color
-import android.view.Gravity
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import com.ezaf.www.citisci.data.SensorType
-import com.ezaf.www.citisci.utils.Logger.log
-import com.ezaf.www.citisci.utils.VerboseLevel
+import com.ezaf.www.citisci.data.exp.ExpAction
 
 
 class SingleExperimentDetails : Fragment() {
 
     lateinit var exp: Experiment
-
-    companion object {
-        fun newInstance() = SingleExperimentDetails()
-    }
 
     private lateinit var viewModel: SingleExperimentDetailsViewModel
 
@@ -44,6 +40,7 @@ class SingleExperimentDetails : Fragment() {
         detExp_btnJoinExp.setOnClickListener {
             viewModel.joinExp(exp, notifyUserWithSuccess(exp.basicData.name))
         }
+        viewModel = ViewModelProviders.of(this).get(SingleExperimentDetailsViewModel::class.java)
         fillExpDetails()
         super.onViewCreated(view, savedInstanceState)
     }
@@ -63,6 +60,23 @@ class SingleExperimentDetails : Fragment() {
                 detExp_samplesRequiredText.visibility = View.INVISIBLE
                 detExp_samplesRequiredTitle.visibility = View.INVISIBLE
             }
+        }
+
+        addActionViews(exp.actions)
+    }
+
+    private fun addActionViews(actions: MutableList<ExpAction>) {
+        actions.forEach {
+
+            val actionViewRow = TextView(this@SingleExperimentDetails.context)
+            actionViewRow.run {
+                textSize = 20f
+                text = viewModel.actionParametersToText(it)
+                setPadding(50,15,25,20)
+                layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            }
+            detExp_actionsLayout.addView(actionViewRow)
+
         }
     }
 
