@@ -2,42 +2,28 @@ package com.ezaf.www.citisci.utils
 
 import com.ezaf.www.citisci.data.exp.ExpAction
 import com.ezaf.www.citisci.data.SensorType
-import com.ezaf.www.citisci.ui.MainActivity.Companion.localDbHandler
+import com.ezaf.www.citisci.data.exp.Experiment
 import com.ezaf.www.citisci.utils.Logger.log
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import com.ezaf.www.citisci.utils.VerboseLevel.*
 import io.reactivex.disposables.CompositeDisposable
 import java.time.Instant
 
 object Interpreter {
 
-//    private var tasks = mutableListOf<ScriptRunner>()
     var observablesManager =  CompositeDisposable()
 
-    fun playScripts(expId: String) {
-        var fn = Throwable().stackTrace[0].methodName
-        log(INFO, "$fn: called.")
-
-        //access the db using an async operation with Observable
-        Observable.fromCallable {
-
-        }.doOnNext{
-            localDbHandler.experimentDao().getExpById(expId).run {
-                log(INFO, "$fn: action list size = ${actions.size}.")
-                for(a in actions){
-                    playScriptFor(a, basicData.startTime)
-                }
-            }
+    fun playScriptList(expList: List<Experiment>){
+        expList.forEach {
+            if(it.basicData.automatic)
+                playScripts(it)
         }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
-
     }
 
-
+    private fun playScripts(exp: Experiment) {
+        exp.actions.forEach {
+            playScriptFor(it, exp.basicData.startTime)
+        }
+    }
 
 //    fun stopScript(expId: String) {
 //        //TODO: stopScripts() implemeted this - what happens on multiple experiments? does this thread hold the lock?
