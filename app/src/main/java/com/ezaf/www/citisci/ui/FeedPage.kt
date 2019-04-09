@@ -44,7 +44,7 @@ open class FeedPage : Fragment() {
     }
 
     @SuppressLint("CheckResult")
-    protected fun setupRecycler(rootView: View, recyclerId: Int) {
+    open fun setupRecycler(rootView: View, recyclerId: Int) {
         var fn = Throwable().stackTrace[0].methodName
 
         if(SharedDataHelper.listOfAllExp.isEmpty()) {
@@ -55,12 +55,12 @@ open class FeedPage : Fragment() {
                         it.enqueue(object : Callback<JsonElement> {
                             override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
                                 ParserUtil.jsonToExpList(response.body().toString(), SharedDataHelper.listOfAllExp)
-                                Logger.log(VerboseLevel.INFO, "got all experiments.")
+                                Logger.log(VerboseLevel.INFO, "$fn: got experiments.")
                                 setupRecyclerProperties(rootView, SharedDataHelper.listOfAllExp, recyclerId)
                             }
 
                             override fun onFailure(call: Call<JsonElement>, t: Throwable) {
-                                Logger.log(VerboseLevel.INFO, "failed to get all experiments.")
+                                Logger.log(VerboseLevel.INFO, "$fn: failed to get experiments.")
                             }
                         })
                     }
@@ -77,7 +77,7 @@ open class FeedPage : Fragment() {
         recyclerView.run {
             layoutManager = LinearLayoutManager(context)
 
-            //set click listener for item clicked in listOfAllExp
+            //set click listener for item clicked in list
             val itemOnClick: (Int, Experiment, NavDirections) -> Unit = { position, exp, nextAction ->
                 //                            this.adapter!!.notifyDataSetChanged()
                 SharedDataHelper.focusedExp = exp
