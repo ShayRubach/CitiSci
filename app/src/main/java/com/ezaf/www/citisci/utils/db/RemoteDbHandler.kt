@@ -52,7 +52,7 @@ object RemoteDbHandler
         Observable.fromCallable {
             service.run {
                 when(msgType){
-                    SEND_GPS_SAMPLE, SEND_CAM_SAMPLE, SEND_MIC_SAMPLE ->putSampleList(expId, samples)
+                    SEND_GPS_SAMPLE, SEND_CAM_SAMPLE, SEND_MIC_SAMPLE ->putSampleList(samples)
                     //SOME OTHER MSG TYPES HERE -> DO STUFF
                 }
             }
