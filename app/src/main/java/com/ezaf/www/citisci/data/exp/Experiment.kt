@@ -46,20 +46,6 @@ class Experiment (
                 }
         }
 
-        fun attachActions() {
-                var fn = Throwable().stackTrace[0].methodName
-                log(VerboseLevel.INFO,"$fn: called.\nexp_id=${this._id}")
-
-                val actionDao = localDbHandler.expActionsDao()
-                actions.clear()
-                actionDao.run {
-                        for(actionID in actionIdList){
-                                val action = getActionById(actionID)
-                                actions.add(action)
-                        }
-                }
-        }
-
         private fun publishExpId() {
                 basicData.consumeExpIdOnce(_id)
                 for(a in actions ){
