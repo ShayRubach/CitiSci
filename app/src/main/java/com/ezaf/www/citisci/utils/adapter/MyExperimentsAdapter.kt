@@ -4,13 +4,20 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.RecyclerView
 import com.ezaf.www.citisci.R
 import com.ezaf.www.citisci.data.exp.Experiment
 import com.ezaf.www.citisci.data.exp.SAMPLES_ACQUIRED_PREFIX
+import com.ezaf.www.citisci.data.exp.SharedDataHelper
 import com.ezaf.www.citisci.ui.MyExperimentsDirections
+import com.ezaf.www.citisci.utils.Logger
+import com.ezaf.www.citisci.utils.VerboseLevel
 import kotlinx.android.synthetic.main.my_experiment_row.view.*
+
+
 
 class MyExperimentsAdapter(private val items: List<Experiment>, val context: Context, private val itemClickListener: (Int, Experiment, NavDirections) -> Unit)
     : RecyclerView.Adapter<MyExperimentViewHolder>() {
@@ -48,21 +55,18 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
     override fun bind(exp: Experiment, itemClickListener: (Int, Experiment, NavDirections) -> Unit) {
 
         val samplesStatus = exp.getSamplesForDisplay()
-        var percentageCompleted = 0
-
-        if(!exp.basicData.automatic){
-            percentageCompleted = samplesStatus.first / samplesStatus.second
-        }
+        val percentageCompleted = samplesStatus.first.toDouble() / samplesStatus.second.toDouble()
 
         exp.basicData.run {
             mName.text = name
             mResearcher.text = researcher
-            mProgress.text = percentageCompleted.toString()+"%"
+            mProgress.text = (percentageCompleted * 100).toString()+"%"
             mSamplesAcquired.text = toFixedSamplesAcquiredDisplay(samplesStatus)
             setExpTypeImageResource(mType, automatic)
         }
 
-        mProgressRect.width = mView.width * percentageCompleted
+        mProgressRect.layoutParams = ConstraintLayout.LayoutParams((SharedDataHelper.screenRes.first * percentageCompleted).toInt(), ConstraintLayout.LayoutParams.WRAP_CONTENT)
+
         setSensorImageResouce(mSensors, exp.getUniqueParticipatingSensorType())
         mView.setOnClickListener { itemClickListener(adapterPosition, exp, MyExperimentsDirections.nextAction()) }
     }

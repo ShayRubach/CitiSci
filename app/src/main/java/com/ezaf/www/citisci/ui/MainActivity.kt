@@ -10,6 +10,7 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.pm.PackageManager
+import android.graphics.Point
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.app.ActivityCompat
@@ -18,40 +19,29 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.ezaf.www.citisci.R
-import com.ezaf.www.citisci.data.SensorType
 import com.ezaf.www.citisci.data.dao.ExpActionDao
 import com.ezaf.www.citisci.data.dao.ExperimentDao
-import com.ezaf.www.citisci.data.exp.ExpAction
 import com.ezaf.www.citisci.data.exp.ExpBasicData
-import com.ezaf.www.citisci.data.exp.Experiment
 import com.ezaf.www.citisci.data.exp.SharedDataHelper
-import com.ezaf.www.citisci.data.exp.SharedDataHelper.list
-import com.ezaf.www.citisci.utils.Interpreter
+import com.ezaf.www.citisci.data.exp.SharedDataHelper.listOfAllExp
 import com.ezaf.www.citisci.utils.Logger
-import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.ParserUtil
 import com.ezaf.www.citisci.utils.VerboseLevel
 import com.ezaf.www.citisci.utils.db.LocalDbHandler
 import com.ezaf.www.citisci.utils.service.LocationUpdateService
 import com.ezaf.www.citisci.utils.db.RemoteDbHandler
 import com.google.gson.JsonElement
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.Instant
-import java.util.*
-import kotlin.concurrent.schedule
 
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
         lateinit var localDbHandler: LocalDbHandler
-
     }
 
 
@@ -66,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
+        publishScreenRes()
         setSupportActionBar(toolbar)
 
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
@@ -134,9 +124,21 @@ class MainActivity : AppCompatActivity() {
                 drawer_layout)
     }
 
+
+    fun publishScreenRes() {
+        val display = getWindowManager().getDefaultDisplay()
+        val size = Point()
+        display.getSize(size)
+        val width = size.x
+        val height = size.y
+
+        SharedDataHelper.screenRes = Pair(width,height)
+
+    }
+
     private fun getAllExpFromRemoteDb() = runBlocking {
 
-        if(SharedDataHelper.list.isEmpty()) {
+        if(SharedDataHelper.listOfAllExp.isEmpty()) {
 
             RemoteDbHandler.getAllExp()
                     .subscribeOn(Schedulers.io())
@@ -144,7 +146,7 @@ class MainActivity : AppCompatActivity() {
                     .subscribe {
                         it.enqueue(object : Callback<JsonElement> {
                             override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
-                                ParserUtil.jsonToExpList(response.body().toString(), list)
+                                ParserUtil.jsonToExpList(response.body().toString(), listOfAllExp)
                                 Logger.log(VerboseLevel.INFO, "got all experiments.")
                             }
 
@@ -179,8 +181,8 @@ class MainActivity : AppCompatActivity() {
 //            var exp1 = Experiment("23sdf78sd",bdata, mutableListOf(action1._id,action2._id,action3._id))
 //            var exp2 = Experiment("9sdf87122",bdata2, mutableListOf(action4._id,action5._id))
 
-//            MainActivity.list.add(exp1)
-//            MainActivity.list.add(exp2)
+//            MainActivity.listOfAllExp.add(exp1)
+//            MainActivity.listOfAllExp.add(exp2)
 
 
         }
@@ -242,4 +244,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
 }

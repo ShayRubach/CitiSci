@@ -28,11 +28,21 @@ class ExpAction (
         var conditions: List<String>,
         var samplesCollected: Int = 0){
 
-
     @Ignore private val TIME_DIVISOR = 3600.0
     @Ignore private var lastTimeCollected = Instant.now()
     @Ignore var expId: String = ""
         private set
+
+    init {
+        fixSamplesRequiredValueForAutomaticAction()
+    }
+
+    private fun fixSamplesRequiredValueForAutomaticAction() {
+        if(duration != DURATION_IGNORABLE && captureInterval > 0){
+            samplesRequired = (duration / captureInterval).toInt()
+        }
+        log(INFO_ERR, "samplesRequired = $samplesRequired")
+    }
 
     fun updateSamplesStatus() = runBlocking {
         var fn = Throwable().stackTrace[0].methodName

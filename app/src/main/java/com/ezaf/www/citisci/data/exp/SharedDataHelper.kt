@@ -4,4 +4,5 @@ object SharedDataHelper {
     lateinit var focusedExp: Experiment
     var listOfAllExp : MutableList<Experiment> = mutableListOf()
     var listOfMyExp : MutableList<Experiment> = mutableListOf()
+    lateinit var screenRes: Pair<Int, Int>
 }

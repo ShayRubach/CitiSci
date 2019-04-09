@@ -1,10 +1,7 @@
 package com.ezaf.www.citisci.utils
 
 import com.ezaf.www.citisci.data.*
-import com.ezaf.www.citisci.data.exp.DUMMMY_ID
-import com.ezaf.www.citisci.data.exp.ExpAction
-import com.ezaf.www.citisci.data.exp.ExpBasicData
-import com.ezaf.www.citisci.data.exp.Experiment
+import com.ezaf.www.citisci.data.exp.*
 import com.ezaf.www.citisci.utils.Logger.log
 import kotlinx.coroutines.*
 import org.json.JSONArray
@@ -89,7 +86,12 @@ object ParserUtil {
                         get(fieldNameAt(ea, 8)).toString().toInt(),
                         get(fieldNameAt(ea, 1)).toString(),
                         toSensorType(get(fieldNameAt(ea, 9)).toString()),
-                        fetchConditions(jsonList.getJSONObject(i))
+                        fetchConditions(jsonList.getJSONObject(i)),
+                        try {
+                            get(fieldNameAt(ea, 7)).toString().toInt()
+                        }catch (e: Exception) {
+                            EXCEPTION_IGNORABLE
+                        }
                 ))
             }
         }
