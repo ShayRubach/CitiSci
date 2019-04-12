@@ -1,10 +1,7 @@
 package com.ezaf.www.citisci.utils.db
 
 import android.widget.Toast
-import com.ezaf.www.citisci.data.exp.ExpAction
-import com.ezaf.www.citisci.data.exp.ExpSample
-import com.ezaf.www.citisci.data.exp.Experiment
-import com.ezaf.www.citisci.data.exp.SharedDataHelper
+import com.ezaf.www.citisci.data.exp.*
 import com.ezaf.www.citisci.utils.Logger
 import com.ezaf.www.citisci.utils.ParserUtil
 import com.ezaf.www.citisci.utils.VerboseLevel
@@ -19,6 +16,7 @@ import com.ezaf.www.citisci.utils.service.HerokuService
 import com.google.gson.JsonElement
 import io.reactivex.disposables.Disposable
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.math.exp
 
 
 object RemoteDbHandler
@@ -45,25 +43,25 @@ object RemoteDbHandler
     }
 
 
-    fun sendMsg(expId: String, msgType: MsgType, samples: List<ExpSample>) {
+    fun sendMsg(expId: String, msgType: MsgType, samples: ExpSample) {
         val fn = Throwable().stackTrace[0].methodName
         Logger.log(VerboseLevel.INFO, "$fn: called.")
 
         Observable.fromCallable {
             service.run {
                 when(msgType){
-                    SEND_GPS_SAMPLE, SEND_CAM_SAMPLE, SEND_MIC_SAMPLE ->putSampleList(samples)
+                    SEND_GPS_SAMPLE, SEND_CAM_SAMPLE, SEND_MIC_SAMPLE ->putSampleList(expId, samples)
                     //SOME OTHER MSG TYPES HERE -> DO STUFF
                 }
             }
 
         }.doOnNext{
-            it.enqueue(object : Callback<List<ExpSample>> {
-                override fun onResponse(call: Call<List<ExpSample>>, response: Response<List<ExpSample>>) {
+            it.enqueue(object : Callback<ExpSample> {
+                override fun onResponse(call: Call<ExpSample>, response: Response<ExpSample>) {
                     Logger.log(VerboseLevel.INFO, "$fn: $msgType successfully sent.")
                 }
 
-                override fun onFailure(call: Call<List<ExpSample>>, t: Throwable) {
+                override fun onFailure(call: Call<ExpSample>, t: Throwable) {
                     Logger.log(VerboseLevel.INFO, "$fn: failed to send $msgType.")
                 }
             })
