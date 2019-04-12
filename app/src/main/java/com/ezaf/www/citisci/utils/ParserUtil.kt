@@ -8,6 +8,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.time.Instant
 
+const val EMPTY_JSON = "null"
 object ParserUtil {
 
     //dummy objects to be referenced as type
@@ -26,6 +27,11 @@ object ParserUtil {
 
     fun jsonToExpList(json: String, expList: MutableList<Experiment>) = runBlocking {
 
+        if(json == EMPTY_JSON){
+            Logger.log(VerboseLevel.INFO, "json is empty. doing nothing.\n")
+            return@runBlocking
+        }
+
         launch(Dispatchers.IO) {
             val j = JSONObject(json).getJSONArray("message")
             for (i in 0 until j.length()) {
@@ -41,7 +47,7 @@ object ParserUtil {
 
                 expJson.run {
                     val exp = Experiment(get(fieldNameAt(exp, 0)).toString(), bdata, actionListIds)
-                    exp.actions = actionList
+                    exp.attachActions(actionList)
                     expList.add(exp)
                 }
             }

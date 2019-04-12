@@ -23,6 +23,7 @@ class Experiment (
 ) {
         @Ignore
         var actions: MutableList<ExpAction> = mutableListOf()
+        private set
         var participating: Boolean = false
 
 
@@ -78,5 +79,10 @@ class Experiment (
                         totalSamplesCollected += it.samplesCollected
                 }
                 return Pair(totalSamplesCollected,totalSamplesRequired)
+        }
+
+        fun attachActions(list: MutableList<ExpAction>){
+                actions = list
+                publishExpId()
         }
 }
