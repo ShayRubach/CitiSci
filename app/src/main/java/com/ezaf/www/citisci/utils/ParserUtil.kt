@@ -146,7 +146,7 @@ object ParserUtil {
                 if(action.duration != DURATION_IGNORABLE){
                     baseStr = gpsBaseStrAuto
                     baseStr = baseStr.replace(sensor,"GPS coordinate")
-                    baseStr = baseStr.replace(time,(action.captureInterval/60).toString())
+                    baseStr = baseStr.replace(time,(action.captureInterval).toString())
                     baseStr = baseStr.replace(durationTime, (action.duration).toString())
                 }
                 else{

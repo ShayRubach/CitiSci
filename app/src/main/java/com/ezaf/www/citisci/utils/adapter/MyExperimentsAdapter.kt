@@ -60,7 +60,8 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
         exp.basicData.run {
             mName.text = name
             mResearcher.text = researcher
-            mProgress.text = (percentageCompleted * 100).toString()+"%"
+//            mProgress.text = (percentageCompleted * 100).toString()+"%"
+            mProgress.text = String.format("%.1f", percentageCompleted * 100)+"%"
             mSamplesAcquired.text = toFixedSamplesAcquiredDisplay(samplesStatus)
             setExpTypeImageResource(mType, automatic)
         }

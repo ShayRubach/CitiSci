@@ -21,7 +21,7 @@ import com.google.android.gms.location.*
 class LocationUpdateService : Service() {
 
     private val locationUpdateInterval: Long = 15000       // 15sec
-    private val locationUpdateFastInterval: Long = 5000  //  5sec
+    private val locationUpdateFastInterval: Long = 1000  //  5sec
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     private var locationRequest: LocationRequest? = null
     private var locationCallback: LocationCallback? = null

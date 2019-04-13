@@ -73,7 +73,7 @@ class ExpAction (
     }
 
     fun expDurationHasEnded(startTime: Instant): Boolean {
-
+        return false
         val timeNow = Instant.now()
         val diff = Duration.between(startTime, timeNow)
         return (diff.seconds / TIME_DIVISOR) > duration

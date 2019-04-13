@@ -12,11 +12,13 @@ class GpsExpCondition(private val baseCoord: Pair<Double,Double>,
     override fun isConditionMet(): Boolean {
         val fn = Throwable().stackTrace[0].methodName
 
-        return distanceBetweenCoordsInMeters(
+        val distance =  distanceBetweenCoordsInMeters(
                 LocationUpdateService.lastLocationCaptured.latitude,
                 LocationUpdateService.lastLocationCaptured.longitude,
                 baseCoord.first,
-                baseCoord.second)  < maxRadius
+                baseCoord.second)
+
+        return distance <= maxRadius
     }
 
     override fun toString(): String {

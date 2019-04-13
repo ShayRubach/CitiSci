@@ -58,12 +58,12 @@ class ScriptRunner(
         if(!conds.isEmpty() && conds.all(condCheck)){
             log(INFO,"$fn: conditions met.")
             action.run {
-                if(expDurationHasEnded(startTime) || allSamplesWereCollected()){
+                /*if(expDurationHasEnded(startTime) || allSamplesWereCollected()){
                     log(INFO,"$fn: experiment duration has ended or all samples were collected. ending experiment")
                     //TODO: endExperiment(): implement
                     //endExperiment()
-                }
-                else if(isIntervalPassedFromLastCapture()){
+                }*/
+                if(isIntervalPassedFromLastCapture()){
                     log(INFO,"$fn: calling data collector.")
                     var location = DataCollector.collect(sensorType) as Location
 
@@ -78,7 +78,9 @@ class ScriptRunner(
                 }
         }
         else{
-            log(INFO,"$fn: conditions did not met. retrying again in ${action.captureInterval} seconds")
+            log(INFO,"$fn: !conds.isEmpty() =  ${!conds.isEmpty()}")
+            log(INFO,"$fn: conds.all(condCheck) =  ${conds.all(condCheck)}")
+            log(INFO,"$fn: conditions did not meet. retrying again in ${action.captureInterval} seconds")
         }
 
     }
