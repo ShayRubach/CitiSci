@@ -17,7 +17,7 @@ import java.time.Instant
 class ExpAction (
         @TypeConverters(TypeConverterUtil::class)
         val captureInterval: Double,
-        val duration: Int,
+        var duration: Int,
         var samplesRequired: Int,
         @PrimaryKey
         @ColumnInfo(name = "_id")
@@ -34,6 +34,7 @@ class ExpAction (
         private set
 
     init {
+        duration *= 60
         fixSamplesRequiredValueForAutomaticAction()
     }
 

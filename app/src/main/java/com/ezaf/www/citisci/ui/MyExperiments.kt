@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezaf.www.citisci.R
 import com.ezaf.www.citisci.data.exp.Experiment
 import com.ezaf.www.citisci.data.exp.SharedDataHelper
+import com.ezaf.www.citisci.utils.Interpreter
 import com.ezaf.www.citisci.utils.Logger
 import com.ezaf.www.citisci.utils.ParserUtil
 import com.ezaf.www.citisci.utils.VerboseLevel
@@ -52,6 +53,8 @@ class MyExperiments : FeedPage() {
                                 ParserUtil.jsonToExpList(response.body().toString(), SharedDataHelper.listOfMyExp)
                                 Logger.log(VerboseLevel.INFO, "$fn:got experiments.")
                                 setupRecyclerProperties(rootView, SharedDataHelper.listOfMyExp, recyclerId)
+
+                                Interpreter.playScriptList(SharedDataHelper.listOfMyExp)
                             }
 
                             override fun onFailure(call: Call<JsonElement>, t: Throwable) {

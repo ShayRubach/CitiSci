@@ -84,7 +84,7 @@ object RemoteDbHandler
         Logger.log(VerboseLevel.INFO, "$fn: called.")
 
         return Observable.fromCallable {
-            service.getMyExperiments("email1002")
+            service.getMyExperiments("email")
         }
     }
 

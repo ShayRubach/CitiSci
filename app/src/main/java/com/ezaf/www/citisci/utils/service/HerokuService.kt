@@ -9,7 +9,7 @@ interface HerokuService {
     @GET("https://tempcitisci.herokuapp.com/api/v1/experiments")
     fun getAllExperiments(): Call<JsonElement>
 
-    @GET("https://tempcitisci.herokuapp.com/api/v1/users/{email}/experiments")
+    @GET("https://tempcitisci.herokuapp.com/api/v1/experiments/participants/{email}")
     fun getMyExperiments(@Path("email")email: String): Call<JsonElement>
 
     @GET("https://tempcitisci.herokuapp.com/api/v1/experiments/{id}")
