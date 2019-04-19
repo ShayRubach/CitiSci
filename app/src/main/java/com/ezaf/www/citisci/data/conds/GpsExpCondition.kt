@@ -1,6 +1,7 @@
-package com.ezaf.www.citisci.data.exp
+package com.ezaf.www.citisci.data.conds
 
 import android.location.Location
+import com.ezaf.www.citisci.data.exp.ExpCondition
 import com.ezaf.www.citisci.utils.service.LocationUpdateService
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.VerboseLevel
@@ -19,13 +20,6 @@ class GpsExpCondition(private val baseCoord: Pair<Double,Double>,
                 baseCoord.second)
 
         return distance <= maxRadius
-    }
-
-    override fun toString(): String {
-        return  baseCoord.toString().replace("(","").replace(")","").replace(" ","")+
-                "|$maxRadius" +
-                "|$id" +
-                "|$sensorType"
     }
 
     private fun distanceBetweenCoordsInMeters(lat1: Double, long1: Double, lat2: Double, long2: Double) : Double

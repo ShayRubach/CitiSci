@@ -4,7 +4,7 @@ import android.location.Location
 import com.ezaf.www.citisci.data.*
 import com.ezaf.www.citisci.data.exp.ExpAction
 import com.ezaf.www.citisci.data.exp.ExpSample
-import com.ezaf.www.citisci.data.exp.GpsExpCondition
+import com.ezaf.www.citisci.data.conds.GpsExpCondition
 import com.ezaf.www.citisci.data.exp.LatLong
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.VerboseLevel.*
