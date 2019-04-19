@@ -30,6 +30,7 @@ import com.ezaf.www.citisci.utils.VerboseLevel
 import com.ezaf.www.citisci.utils.db.LocalDbHandler
 import com.ezaf.www.citisci.utils.service.LocationUpdateService
 import com.ezaf.www.citisci.utils.db.RemoteDbHandler
+import com.ezaf.www.citisci.utils.service.LightUpdateService
 import com.google.gson.JsonElement
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
@@ -77,6 +78,8 @@ class MainActivity : AppCompatActivity() {
         if(checkPermissions()){
             requestPermissions()
         }
+
+        startForegroundService(Intent(this, LightUpdateService::class.java))
 
         //called on the permission result handler
 //        startForegroundService(Intent(this, LocationUpdateService::class.java))
