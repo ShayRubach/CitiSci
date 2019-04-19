@@ -1,8 +1,12 @@
 package com.ezaf.www.citisci.utils
 
 import com.ezaf.www.citisci.data.*
+import com.ezaf.www.citisci.data.conds.GpsExpCondition
+import com.ezaf.www.citisci.data.conds.LightExpCondition
+import com.ezaf.www.citisci.data.conds.TimeExpCondition
 import com.ezaf.www.citisci.data.exp.*
 import com.ezaf.www.citisci.utils.Logger.log
+import com.ezaf.www.citisci.utils.service.LightMode
 import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -108,11 +112,42 @@ object ParserUtil {
 
     private fun fetchConditions(jsonList: JSONObject): MutableList<String> {
         val list = getObjectsFromJsonArray(jsonList.getJSONArray("conditions"))
+//        list.add(JSONObject("{\"type\":GPS,\"latitude\":32.089974,\"longitude\":34.803078,\"maxRadius\":100}"))
+//        list.add(JSONObject("{\"type\":TEMPERATURE,\"above\":10.0,\"below\":30.0}"))
+//        list.add(JSONObject("{\"type\":LIGHT,\"mode\":1}"))
+//        list.add(JSONObject("{\"type\":TIME,\"after\":10.15,\"before\":18.30}"))
+
+//        val condsList = mutableListOf<ExpCondition>()
+
+
         val condStrList : MutableList<String> = mutableListOf()
         for(i in 0 until list.size){
+//            condsList.add(strToCondition(list[i].toString()))
+//            val strArray = list[i].toString().replace("[^0-9+.,]".toRegex(),"").replace(",","$").split("$")
             condStrList.add(list[i].toString().replace("[^0-9+.,]".toRegex(),"").replace(",","$"))
         }
+//        Logger.log(VerboseLevel.INFO, "condsList = \n$condsList\n")
         return condStrList
+    }
+
+    private fun strToCondition(condStr: String): ExpCondition {
+        val strArray = condStr.replace("[^0-9+.,]".toRegex(),"").replace(",","$").split("$")
+        condStr.run {
+            if(contains(SensorType.GPS.toString())){
+                return GpsExpCondition(Pair(strArray[1].toDouble(),strArray[2].toDouble()),strArray[3].toDouble())
+            }
+//            if(contains(SensorType.Temperature.toString())){
+//                return TemperatureExpCondition()
+//            }
+            if(contains(SensorType.Time.toString())){
+                return TimeExpCondition(strArray[1],strArray[2])
+            }
+            if(contains(SensorType.Light.toString())){
+                val mode = if (strArray[1] == LightMode.DARK.ordinal.toString()) LightMode.DARK else LightMode.BRIGHT
+                return LightExpCondition(mode)
+            }
+        }
+        return TimeExpCondition("0","0")
     }
 
 

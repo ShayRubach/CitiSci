@@ -14,4 +14,8 @@ class TimeExpCondition (private val startTime: String, private val endTime: Stri
         return (nowTime.isBefore(startTimeInstant) && nowTime.isAfter(endTimeInstant))
     }
 
+    override fun toString(): String {
+        return "start time = $startTime , endTime = $endTime"
+    }
+
 }

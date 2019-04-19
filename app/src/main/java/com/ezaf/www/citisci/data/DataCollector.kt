@@ -16,6 +16,8 @@ object DataCollector {
             SensorType.Camera-> collectGpsCoord()
             SensorType.Michrophone-> collectGpsCoord()
             SensorType.Unknown -> collectGpsCoord()
+            else -> collectGpsCoord()
+
         }
     }
 
