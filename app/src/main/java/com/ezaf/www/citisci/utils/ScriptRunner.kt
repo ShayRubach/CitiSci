@@ -5,6 +5,7 @@ import com.ezaf.www.citisci.data.*
 import com.ezaf.www.citisci.data.exp.ExpAction
 import com.ezaf.www.citisci.data.exp.ExpSample
 import com.ezaf.www.citisci.data.conds.GpsExpCondition
+import com.ezaf.www.citisci.data.exp.ExpSampleList
 import com.ezaf.www.citisci.data.exp.LatLong
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.VerboseLevel.*
@@ -67,8 +68,13 @@ class ScriptRunner(
                     log(INFO,"$fn: calling data collector.")
                     var location = DataCollector.collect(sensorType) as Location
 
-                    val samples = ExpSample(action.expId, action._id, "participant@gmail.com", LatLong(location.latitude, location.longitude))
-                    RemoteDbHandler.sendMsg(SEND_GPS_SAMPLE, samples)
+                    val sampleList = ExpSampleList()
+                    val sample = ExpSample(action.expId, action._id, "participant@gmail.com", LatLong(location.latitude, location.longitude))
+
+                    sampleList.addSample(sample)
+
+                    log(INFO,"$fn: samples=\n$sample")
+                    RemoteDbHandler.sendMsg(SEND_GPS_SAMPLE, sampleList)
                     updateSamplesStatus()
                     }
                     else {

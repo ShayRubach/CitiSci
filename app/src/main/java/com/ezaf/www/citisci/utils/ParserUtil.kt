@@ -3,6 +3,7 @@ package com.ezaf.www.citisci.utils
 import com.ezaf.www.citisci.data.*
 import com.ezaf.www.citisci.data.conds.GpsExpCondition
 import com.ezaf.www.citisci.data.conds.LightExpCondition
+import com.ezaf.www.citisci.data.conds.TemperatureExpCondition
 import com.ezaf.www.citisci.data.conds.TimeExpCondition
 import com.ezaf.www.citisci.data.exp.*
 import com.ezaf.www.citisci.utils.Logger.log
@@ -117,14 +118,14 @@ object ParserUtil {
 //        list.add(JSONObject("{\"type\":LIGHT,\"mode\":1}"))
 //        list.add(JSONObject("{\"type\":TIME,\"after\":10.15,\"before\":18.30}"))
 
-//        val condsList = mutableListOf<ExpCondition>()
+        val condsList = mutableListOf<ExpCondition>()
 
 
         val condStrList : MutableList<String> = mutableListOf()
         for(i in 0 until list.size){
-//            condsList.add(strToCondition(list[i].toString()))
+            condsList.add(strToCondition(list[i].toString()))
 //            val strArray = list[i].toString().replace("[^0-9+.,]".toRegex(),"").replace(",","$").split("$")
-            condStrList.add(list[i].toString().replace("[^0-9+.,]".toRegex(),"").replace(",","$"))
+            condStrList.add(list[i].toString().replace("[^0-9+.,]".toRegex(),"").replace(",","$").substring(1))
         }
 //        Logger.log(VerboseLevel.INFO, "condsList = \n$condsList\n")
         return condStrList
@@ -132,17 +133,22 @@ object ParserUtil {
 
     private fun strToCondition(condStr: String): ExpCondition {
         val strArray = condStr.replace("[^0-9+.,]".toRegex(),"").replace(",","$").split("$")
+        val gpsStr = SensorType.GPS.toString()
+        val timeStr = SensorType.Time.toString()
+        val lightStr = SensorType.Light.toString()
+        val tempStr = SensorType.Temperature.toString()
+
         condStr.run {
-            if(contains(SensorType.GPS.toString())){
+            if(contains(gpsStr) || contains(gpsStr.toUpperCase())){
                 return GpsExpCondition(Pair(strArray[1].toDouble(),strArray[2].toDouble()),strArray[3].toDouble())
             }
-//            if(contains(SensorType.Temperature.toString())){
-//                return TemperatureExpCondition()
-//            }
-            if(contains(SensorType.Time.toString())){
+            if(contains(tempStr) || contains(tempStr.toUpperCase())){
+                return TemperatureExpCondition(strArray[1].toDouble(),strArray[2].toDouble())
+            }
+            if(contains(timeStr) || contains(timeStr.toUpperCase())){
                 return TimeExpCondition(strArray[1],strArray[2])
             }
-            if(contains(SensorType.Light.toString())){
+            if(contains(lightStr) || contains(lightStr.toUpperCase())){
                 val mode = if (strArray[1] == LightMode.DARK.ordinal.toString()) LightMode.DARK else LightMode.BRIGHT
                 return LightExpCondition(mode)
             }

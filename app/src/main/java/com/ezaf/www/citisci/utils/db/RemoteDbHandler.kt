@@ -43,7 +43,7 @@ object RemoteDbHandler
     }
 
 
-    fun sendMsg(msgType: MsgType, samples: ExpSample) {
+    fun sendMsg(msgType: MsgType, samples: ExpSampleList) {
         val fn = Throwable().stackTrace[0].methodName
         Logger.log(VerboseLevel.INFO, "$fn: called.")
 
@@ -56,12 +56,12 @@ object RemoteDbHandler
             }
 
         }.doOnNext{
-            it.enqueue(object : Callback<List<ExpSample>> {
-                override fun onResponse(call: Call<List<ExpSample>>, response: Response<List<ExpSample>>) {
+            it.enqueue(object : Callback<ExpSampleList> {
+                override fun onResponse(call: Call<ExpSampleList>, response: Response<ExpSampleList>) {
                     Logger.log(VerboseLevel.INFO, "$fn: $msgType successfully sent.")
                 }
 
-                override fun onFailure(call: Call<List<ExpSample>>, t: Throwable) {
+                override fun onFailure(call: Call<ExpSampleList>, t: Throwable) {
                     Logger.log(VerboseLevel.INFO, "$fn: failed to send $msgType.")
                 }
             })
