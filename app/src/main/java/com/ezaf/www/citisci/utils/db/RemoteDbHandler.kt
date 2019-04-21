@@ -43,25 +43,25 @@ object RemoteDbHandler
     }
 
 
-    fun sendMsg(expId: String, msgType: MsgType, samples: ExpSample) {
+    fun sendMsg(msgType: MsgType, samples: ExpSample) {
         val fn = Throwable().stackTrace[0].methodName
         Logger.log(VerboseLevel.INFO, "$fn: called.")
 
         Observable.fromCallable {
             service.run {
                 when(msgType){
-                    SEND_GPS_SAMPLE, SEND_CAM_SAMPLE, SEND_MIC_SAMPLE ->putSampleList(expId, samples)
+                    SEND_GPS_SAMPLE, SEND_CAM_SAMPLE, SEND_MIC_SAMPLE ->putSampleList(samples)
                     //SOME OTHER MSG TYPES HERE -> DO STUFF
                 }
             }
 
         }.doOnNext{
-            it.enqueue(object : Callback<ExpSample> {
-                override fun onResponse(call: Call<ExpSample>, response: Response<ExpSample>) {
+            it.enqueue(object : Callback<List<ExpSample>> {
+                override fun onResponse(call: Call<List<ExpSample>>, response: Response<List<ExpSample>>) {
                     Logger.log(VerboseLevel.INFO, "$fn: $msgType successfully sent.")
                 }
 
-                override fun onFailure(call: Call<ExpSample>, t: Throwable) {
+                override fun onFailure(call: Call<List<ExpSample>>, t: Throwable) {
                     Logger.log(VerboseLevel.INFO, "$fn: failed to send $msgType.")
                 }
             })
@@ -84,13 +84,13 @@ object RemoteDbHandler
         Logger.log(VerboseLevel.INFO, "$fn: called.")
 
         return Observable.fromCallable {
-            service.getMyExperiments("email")
+            service.getMyExperiments("participant@gmail.com")
         }
     }
 
     fun joinExp(expId: String): Observable<Call<JsonElement>>{
         return Observable.fromCallable {
-            service.joinExp(expId, "my_email")
+            service.joinExp(expId, "participant@gmail.com")
         }
     }
 

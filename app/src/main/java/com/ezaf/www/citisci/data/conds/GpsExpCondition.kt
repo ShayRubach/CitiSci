@@ -45,7 +45,7 @@ class GpsExpCondition(private val baseCoord: Pair<Double,Double>,
 
             for(str in actionList){
                 splittedStr = str.split(delim)
-                newList.add(GpsExpCondition(Pair(splittedStr[0].toDouble(), splittedStr[1].toDouble()), splittedStr[2].toDouble()))
+                newList.add(GpsExpCondition(Pair(splittedStr[1].toDouble(), splittedStr[2].toDouble()), splittedStr[3].toDouble()))
             }
             if(newList.isEmpty()){
                 log(VerboseLevel.ERR,"$fn: empty list was generated")

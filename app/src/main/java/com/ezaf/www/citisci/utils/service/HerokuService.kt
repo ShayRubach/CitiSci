@@ -15,8 +15,8 @@ interface HerokuService {
     @GET("https://tempcitisci.herokuapp.com/api/v1/experiments/{id}")
     fun getExpById(@Path("id")id: String): Call<JsonElement>
 
-    @PUT("https://tempcitisci.herokuapp.com/api/v1/experiments/{id}/samples")
-    fun putSampleList(@Path("id")id: String, @Body body: ExpSample): Call<ExpSample>
+    @PUT("https://tempcitisci.herokuapp.com/api/v1/experiments/user/samples")
+    fun putSampleList(@Body body: ExpSample): Call<List<ExpSample>>
 
     @PUT("https://tempcitisci.herokuapp.com/api/v1/experiments/{expId}/participants/{email}")
     fun joinExp(expId: String, email: String): Call<JsonElement>

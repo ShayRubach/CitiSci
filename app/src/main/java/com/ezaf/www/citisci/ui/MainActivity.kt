@@ -68,30 +68,16 @@ class MainActivity : AppCompatActivity() {
         setupActionBar(navController)
 
 
-
-//        goToCameraBtn.setOnClickListener{
-//            startActivity(Intent(this, CameraActivity::class.java))
-//            finish()
-//        }
-
-
         if(checkPermissions()){
             requestPermissions()
         }
-
+    
         startForegroundService(Intent(this, LightUpdateService::class.java))
-
-        //called on the permission result handler
-//        startForegroundService(Intent(this, LocationUpdateService::class.java))
 
         localDbHandler = LocalDbHandler.getLocalDb(context = this)
         expDao = localDbHandler.experimentDao()
         expActionDao = localDbHandler.expActionsDao()
 //        testDbInsertionAndSelection()
-
-//        getAllExpFromRemoteDb()
-
-
     }
 
     private fun setupBottomNavMenu(navController: NavController) {
@@ -139,28 +125,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun getAllExpFromRemoteDb() = runBlocking {
-
-        if(SharedDataHelper.listOfAllExp.isEmpty()) {
-
-            RemoteDbHandler.getAllExp()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        it.enqueue(object : Callback<JsonElement> {
-                            override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
-                                ParserUtil.jsonToExpList(response.body().toString(), listOfAllExp)
-                                Logger.log(VerboseLevel.INFO, "got all experiments.")
-                            }
-
-                            override fun onFailure(call: Call<JsonElement>, t: Throwable) {
-                                Logger.log(VerboseLevel.INFO, "failed to get all experiments.")
-                            }
-                        })
-                    }
-
-        }
-    }
 
     fun testDbInsertionAndSelection(){
 
