@@ -18,7 +18,7 @@ import kotlinx.coroutines.runBlocking
 
 const val LOCAL_DB_NAME = "citizen_science_local_room_db"
 
-@Database(entities = [Experiment::class, ExpAction::class], version = 1)
+@Database(entities = [Experiment::class], version = 1)
 @TypeConverters(TypeConverterUtil::class)
 abstract class LocalDbHandler : RoomDatabase() {
     abstract fun experimentDao(): ExperimentDao
@@ -35,17 +35,17 @@ abstract class LocalDbHandler : RoomDatabase() {
         experimentDao().joinExp(exp._id)
     }
 
-    fun insertExpList(list: MutableList<Experiment>) = runBlocking {
-        launch(Dispatchers.IO){
-            list.forEach { exp ->
-                exp.actions.forEach { action ->
-                    log(VerboseLevel.INFO_ERR, " \ninserting action = $action\n")
-                    this@LocalDbHandler.expActionsDao().insertAction(action)
-                }
-                log(VerboseLevel.INFO_ERR, " \ninserting exp = $exp\n")
-                this@LocalDbHandler.experimentDao().insertExp(exp)
-            }
-        }
-    }
+//    fun insertExpList(list: MutableList<Experiment>) = runBlocking {
+//        launch(Dispatchers.IO){
+//            list.forEach { exp ->
+//                exp.actions.forEach { action ->
+//                    log(VerboseLevel.INFO_ERR, " \ninserting action = $action\n")
+//                    this@LocalDbHandler.expActionsDao().insertAction(action)
+//                }
+//                log(VerboseLevel.INFO_ERR, " \ninserting exp = $exp\n")
+//                this@LocalDbHandler.experimentDao().insertExp(exp)
+//            }
+//        }
+//    }
 
 }

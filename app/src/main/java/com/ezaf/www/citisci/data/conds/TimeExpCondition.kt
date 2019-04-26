@@ -4,18 +4,23 @@ import com.ezaf.www.citisci.data.exp.ExpBasicData.Companion.toInstant
 import com.ezaf.www.citisci.data.exp.ExpCondition
 import java.time.Instant
 
-class TimeExpCondition (private val startTime: String, private val endTime: String) : ExpCondition {
+class TimeExpCondition (private val after: String, private val before: String) : ExpCondition {
 
     override fun isConditionMet(): Boolean {
-        val startTimeInstant = toInstant(startTime)
-        val endTimeInstant = toInstant(endTime)
+
+        if(after.isNullOrEmpty() || before.isNullOrEmpty()){
+            return false
+        }
+
+        val startTimeInstant = toInstant(after)
+        val endTimeInstant = toInstant(before)
         val nowTime = Instant.now()
 
         return (nowTime.isBefore(startTimeInstant) && nowTime.isAfter(endTimeInstant))
     }
 
     override fun toString(): String {
-        return "start time = $startTime , endTime = $endTime"
+        return "after = $after , before = $before\n"
     }
 
 }

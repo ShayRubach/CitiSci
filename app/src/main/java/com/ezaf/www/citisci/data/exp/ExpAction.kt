@@ -5,32 +5,24 @@ import com.ezaf.www.citisci.data.SensorType
 import com.ezaf.www.citisci.ui.MainActivity.Companion.localDbHandler
 import com.ezaf.www.citisci.utils.VerboseLevel.*
 import com.ezaf.www.citisci.utils.Logger.log
-import com.ezaf.www.citisci.utils.TypeConverterUtil
-import com.ezaf.www.citisci.utils.VerboseLevel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.time.Duration
 import java.time.Instant
 
-@Entity
 class ExpAction (
-        @TypeConverters(TypeConverterUtil::class)
         val captureInterval: Double,
         var duration: Int,
         var samplesRequired: Int,
-        @PrimaryKey
-        @ColumnInfo(name = "_id")
         val _id: String,
-        @TypeConverters(TypeConverterUtil::class)
         val sensorType: SensorType,
-        @TypeConverters(TypeConverterUtil::class)
-        var conditions: List<String>,
+        val condsList : List<ExpCondition>,
         var samplesCollected: Int = 0){
 
-    @Ignore private val TIME_DIVISOR = 3600.0
-    @Ignore private var lastTimeCollected = Instant.now()
-    @Ignore var expId: String = ""
+    private val TIME_DIVISOR = 3600.0
+    private var lastTimeCollected = Instant.now()
+    var expId: String = ""
         private set
 
     init {
@@ -52,7 +44,7 @@ class ExpAction (
         lastTimeCollected = Instant.now()
         samplesCollected++
 
-        launch(Dispatchers.IO){(localDbHandler.expActionsDao().updateAction(this@ExpAction))}
+//        launch(Dispatchers.IO){(localDbHandler.expActionsDao().updateAction(this@ExpAction))}
     }
 
     fun allSamplesWereCollected() = samplesCollected == samplesRequired
@@ -69,7 +61,7 @@ class ExpAction (
     }
 
     override fun toString(): String {
-        return  "$captureInterval|$duration|$samplesRequired|$_id|$sensorType|$conditions|$samplesCollected"
+        return  "$captureInterval|$duration|$samplesRequired|$_id|$sensorType|$condsList|$samplesCollected"
     }
 
     fun expDurationHasEnded(startTime: Instant): Boolean {

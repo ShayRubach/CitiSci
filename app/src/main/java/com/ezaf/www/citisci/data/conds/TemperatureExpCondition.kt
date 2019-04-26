@@ -7,4 +7,8 @@ class TemperatureExpCondition(private val above: Double = 0.0, private val under
     override fun isConditionMet(): Boolean {
         return true
     }
+
+    override fun toString(): String {
+        return "above=$above, under=$under\n"
+    }
 }

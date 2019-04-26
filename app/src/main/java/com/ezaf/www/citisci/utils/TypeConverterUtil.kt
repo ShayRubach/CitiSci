@@ -90,7 +90,7 @@ class TypeConverterUtil {
                         type.samplesRequired,
                         type._id,
                         type.sensorType,
-                        type.conditions,
+                        type.condsList,
                         type.samplesCollected))
     }
 

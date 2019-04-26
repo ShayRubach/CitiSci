@@ -55,6 +55,6 @@ class GpsExpCondition(private val baseCoord: Pair<Double,Double>,
     }
 
     override fun toString(): String {
-        return "latitude= ${baseCoord.first}, longitude = ${baseCoord.second}, maxRadios = $maxRadius"
+        return "latitude= ${baseCoord.first}, longitude = ${baseCoord.second}, maxRadios = $maxRadius\n"
     }
 }

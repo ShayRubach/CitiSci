@@ -111,24 +111,14 @@ object ParserUtil {
         return actionList
     }
 
-    private fun fetchConditions(jsonList: JSONObject): MutableList<String> {
+    private fun fetchConditions(jsonList: JSONObject): List<ExpCondition> {
         val list = getObjectsFromJsonArray(jsonList.getJSONArray("conditions"))
-//        list.add(JSONObject("{\"type\":GPS,\"latitude\":32.089974,\"longitude\":34.803078,\"maxRadius\":100}"))
-//        list.add(JSONObject("{\"type\":TEMPERATURE,\"above\":10.0,\"below\":30.0}"))
-//        list.add(JSONObject("{\"type\":LIGHT,\"mode\":1}"))
-//        list.add(JSONObject("{\"type\":TIME,\"after\":10.15,\"before\":18.30}"))
-
         val condsList = mutableListOf<ExpCondition>()
-
-
-        val condStrList : MutableList<String> = mutableListOf()
         for(i in 0 until list.size){
             condsList.add(strToCondition(list[i].toString()))
-//            val strArray = list[i].toString().replace("[^0-9+.,]".toRegex(),"").replace(",","$").split("$")
-            condStrList.add(list[i].toString().replace("[^0-9+.,]".toRegex(),"").replace(",","$").substring(1))
         }
-//        Logger.log(VerboseLevel.INFO, "condsList = \n$condsList\n")
-        return condStrList
+        Logger.log(VerboseLevel.INFO, "condsList=$condsList.\n")
+        return condsList
     }
 
     private fun strToCondition(condStr: String): ExpCondition {

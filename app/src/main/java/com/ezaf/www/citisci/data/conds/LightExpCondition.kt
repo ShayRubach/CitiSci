@@ -11,6 +11,6 @@ class LightExpCondition(private val mode: LightMode) : ExpCondition {
     }
 
     override fun toString(): String {
-        return "mode = ${mode.ordinal+1}"
+        return "mode = ${mode.ordinal+1}\n"
     }
 }
