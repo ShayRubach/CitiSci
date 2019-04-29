@@ -8,4 +8,5 @@ object SharedDataHelper {
     var listOfMyExp : MutableList<Experiment> = mutableListOf()
     lateinit var screenRes: Pair<Int, Int>
     var lightMode = LightMode.BRIGHT
+    var magneticFieldValues = floatArrayOf()
 }

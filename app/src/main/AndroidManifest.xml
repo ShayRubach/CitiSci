@@ -27,6 +27,10 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
         <service
+            android:name=".utils.service.MagneticFieldUpdateService"
+            android:enabled="true"
+            android:exported="true"></service>
+        <service
             android:name=".utils.service.LightUpdateService"
             android:enabled="true"
             android:exported="true" />

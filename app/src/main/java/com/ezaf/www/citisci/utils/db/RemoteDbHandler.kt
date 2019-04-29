@@ -24,7 +24,8 @@ object RemoteDbHandler
     enum class MsgType {
         SEND_GPS_SAMPLE,
         SEND_CAM_SAMPLE,
-        SEND_MIC_SAMPLE
+        SEND_MIC_SAMPLE,
+        SEND_MAGNETIC_FIELD_SAMPLE
     }
 
 
@@ -50,7 +51,7 @@ object RemoteDbHandler
         Observable.fromCallable {
             service.run {
                 when(msgType){
-                    SEND_GPS_SAMPLE, SEND_CAM_SAMPLE, SEND_MIC_SAMPLE ->putSampleList(samples)
+                    SEND_GPS_SAMPLE, SEND_CAM_SAMPLE, SEND_MIC_SAMPLE, SEND_MAGNETIC_FIELD_SAMPLE ->putSampleList(samples)
                     //SOME OTHER MSG TYPES HERE -> DO STUFF
                 }
             }

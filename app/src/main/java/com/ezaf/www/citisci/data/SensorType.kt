@@ -7,6 +7,7 @@ enum class SensorType {
     Temperature,
     Light,
     Time,
+    MagneticField,
     Unknown
 }
 
@@ -18,6 +19,7 @@ fun toSensorType(str:String): SensorType {
         SensorType.Temperature.toString(), "TEMPERATURE" -> SensorType.Temperature
         SensorType.Time.toString(), "TIME" -> SensorType.Time
         SensorType.Light.toString(), "LIGHT" -> SensorType.Light
+        SensorType.MagneticField.toString(), "MAGNETIC_FIELD" -> SensorType.Light
         else -> SensorType.Unknown
     }
 }

@@ -1,10 +1,7 @@
 package com.ezaf.www.citisci.utils
 
 import com.ezaf.www.citisci.data.*
-import com.ezaf.www.citisci.data.conds.GpsExpCondition
-import com.ezaf.www.citisci.data.conds.LightExpCondition
-import com.ezaf.www.citisci.data.conds.TemperatureExpCondition
-import com.ezaf.www.citisci.data.conds.TimeExpCondition
+import com.ezaf.www.citisci.data.conds.*
 import com.ezaf.www.citisci.data.exp.*
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.service.LightMode
@@ -123,27 +120,34 @@ object ParserUtil {
 
     private fun strToCondition(condStr: String): ExpCondition {
         val strArray = condStr.replace("[^0-9+.,]".toRegex(),"").replace(",","$").split("$")
-        val gpsStr = SensorType.GPS.toString()
-        val timeStr = SensorType.Time.toString()
-        val lightStr = SensorType.Light.toString()
-        val tempStr = SensorType.Temperature.toString()
 
         condStr.run {
-            if(contains(gpsStr) || contains(gpsStr.toUpperCase())){
+            if(isOfType(SensorType.GPS.toString(),this)){
                 return GpsExpCondition(Pair(strArray[1].toDouble(),strArray[2].toDouble()),strArray[3].toDouble())
             }
-            if(contains(tempStr) || contains(tempStr.toUpperCase())){
+            if(isOfType(SensorType.Temperature.toString(),this)){
                 return TemperatureExpCondition(strArray[1].toDouble(),strArray[2].toDouble())
             }
-            if(contains(timeStr) || contains(timeStr.toUpperCase())){
+            if(isOfType(SensorType.Time.toString(),this)){
                 return TimeExpCondition(strArray[1],strArray[2])
             }
-            if(contains(lightStr) || contains(lightStr.toUpperCase())){
+            if(isOfType(SensorType.Light.toString(),this)){
                 val mode = if (strArray[1] == LightMode.DARK.ordinal.toString()) LightMode.DARK else LightMode.BRIGHT
                 return LightExpCondition(mode)
             }
+            if(isOfType(SensorType.MagneticField.toString(),this)){
+                return MagneticFieldExpCondition(
+                        strArray[1].toFloat(), strArray[2].toFloat(), strArray[3].toFloat(),
+                        strArray[4].toFloat(), strArray[5].toFloat(), strArray[6].toFloat()
+                )
+            }
+
         }
-        return TimeExpCondition("0","0")
+        return TimeExpCondition("0","24")
+    }
+
+    private fun isOfType(sensorType: String, str: String): Boolean {
+        return str.contains(sensorType) || str.contains(sensorType.toUpperCase())
     }
 
 

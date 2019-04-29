@@ -31,6 +31,7 @@ import com.ezaf.www.citisci.utils.db.LocalDbHandler
 import com.ezaf.www.citisci.utils.service.LocationUpdateService
 import com.ezaf.www.citisci.utils.db.RemoteDbHandler
 import com.ezaf.www.citisci.utils.service.LightUpdateService
+import com.ezaf.www.citisci.utils.service.MagneticFieldUpdateService
 import com.google.gson.JsonElement
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
@@ -73,6 +74,7 @@ class MainActivity : AppCompatActivity() {
         }
     
         startForegroundService(Intent(this, LightUpdateService::class.java))
+        startForegroundService(Intent(this, MagneticFieldUpdateService::class.java))
 
         localDbHandler = LocalDbHandler.getLocalDb(context = this)
         expDao = localDbHandler.experimentDao()
