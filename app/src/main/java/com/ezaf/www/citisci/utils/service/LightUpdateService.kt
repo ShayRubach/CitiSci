@@ -48,8 +48,7 @@ class LightUpdateService : Service(), SensorEventListener {
 
         val sensorData = event.values[0]
 
-
-        if(sensorData in 0.0..1.0 || sensorData in 8.0..9.0 ){
+        if(sensorData in 8.0..9.0 ){
             SharedDataHelper.lightMode = LightMode.DARK
             Logger.log(VerboseLevel.LOCATION, "$fn: dark mode")
         }
