@@ -7,19 +7,33 @@ enum class SensorType {
     Temperature,
     Light,
     Time,
-    MagneticField,
+    MAGNETIC_FIELD,
     Unknown
 }
 
 fun toSensorType(str:String): SensorType {
     return when(str){
-        SensorType.GPS.toString(), "GPS" -> SensorType.GPS
-        SensorType.Michrophone.toString(), "MICROPHONE" -> SensorType.Michrophone
-        SensorType.Camera.toString(), "CAMERA" -> SensorType.Camera
-        SensorType.Temperature.toString(), "TEMPERATURE" -> SensorType.Temperature
-        SensorType.Time.toString(), "TIME" -> SensorType.Time
-        SensorType.Light.toString(), "LIGHT" -> SensorType.Light
-        SensorType.MagneticField.toString(), "MAGNETIC_FIELD" -> SensorType.Light
+        SensorType.GPS.toString(),
+        SensorType.GPS.toString().toUpperCase() -> SensorType.GPS
+
+        SensorType.Michrophone.toString(),
+        SensorType.Michrophone.toString().toUpperCase() -> SensorType.Michrophone
+
+        SensorType.Camera.toString(),
+        SensorType.Camera.toString().toUpperCase() -> SensorType.Camera
+
+        SensorType.Temperature.toString(),
+        SensorType.Temperature.toString().toUpperCase() -> SensorType.Temperature
+
+        SensorType.Time.toString(),
+        SensorType.Time.toString().toUpperCase() -> SensorType.Time
+
+        SensorType.Light.toString(),
+        SensorType.Light.toString().toUpperCase() -> SensorType.Light
+
+        SensorType.MAGNETIC_FIELD.toString(),
+        SensorType.MAGNETIC_FIELD.toString().toUpperCase() -> SensorType.MAGNETIC_FIELD
+
         else -> SensorType.Unknown
     }
 }

@@ -2,7 +2,6 @@ package com.ezaf.www.citisci.utils
 
 import android.location.Location
 import com.ezaf.www.citisci.data.*
-import com.ezaf.www.citisci.data.conds.GpsExpCondition
 import com.ezaf.www.citisci.data.exp.*
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.VerboseLevel.*
@@ -38,7 +37,7 @@ class ScriptRunner(
                 )
 
             }
-            SensorType.MagneticField -> {
+            SensorType.MAGNETIC_FIELD -> {
                 Interpreter.observablesManager.add(
                         Observable.interval(action.captureInterval.toLong(), TimeUnit.SECONDS)
                                 .timeInterval()

@@ -16,7 +16,7 @@ object DataCollector {
             SensorType.GPS-> collectGpsCoord()
             SensorType.Camera-> collectGpsCoord()
             SensorType.Michrophone-> collectGpsCoord()
-            SensorType.MagneticField-> collectMagneticField()
+            SensorType.MAGNETIC_FIELD-> collectMagneticField()
             SensorType.Unknown -> collectGpsCoord()
             else -> collectGpsCoord()
 

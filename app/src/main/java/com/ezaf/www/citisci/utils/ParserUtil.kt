@@ -3,7 +3,6 @@ package com.ezaf.www.citisci.utils
 import com.ezaf.www.citisci.data.*
 import com.ezaf.www.citisci.data.conds.*
 import com.ezaf.www.citisci.data.exp.*
-import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.service.LightMode
 import kotlinx.coroutines.*
 import org.json.JSONArray
@@ -111,6 +110,7 @@ object ParserUtil {
     private fun fetchConditions(jsonList: JSONObject): List<ExpCondition> {
         val list = getObjectsFromJsonArray(jsonList.getJSONArray("conditions"))
         val condsList = mutableListOf<ExpCondition>()
+
         for(i in 0 until list.size){
             condsList.add(strToCondition(list[i].toString()))
         }
@@ -135,7 +135,7 @@ object ParserUtil {
                 val mode = if (strArray[1] == LightMode.DARK.ordinal.toString()) LightMode.DARK else LightMode.BRIGHT
                 return LightExpCondition(mode)
             }
-            if(isOfType(SensorType.MagneticField.toString(),this)){
+            if(isOfType(SensorType.MAGNETIC_FIELD.toString(),this)){
                 return MagneticFieldExpCondition(
                         strArray[1].toFloat(), strArray[2].toFloat(), strArray[3].toFloat(),
                         strArray[4].toFloat(), strArray[5].toFloat(), strArray[6].toFloat()
@@ -144,6 +144,7 @@ object ParserUtil {
 
         }
         return TimeExpCondition("0","24")
+
     }
 
     private fun isOfType(sensorType: String, str: String): Boolean {
