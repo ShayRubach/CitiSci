@@ -51,7 +51,8 @@ object RemoteDbHandler
         Observable.fromCallable {
             service.run {
                 when(msgType){
-                    SEND_GPS_SAMPLE, SEND_CAM_SAMPLE, SEND_MIC_SAMPLE, SEND_MAGNETIC_FIELD_SAMPLE ->putSampleList(samples)
+                    SEND_GPS_SAMPLE, SEND_MIC_SAMPLE, SEND_MAGNETIC_FIELD_SAMPLE ->putSampleList(samples, EncodingType.REGULAR.toString())
+                    SEND_CAM_SAMPLE -> putSampleList(samples, EncodingType.BASE64.toString())
                     //SOME OTHER MSG TYPES HERE -> DO STUFF
                 }
             }
@@ -89,10 +90,12 @@ object RemoteDbHandler
         }
     }
 
-    fun joinExp(expId: String): Observable<Call<JsonElement>>{
+    fun joinExp(expId: String): Observable<Call<JoinExpRequest>>{
         return Observable.fromCallable {
-            service.joinExp(expId, "participant@gmail.com")
+            service.joinExp(JoinExpRequest(expId),"participant@gmail.com")
         }
     }
 
 }
+
+class JoinExpRequest(private val id: String)
