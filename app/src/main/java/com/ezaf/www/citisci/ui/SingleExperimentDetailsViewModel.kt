@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.ezaf.www.citisci.data.exp.ExpAction
 import com.ezaf.www.citisci.data.exp.Experiment
 import com.ezaf.www.citisci.utils.ParserUtil
+import com.ezaf.www.citisci.utils.db.JoinExpRequest
 import com.ezaf.www.citisci.utils.db.RemoteDbHandler
 import com.google.gson.JsonElement
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,12 +22,12 @@ class SingleExperimentDetailsViewModel : ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe {
-                    it.enqueue(object : Callback<JsonElement> {
-                        override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
+                    it.enqueue(object : Callback<JoinExpRequest> {
+                        override fun onResponse(call: Call<JoinExpRequest>, response: Response<JoinExpRequest>) {
                             notifyUserWithSuccessJoin
                         }
 
-                        override fun onFailure(call: Call<JsonElement>, t: Throwable) {
+                        override fun onFailure(call: Call<JoinExpRequest>, t: Throwable) {
 
                         }
                     })
