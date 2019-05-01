@@ -47,11 +47,11 @@
                     app:srcCompat="@drawable/ic_sensor_cam" />
 
                 <ImageView
-                    android:id="@+id/detExp_sensorMic"
+                    android:id="@+id/detExp_sensorMagneticField"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_sensor_mic" />
+                    app:srcCompat="@drawable/ic_sensor_magnetic_field" />
 
                 <ImageView
                     android:id="@+id/detExp_sensorGps"

@@ -110,6 +110,7 @@ open class FeedPageViewHolder (view: View) : RecyclerView.ViewHolder(view) {
             SensorType.GPS-> R.drawable.ic_sensor_gps
             SensorType.Camera-> R.drawable.ic_sensor_cam
             SensorType.Michrophone-> R.drawable.ic_sensor_mic
+            SensorType.MAGNETIC_FIELD-> R.drawable.ic_sensor_magnetic_field
             SensorType.Unknown -> R.drawable.abc_btn_radio_material
             else -> R.drawable.abc_btn_radio_material
         }

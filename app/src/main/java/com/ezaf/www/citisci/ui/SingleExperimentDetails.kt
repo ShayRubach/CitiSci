@@ -88,8 +88,8 @@ class SingleExperimentDetails : Fragment() {
     }
 
     private fun greyOutSensors(greyColor: Int, sensors: MutableSet<SensorType>) {
-        if(!sensors.contains(SensorType.Michrophone))
-            detExp_sensorMic.setColorFilter(greyColor)
+        if(!sensors.contains(SensorType.MAGNETIC_FIELD))
+            detExp_sensorMagneticField.setColorFilter(greyColor)
         if(!sensors.contains(SensorType.Camera))
             detExp_sensorCam.setColorFilter(greyColor)
         if(!sensors.contains(SensorType.GPS))
