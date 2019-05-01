@@ -1,9 +1,7 @@
 package com.ezaf.www.citisci.utils.db
 
-import android.widget.Toast
 import com.ezaf.www.citisci.data.exp.*
 import com.ezaf.www.citisci.utils.Logger
-import com.ezaf.www.citisci.utils.ParserUtil
 import com.ezaf.www.citisci.utils.VerboseLevel
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -14,9 +12,8 @@ import retrofit2.Response
 import com.ezaf.www.citisci.utils.db.RemoteDbHandler.MsgType.*
 import com.ezaf.www.citisci.utils.service.HerokuService
 import com.google.gson.JsonElement
-import io.reactivex.disposables.Disposable
 import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.math.exp
+import com.ezaf.www.citisci.data.exp.EncodingType.*
 
 
 object RemoteDbHandler
@@ -51,8 +48,8 @@ object RemoteDbHandler
         Observable.fromCallable {
             service.run {
                 when(msgType){
-                    SEND_GPS_SAMPLE, SEND_MIC_SAMPLE, SEND_MAGNETIC_FIELD_SAMPLE ->putSampleList(samples, EncodingType.REGULAR.toString())
-                    SEND_CAM_SAMPLE -> putSampleList(samples, EncodingType.BASE64.toString())
+                    SEND_GPS_SAMPLE, SEND_MIC_SAMPLE, SEND_MAGNETIC_FIELD_SAMPLE ->putSampleList(samples, REGULAR.toString())
+                    SEND_CAM_SAMPLE -> putSampleList(samples, BASE64.toString())
                     //SOME OTHER MSG TYPES HERE -> DO STUFF
                 }
             }
