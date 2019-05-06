@@ -32,10 +32,13 @@ object Interpreter {
 //    }
 //
     private fun playScriptFor(action: ExpAction, startTime: Instant) {
-        var fn = Throwable().stackTrace[0].methodName
-        log(INFO_ERR, "$fn: called.")
+    var fn = Throwable().stackTrace[0].methodName
+    log(INFO_ERR, "$fn: called.")
 
-        when(action.sensorType){
+    ScriptRunner(action, startTime).playScript()
+
+    /*
+    when(action.sensorType){
             SensorType.GPS -> {
                 //add new task to the list and run the script
 //                tasks.add(ScriptRunner(action, condList.filter { it is GpsExpCondition } as MutableList<GpsExpCondition>, startTime))
@@ -47,6 +50,8 @@ object Interpreter {
             SensorType.Unknown -> return
         }
     }
+*/
+
 //
 //    fun stopAllScripts() {
 //        //TODO: playScripts() implemeted this - what happens on multiple experiments? does this thread hold the lock?
@@ -58,4 +63,5 @@ object Interpreter {
 //
 //    }
 
+    }
 }

@@ -25,6 +25,10 @@ object ParserUtil {
     var gpsBaseStrAuto  = "- Capturing $sensor every $time seconds for $durationTime minutes"
     var gpsBaseStrManual  = "- Capture $samples $sensor at the requested locations in guide"
     var camBaseStr = "- Take $samples pictures of subject requested in guide"
+    var magneticBaseStr = "- Measuring $sensor around the device every $time seconds for $durationTime minutes"
+    var magneticBaseStrManuel = "- Measure the magnetic field around the device $samples times at the requested locations and time in guide"
+
+
 
     fun jsonToExpList(json: String, expList: MutableList<Experiment>) = runBlocking {
 
@@ -88,6 +92,7 @@ object ParserUtil {
 
         for(i in 0 until jsonList.length()){
             val json = jsonList.getJSONObject(i)
+            Logger.log(VerboseLevel.INFO, "json=$json.\n")
             json.run {
                 actionList.add(ExpAction(
                         get(fieldNameAt(ea, 2)).toString().toDouble(),
@@ -189,6 +194,20 @@ object ParserUtil {
                     baseStr = gpsBaseStrManual
                     baseStr = baseStr.replace(samples, action.samplesRequired.toString())
                     baseStr = baseStr.replace(sensor, "GPS coordinates")
+                }
+                baseStr
+            }
+            SensorType.MAGNETIC_FIELD -> {
+                if(action.duration != DURATION_IGNORABLE){
+                    baseStr = magneticBaseStr
+                    baseStr = baseStr.replace(sensor,"magnetic field")
+                    baseStr = baseStr.replace(time,(action.captureInterval).toString())
+                    baseStr = baseStr.replace(durationTime, (action.duration).toString())
+                }
+                else{
+                    baseStr = magneticBaseStrManuel
+                    baseStr = baseStr.replace(samples, action.samplesRequired.toString())
+                    baseStr = baseStr.replace(sensor, "magnetic field")
                 }
                 baseStr
             }

@@ -11,6 +11,9 @@ import com.ezaf.www.citisci.utils.db.RemoteDbHandler.MsgType.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.time.Instant
 import java.util.concurrent.TimeUnit
 
@@ -49,9 +52,7 @@ class ScriptRunner(
                 )
             }
 
-            SensorType.Camera -> return
-            SensorType.Michrophone -> return
-            SensorType.Unknown -> return
+            else -> return
         }
     }
 
@@ -81,20 +82,30 @@ class ScriptRunner(
                     )
                     sampleList.addSample(sample)
 
-                    log(INFO,"$fn: samples=\n$sample")
-                    RemoteDbHandler.sendMsg(SEND_MAGNETIC_FIELD_SAMPLE, sampleList)
-                    updateSamplesStatus()
+                    val mf = sample.sample as MagneticFields
+
+                    log(INFO,"$fn: mf =\n${mf.x},${mf.y},${mf.z} ")
+                    RemoteDbHandler.sendMsg(SEND_MAGNETIC_FIELD_SAMPLE, sampleList).
+                            doOnNext{
+                                it.enqueue(object : Callback<ExpSampleList> {
+                                    override fun onResponse(call: Call<ExpSampleList>, response: Response<ExpSampleList>) {
+                                        Logger.log(VerboseLevel.INFO, "$fn: SEND_MAGNETIC_FIELD_SAMPLE successfully sent.")
+                                        updateSamplesStatus()
+                                    }
+
+                                    override fun onFailure(call: Call<ExpSampleList>, t: Throwable) {
+                                        Logger.log(VerboseLevel.INFO, "$fn: failed to send SEND_MAGNETIC_FIELD_SAMPLE.")
+                                    }
+                                })
+                            }
+                            .subscribeOn(Schedulers.io())
+                            .subscribe()
                 }
                 else {
                     log(INFO,"$fn: interval halt time yet not over. retrying again in ${action.captureInterval} seconds")
                 }
 
             }
-        }
-        else{
-            log(INFO,"$fn: !conds.isEmpty() =  ${!action.condsList.isEmpty()}")
-            log(INFO,"$fn: conds.all(condCheck) =  ${action.condsList.all(condCheck)}")
-            log(INFO,"$fn: conditions did not meet. retrying again in ${action.captureInterval} seconds")
         }
     }
 
@@ -124,29 +135,27 @@ class ScriptRunner(
                     sampleList.addSample(sample)
 
                     log(INFO,"$fn: samples=\n$sample")
-                    RemoteDbHandler.sendMsg(SEND_GPS_SAMPLE, sampleList)
-                    updateSamplesStatus()
-                    }
-                    else {
-                        log(INFO,"$fn: interval halt time yet not over. retrying again in ${action.captureInterval} seconds")
-                    }
+                    RemoteDbHandler.sendMsg(SEND_GPS_SAMPLE, sampleList).
+                            doOnNext{
+                                it.enqueue(object : Callback<ExpSampleList> {
+                                    override fun onResponse(call: Call<ExpSampleList>, response: Response<ExpSampleList>) {
+                                        Logger.log(VerboseLevel.INFO, "$fn: SEND_GPS_SAMPLE successfully sent.")
+                                        updateSamplesStatus()
+                                    }
 
+                                    override fun onFailure(call: Call<ExpSampleList>, t: Throwable) {
+                                        Logger.log(VerboseLevel.INFO, "$fn: failed to send SEND_GPS_SAMPLE.")
+                                    }
+                                })
+                            }
+                            .subscribeOn(Schedulers.io())
+                            .subscribe()
                 }
+                else {
+                    log(INFO,"$fn: interval halt time yet not over. retrying again in ${action.captureInterval} seconds")
+                }
+            }
         }
-        else{
-            log(INFO,"$fn: !conds.isEmpty() =  ${!action.condsList.isEmpty()}")
-            log(INFO,"$fn: conds.all(condCheck) =  ${action.condsList.all(condCheck)}")
-            log(INFO,"$fn: conditions did not meet. retrying again in ${action.captureInterval} seconds")
-        }
-
     }
-//
-//    private fun playCameraScript(){
-//        var fn = Throwable().stackTrace[0].methodName
-//        log(INFO_ERR, "$fn: called.")
-//    }
-//    private fun playMicScript(){
-//        var fn = Throwable().stackTrace[0].methodName
-//        log(INFO_ERR, "$fn: called.")
-//    }
+
 }

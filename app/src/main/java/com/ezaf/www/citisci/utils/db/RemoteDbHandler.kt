@@ -41,11 +41,8 @@ object RemoteDbHandler
     }
 
 
-    fun sendMsg(msgType: MsgType, samples: ExpSampleList) {
-        val fn = Throwable().stackTrace[0].methodName
-        Logger.log(VerboseLevel.INFO, "$fn: called.")
-
-        Observable.fromCallable {
+    fun sendMsg(msgType: MsgType, samples: ExpSampleList): Observable<Call<ExpSampleList>> {
+        return Observable.fromCallable {
             service.run {
                 when(msgType){
                     SEND_GPS_SAMPLE, SEND_MIC_SAMPLE, SEND_MAGNETIC_FIELD_SAMPLE ->putSampleList(samples, REGULAR.toString())
@@ -54,19 +51,7 @@ object RemoteDbHandler
                 }
             }
 
-        }.doOnNext{
-            it.enqueue(object : Callback<ExpSampleList> {
-                override fun onResponse(call: Call<ExpSampleList>, response: Response<ExpSampleList>) {
-                    Logger.log(VerboseLevel.INFO, "$fn: $msgType successfully sent.")
-                }
-
-                override fun onFailure(call: Call<ExpSampleList>, t: Throwable) {
-                    Logger.log(VerboseLevel.INFO, "$fn: failed to send $msgType.")
-                }
-            })
         }
-                .subscribeOn(Schedulers.io())
-                .subscribe()
     }
 
     fun getAllExp() : Observable<Call<JsonElement>> {
