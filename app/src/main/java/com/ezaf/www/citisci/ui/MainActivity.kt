@@ -116,8 +116,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun publishScreenRes() {
-        val display = getWindowManager().getDefaultDisplay()
+    private fun publishScreenRes() {
+        val display = windowManager.defaultDisplay
         val size = Point()
         display.getSize(size)
         val width = size.x
