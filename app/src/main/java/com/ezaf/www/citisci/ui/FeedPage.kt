@@ -16,6 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import androidx.recyclerview.widget.DividerItemDecoration
 import android.view.animation.AnimationUtils
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.ezaf.www.citisci.data.exp.Experiment
@@ -40,6 +41,7 @@ open class FeedPage : Fragment() {
 
         val rootView = inflater.inflate(R.layout.feed_page_fragment, container, false)
         setupRecycler(rootView, R.id.feedPageRecyclerView)
+        (activity as AppCompatActivity).supportActionBar?.title = ""
         return rootView
     }
 

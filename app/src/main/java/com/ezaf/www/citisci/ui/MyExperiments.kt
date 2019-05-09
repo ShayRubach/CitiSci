@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.RecyclerView
 import com.ezaf.www.citisci.R
@@ -35,6 +36,7 @@ class MyExperiments : FeedPage() {
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.my_experiments_fragment, container, false)
         setupRecycler(rootView, R.id.MyExperimentsRecyclerView)
+        (activity as AppCompatActivity).supportActionBar?.title = ""
         return rootView
     }
 
