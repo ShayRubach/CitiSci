@@ -17,6 +17,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.ezaf.www.citisci.data.SensorType
 import com.ezaf.www.citisci.data.exp.ExpAction
+import com.ezaf.www.citisci.utils.viewmodel.SingleExperimentDetailsViewModel
 
 
 class SingleExperimentDetails : Fragment() {
