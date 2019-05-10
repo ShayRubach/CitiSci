@@ -1,13 +1,8 @@
 package com.ezaf.www.citisci.data.exp
 
-import androidx.room.*
 import com.ezaf.www.citisci.data.SensorType
-import com.ezaf.www.citisci.ui.MainActivity.Companion.localDbHandler
 import com.ezaf.www.citisci.utils.VerboseLevel.*
 import com.ezaf.www.citisci.utils.Logger.log
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.time.Duration
 import java.time.Instant
 
@@ -37,14 +32,13 @@ class ExpAction (
         log(INFO_ERR, "samplesRequired = $samplesRequired")
     }
 
-    fun updateSamplesStatus() = runBlocking {
+    fun updateSamplesStatus() {
         var fn = Throwable().stackTrace[0].methodName
         log(INFO_ERR, "$fn: called.")
 
         lastTimeCollected = Instant.now()
         samplesCollected++
 
-//        launch(Dispatchers.IO){(localDbHandler.expActionsDao().updateAction(this@ExpAction))}
     }
 
     fun allSamplesWereCollected() = samplesCollected == samplesRequired
