@@ -3,6 +3,7 @@ package com.ezaf.www.citisci.utils.viewmodel
 import androidx.lifecycle.ViewModel
 import com.ezaf.www.citisci.data.exp.ExpAction
 import com.ezaf.www.citisci.data.exp.Experiment
+import com.ezaf.www.citisci.data.exp.SharedDataHelper
 import com.ezaf.www.citisci.utils.ParserUtil
 import com.ezaf.www.citisci.utils.db.JoinExpRequest
 import com.ezaf.www.citisci.utils.db.RemoteDbHandler
@@ -25,6 +26,7 @@ class SingleExperimentDetailsViewModel : ViewModel() {
                     it.enqueue(object : Callback<JoinExpRequest> {
                         override fun onResponse(call: Call<JoinExpRequest>, response: Response<JoinExpRequest>) {
                             notifyUserWithSuccessJoin
+                            SharedDataHelper.listOfMyExp.clear()
                         }
 
                         override fun onFailure(call: Call<JoinExpRequest>, t: Throwable) {
