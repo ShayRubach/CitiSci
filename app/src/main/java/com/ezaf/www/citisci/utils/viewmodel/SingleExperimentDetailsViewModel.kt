@@ -40,4 +40,11 @@ class SingleExperimentDetailsViewModel : ViewModel() {
         return ParserUtil.actionParametersToText(action)
     }
 
+    fun isUserParticipatingInThisExp(id: String): Boolean {
+        SharedDataHelper.listOfMyExp.forEach {
+            if(it._id == id) return true
+        }
+        return false
+    }
+
 }

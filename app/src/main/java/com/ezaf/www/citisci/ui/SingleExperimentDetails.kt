@@ -12,11 +12,15 @@ import com.ezaf.www.citisci.data.exp.Experiment
 import com.ezaf.www.citisci.data.exp.SharedDataHelper
 import kotlinx.android.synthetic.main.single_experiment_details_fragment.*
 import android.graphics.Color
+import android.opengl.Visibility
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.ezaf.www.citisci.data.SensorType
 import com.ezaf.www.citisci.data.exp.ExpAction
+import com.ezaf.www.citisci.data.exp.ExpCondition
+import com.ezaf.www.citisci.utils.Logger
+import com.ezaf.www.citisci.utils.VerboseLevel
 import com.ezaf.www.citisci.utils.viewmodel.SingleExperimentDetailsViewModel
 
 
@@ -45,6 +49,19 @@ class SingleExperimentDetails : Fragment() {
 
     private fun fillExpDetails() {
         val greyColor= (Color.argb(220, 200, 200, 200))
+        val participating = isUserParticipatingInThisExp(exp._id)
+
+        if(participating){
+            detExp_btnJoinExp.visibility = View.INVISIBLE
+
+            val condCheck: (ExpCondition) -> Boolean = { it.isConditionMet() }
+            if(!exp.actions[0].condsList.all(condCheck) && !exp.basicData.automatic){
+                detExp_captureBtn.isClickable = false
+                detExp_captureBtn.text = "Unavailable"
+                detExp_condNotification.visibility = View.VISIBLE
+            }
+        }
+
 
         exp.basicData.run {
             detExp_expName.text = name
@@ -57,10 +74,22 @@ class SingleExperimentDetails : Fragment() {
             if(automatic){
                 detExp_samplesRequiredText.visibility = View.INVISIBLE
                 detExp_samplesRequiredTitle.visibility = View.INVISIBLE
+                detExp_captureBtn.visibility = View.INVISIBLE
+
             }
+            else {
+                if(!participating){
+                    detExp_captureBtn.visibility = View.INVISIBLE
+                }
+            }
+
         }
 
         addActionViews(exp.actions)
+    }
+
+    private fun isUserParticipatingInThisExp(id: String): Boolean {
+        return viewModel.isUserParticipatingInThisExp(id)
     }
 
     private fun addActionViews(actions: MutableList<ExpAction>) {

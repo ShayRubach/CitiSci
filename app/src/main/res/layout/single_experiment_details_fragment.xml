@@ -12,6 +12,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+
+
         <LinearLayout
             android:id="@+id/detExp_linearLayout"
             android:layout_width="match_parent"
@@ -30,6 +32,22 @@
                 android:textColor="@color/black"
                 android:textSize="40sp"
                 android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/detExp_captureBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Collect New Sample"
+                android:textSize="26sp" />
+
+            <TextView
+                android:id="@+id/detExp_condNotification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="One or more of the required conditions do not meet!"
+                android:textAlignment="center"
+                android:textColor="@color/design_default_color_error"
+                android:visibility="invisible" />
 
             <LinearLayout
                 android:id="@+id/detExp_sensorsLinearLayout"
@@ -165,14 +183,17 @@
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
+
             <LinearLayout
                 android:id="@+id/detExp_actionsLayout"
-                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:paddingBottom="100dp">
 
             </LinearLayout>
+
+
 
         </LinearLayout>
 
