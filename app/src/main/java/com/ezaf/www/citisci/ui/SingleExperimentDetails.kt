@@ -150,10 +150,6 @@ class SingleExperimentDetails : Fragment() {
         }
     }
 
-    private fun displayCaptureScreen(type: SensorType) {
-
-    }
-
     private fun startCameraActivity() {
         activity?.let {
             val intent = Intent (it, CameraActivity::class.java)
