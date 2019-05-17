@@ -64,11 +64,11 @@ class ScriptRunner(
         if(!action.condsList.isEmpty() && action.condsList.all(condCheck)){
             log(INFO,"$fn: conditions met.")
             action.run {
-                /*if(expDurationHasEnded(startTime) || allSamplesWereCollected()){
+                if(allSamplesWereCollected()){
                     log(INFO,"$fn: experiment duration has ended or all samples were collected. ending experiment")
                     //TODO: endExperiment(): implement
                     //endExperiment()
-                }*/
+                }
                 if(isIntervalPassedFromLastCapture()){
                     log(INFO,"$fn: calling data collector.")
                     var magneticFieldValues = DataCollector.collect(sensorType) as FloatArray
@@ -120,11 +120,11 @@ class ScriptRunner(
         if(!action.condsList.isEmpty() && action.condsList.all(condCheck)){
             log(INFO,"$fn: conditions met.")
             action.run {
-                /*if(expDurationHasEnded(startTime) || allSamplesWereCollected()){
+                if(allSamplesWereCollected()){
                     log(INFO,"$fn: experiment duration has ended or all samples were collected. ending experiment")
                     //TODO: endExperiment(): implement
                     //endExperiment()
-                }*/
+                }
                 if(isIntervalPassedFromLastCapture()){
                     log(INFO,"$fn: calling data collector.")
                     var location = DataCollector.collect(sensorType) as Location
