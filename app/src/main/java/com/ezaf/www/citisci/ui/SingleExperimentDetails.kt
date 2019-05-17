@@ -1,5 +1,6 @@
 package com.ezaf.www.citisci.ui
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -41,6 +42,9 @@ class SingleExperimentDetails : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         detExp_btnJoinExp.setOnClickListener {
             viewModel.joinExp(exp, notifyUserWithSuccessJoin(exp.basicData.name))
+        }
+        detExp_captureBtn.setOnClickListener {
+            moveToCaptureScreen()
         }
         viewModel = ViewModelProviders.of(this).get(SingleExperimentDetailsViewModel::class.java)
         fillExpDetails()
@@ -135,6 +139,24 @@ class SingleExperimentDetails : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SingleExperimentDetailsViewModel::class.java)
         // TODO: Use the ViewModel
+    }
+
+    private fun moveToCaptureScreen() {
+        if(exp.actions[0].sensorType == SensorType.Camera) {
+            startCameraActivity()
+        }
+        else {
+
+        }
+    }
+
+    private fun startCameraActivity() {
+        activity?.let {
+            val intent = Intent (it, CameraActivity::class.java)
+            it.startActivity(intent)
+
+
+        }
     }
 
 }
