@@ -13,15 +13,13 @@ import com.ezaf.www.citisci.data.exp.Experiment
 import com.ezaf.www.citisci.data.exp.SharedDataHelper
 import kotlinx.android.synthetic.main.single_experiment_details_fragment.*
 import android.graphics.Color
-import android.opengl.Visibility
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.navigation.Navigation
 import com.ezaf.www.citisci.data.SensorType
 import com.ezaf.www.citisci.data.exp.ExpAction
 import com.ezaf.www.citisci.data.exp.ExpCondition
-import com.ezaf.www.citisci.utils.Logger
-import com.ezaf.www.citisci.utils.VerboseLevel
 import com.ezaf.www.citisci.utils.viewmodel.SingleExperimentDetailsViewModel
 
 
@@ -44,7 +42,7 @@ class SingleExperimentDetails : Fragment() {
             viewModel.joinExp(exp, notifyUserWithSuccessJoin(exp.basicData.name))
         }
         detExp_captureBtn.setOnClickListener {
-            moveToCaptureScreen()
+            moveToCaptureScreen(it)
         }
         viewModel = ViewModelProviders.of(this).get(SingleExperimentDetailsViewModel::class.java)
         fillExpDetails()
@@ -141,21 +139,25 @@ class SingleExperimentDetails : Fragment() {
         // TODO: Use the ViewModel
     }
 
-    private fun moveToCaptureScreen() {
-        if(exp.actions[0].sensorType == SensorType.Camera) {
-            startCameraActivity()
+    private fun moveToCaptureScreen(it: View) {
+        val type = exp.actions[0].sensorType
+        when(type) {
+            SensorType.Camera-> startCameraActivity()
+            else -> {
+                val nextAction = SingleExperimentDetailsDirections.nextAction()
+                Navigation.findNavController(it).navigate(nextAction)
+            }
         }
-        else {
+    }
 
-        }
+    private fun displayCaptureScreen(type: SensorType) {
+
     }
 
     private fun startCameraActivity() {
         activity?.let {
             val intent = Intent (it, CameraActivity::class.java)
             it.startActivity(intent)
-
-
         }
     }
 

@@ -19,7 +19,17 @@
         android:id="@+id/destination_detailed_experiment"
         android:name="com.ezaf.www.citisci.ui.SingleExperimentDetails"
         android:label="single_experiment_details_fragment"
-        tools:layout="@layout/single_experiment_details_fragment"/>
+        tools:layout="@layout/single_experiment_details_fragment" >
+        <action
+            android:id="@+id/next_action"
+            app:destination="@id/destination_manual_capturing" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/destination_manual_capturing"
+        android:name="com.ezaf.www.citisci.ui.ManualCapturing"
+        android:label="manual_capturing_fragment"
+        tools:layout="@layout/manual_capturing_fragment"/>
 
     <fragment
         android:id="@+id/destination_my_experiments"
