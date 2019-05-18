@@ -10,5 +10,7 @@
     <string name="samples_acquired">Samples Acquired: 0/0</string>
     <string name="lorem_ipsum_exp_description">"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy.." </string>
     <string name="exp_researcher">Rick James</string>
+    <string name="identifier_msg_gps">Your current location:</string>
+    <string name="identifier_msg_magnetic">Magnetic field around you:</string>
 
 </resources>
