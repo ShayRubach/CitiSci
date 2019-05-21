@@ -66,9 +66,10 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
             setExpTypeImageResource(mType, automatic)
         }
 
+        mLayout.setBackgroundColor(Color.argb(250,255,203,57))
+
         val condCheck: (ExpCondition) -> Boolean = { it.isConditionMet() }
         if(!exp.actions[0].condsList.all(condCheck)){
-            mLayout.setBackgroundColor(Color.argb(250,255,203,57))
             mProgressRect.visibility = View.INVISIBLE
         }
         else {
