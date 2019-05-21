@@ -66,7 +66,7 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
             setExpTypeImageResource(mType, automatic)
         }
 
-        mLayout.setBackgroundColor(Color.argb(250,255,203,57))
+        mLayout.setBackgroundColor(Color.argb(200,255,203,57))
 
         val condCheck: (ExpCondition) -> Boolean = { it.isConditionMet() }
         if(!exp.actions[0].condsList.all(condCheck)){
@@ -76,6 +76,10 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
             mLayout.setBackgroundColor(Color.rgb(255,255,255))
             mProgressRect.visibility = View.VISIBLE
             mProgressRect.layoutParams = ConstraintLayout.LayoutParams((SharedDataHelper.screenRes.first * percentageCompleted).toInt(), ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        }
+
+        if(exp.actions[0].allSamplesWereCollected()){
+            mLayout.setBackgroundColor(Color.argb(150,178,255,204))
         }
 
         setSensorImageResouce(mSensors, exp.getUniqueParticipatingSensorType())

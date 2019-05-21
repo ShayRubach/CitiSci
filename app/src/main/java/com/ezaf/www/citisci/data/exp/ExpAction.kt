@@ -41,7 +41,7 @@ class ExpAction (
 
     }
 
-    fun allSamplesWereCollected() = samplesCollected == samplesRequired
+    fun allSamplesWereCollected() = samplesCollected >= samplesRequired
 
     fun consumeExpIdOnce(id: String) { expId = id }
 
