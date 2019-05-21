@@ -54,7 +54,7 @@ class SingleExperimentDetails : Fragment() {
             detExp_btnJoinExp.visibility = View.INVISIBLE
 
             val condCheck: (ExpCondition) -> Boolean = { it.isConditionMet() }
-            if(!exp.actions[0].condsList.all(condCheck) && !exp.basicData.automatic){
+            if(!exp.actions[0].condsList.all(condCheck)){
                 detExp_captureBtn.isClickable = false
                 detExp_captureBtn.text = UNAVAILABLE
                 detExp_condNotification.visibility = View.VISIBLE
