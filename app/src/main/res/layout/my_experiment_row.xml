@@ -161,6 +161,20 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="0dp" />
 
+        <ImageView
+            android:id="@+id/myExp_notifImage"
+            android:layout_width="143dp"
+            android:layout_height="116dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/myExp_expName"
+            app:layout_constraintEnd_toEndOf="@+id/myExp_samplesAcquired"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/myExp_expName"
+            app:srcCompat="@drawable/ic_completed_verbose" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

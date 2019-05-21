@@ -40,6 +40,7 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
 
     private val mSamplesAcquired = view.myExp_samplesAcquired
     private val mProgressRect = view.myExp_progressRect
+    private val mNotifImage = view.myExp_notifImage
     override val mView = view
     override val mLayout = view.myExp_layout
     override val mName = view.myExp_expName
@@ -66,20 +67,25 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
             setExpTypeImageResource(mType, automatic)
         }
 
-        mLayout.setBackgroundColor(Color.argb(200,255,203,57))
+        mLayout.setBackgroundColor(Color.rgb(255,255,255))
+        mNotifImage.visibility = View.INVISIBLE
 
         val condCheck: (ExpCondition) -> Boolean = { it.isConditionMet() }
         if(!exp.actions[0].condsList.all(condCheck)){
+            mLayout.setBackgroundColor(Color.argb(100,255,203,57))
+            mNotifImage.setImageResource(R.drawable.ic_warning)
+            mNotifImage.visibility = View.VISIBLE
             mProgressRect.visibility = View.INVISIBLE
         }
         else {
-            mLayout.setBackgroundColor(Color.rgb(255,255,255))
             mProgressRect.visibility = View.VISIBLE
             mProgressRect.layoutParams = ConstraintLayout.LayoutParams((SharedDataHelper.screenRes.first * percentageCompleted).toInt(), ConstraintLayout.LayoutParams.WRAP_CONTENT)
         }
 
         if(exp.actions[0].allSamplesWereCollected()){
             mLayout.setBackgroundColor(Color.argb(150,178,255,204))
+            mNotifImage.setImageResource(R.drawable.ic_completed_verbose)
+            mNotifImage.visibility = View.VISIBLE
         }
 
         setSensorImageResouce(mSensors, exp.getUniqueParticipatingSensorType())
