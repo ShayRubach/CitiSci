@@ -11,9 +11,10 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:orientation="vertical"
+        android:id="@+id/myExp_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/myExp_progressRect"
@@ -87,14 +88,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="@+id/myExp_expName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:paddingEnd="5dp"
-            android:paddingStart="5dp"
             app:layout_constraintVertical_bias="1.0"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
             app:srcCompat="@android:drawable/ic_menu_camera" />
 
         <ImageView
@@ -102,14 +103,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="@+id/myExp_expName"
             app:layout_constraintEnd_toStartOf="@+id/myExp_sensorType1"
             app:layout_constraintTop_toTopOf="parent"
-            android:paddingEnd="5dp"
-            android:paddingStart="5dp"
             app:layout_constraintVertical_bias="1.0"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
             app:srcCompat="@android:drawable/ic_menu_camera" />
 
         <ImageView
@@ -117,14 +118,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="@+id/myExp_expName"
             app:layout_constraintEnd_toStartOf="@+id/myExp_sensorType2"
             app:layout_constraintTop_toTopOf="parent"
-            android:paddingEnd="5dp"
-            android:paddingStart="5dp"
             app:layout_constraintVertical_bias="1.0"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
             app:srcCompat="@android:drawable/ic_menu_camera" />
 
         <ImageView

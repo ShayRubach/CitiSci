@@ -13,7 +13,6 @@
         android:orientation="vertical">
 
 
-
         <LinearLayout
             android:id="@+id/detExp_linearLayout"
             android:layout_width="match_parent"
@@ -192,7 +191,6 @@
                 android:paddingBottom="100dp">
 
             </LinearLayout>
-
 
 
         </LinearLayout>

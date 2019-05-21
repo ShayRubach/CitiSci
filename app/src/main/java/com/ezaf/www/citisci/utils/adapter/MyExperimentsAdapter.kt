@@ -1,6 +1,8 @@
 package com.ezaf.www.citisci.utils.adapter
 
 import android.content.Context
+import android.graphics.Color
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,14 +11,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.RecyclerView
 import com.ezaf.www.citisci.R
-import com.ezaf.www.citisci.data.exp.Experiment
-import com.ezaf.www.citisci.data.exp.SAMPLES_ACQUIRED_PREFIX
-import com.ezaf.www.citisci.data.exp.SharedDataHelper
+import com.ezaf.www.citisci.data.exp.*
 import com.ezaf.www.citisci.ui.MyExperimentsDirections
 import com.ezaf.www.citisci.utils.Logger
 import com.ezaf.www.citisci.utils.VerboseLevel
 import kotlinx.android.synthetic.main.my_experiment_row.view.*
-
+import kotlinx.android.synthetic.main.single_experiment_details_fragment.*
 
 
 class MyExperimentsAdapter(private val items: List<Experiment>, val context: Context, private val itemClickListener: (Int, Experiment, NavDirections) -> Unit)
@@ -41,6 +41,7 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
     private val mSamplesAcquired = view.myExp_samplesAcquired
     private val mProgressRect = view.myExp_progressRect
     override val mView = view
+    override val mLayout = view.myExp_layout
     override val mName = view.myExp_expName
     override val mResearcher = view.myExp_previewResearcherName
     override val mProgress = view.myExp_expProgress
@@ -65,7 +66,16 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
             setExpTypeImageResource(mType, automatic)
         }
 
-        mProgressRect.layoutParams = ConstraintLayout.LayoutParams((SharedDataHelper.screenRes.first * percentageCompleted).toInt(), ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        val condCheck: (ExpCondition) -> Boolean = { it.isConditionMet() }
+        if(!exp.actions[0].condsList.all(condCheck)){
+            mLayout.setBackgroundColor(Color.argb(250,255,203,57))
+            mProgressRect.visibility = View.INVISIBLE
+        }
+        else {
+            mLayout.setBackgroundColor(Color.rgb(255,255,255))
+            mProgressRect.visibility = View.VISIBLE
+            mProgressRect.layoutParams = ConstraintLayout.LayoutParams((SharedDataHelper.screenRes.first * percentageCompleted).toInt(), ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        }
 
         setSensorImageResouce(mSensors, exp.getUniqueParticipatingSensorType())
         mView.setOnClickListener { itemClickListener(adapterPosition, exp, MyExperimentsDirections.nextAction()) }

@@ -39,6 +39,7 @@ class FeedPageAdapter(protected val items: List<Experiment>, val context: Contex
 open class FeedPageViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
     open val mView = view
+    open val mLayout = view.allExp_layout
     open val mName = view.allExp_expName
     open val mResearcher = view.allExp_previewResearcherName
     open val mDescription = view.allExp_previewExpDescription
