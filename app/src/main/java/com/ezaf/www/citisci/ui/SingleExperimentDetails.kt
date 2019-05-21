@@ -14,6 +14,7 @@ import android.graphics.Color
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.Navigation
 import com.ezaf.www.citisci.data.SensorType
 import com.ezaf.www.citisci.data.exp.*
@@ -35,12 +36,9 @@ class SingleExperimentDetails : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        detExp_btnJoinExp.setOnClickListener {
-            viewModel.joinExp(exp, notifyUserWithSuccessJoin(exp.basicData.name))
-        }
-        detExp_captureBtn.setOnClickListener {
-            moveToCaptureScreen(it)
-        }
+        detExp_btnJoinExp.setOnClickListener { viewModel.joinExp(exp, notifyUserWithSuccessJoin(exp.basicData.name)) }
+        detExp_captureBtn.setOnClickListener { moveToCaptureScreen(it) }
+        detExp_tvBtnAbandonExp.setOnClickListener { promptAbandonDialog(it) }
         viewModel = ViewModelProviders.of(this).get(SingleExperimentDetailsViewModel::class.java)
         fillExpDetails()
         super.onViewCreated(view, savedInstanceState)
@@ -50,8 +48,10 @@ class SingleExperimentDetails : Fragment() {
         val greyColor= (Color.argb(220, 200, 200, 200))
         val participating = isUserParticipatingInThisExp(exp._id)
 
+
         if(participating){
             detExp_btnJoinExp.visibility = View.INVISIBLE
+            detExp_tvBtnAbandonExp.visibility = View.VISIBLE
 
             val condCheck: (ExpCondition) -> Boolean = { it.isConditionMet() }
             if(!exp.actions[0].condsList.all(condCheck)){
@@ -152,6 +152,28 @@ class SingleExperimentDetails : Fragment() {
             val intent = Intent (it, CameraActivity::class.java)
             it.startActivity(intent)
         }
+    }
+
+    private fun promptAbandonDialog(v: View){
+        val builder = AlertDialog.Builder(context!!)
+        builder.setTitle("Warning")
+        builder.setMessage(ABANDON_DIALOG_MSG_PROMPT)
+        //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
+
+        builder.setNegativeButton(ABANDON_DIALOG_MSG_NO) { dialog, which ->
+            //do something
+        }
+
+        builder.setPositiveButton(ABANDON_DIALOG_MSG_YES) { dialog, which ->
+            Toast.makeText(this.context,
+                    "Experiment abandoned!", Toast.LENGTH_SHORT).show()
+        }
+
+//        builder.setNeutralButton("Maybe") { dialog, which ->
+//            Toast.makeText(this.context,
+//                    "Maybe", Toast.LENGTH_SHORT).show()
+//        }
+        builder.show()
     }
 
 }

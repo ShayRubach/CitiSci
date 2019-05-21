@@ -7,5 +7,7 @@
     <color name="expRowBottomColor">#CCE6FF</color>
     <color name="progressColor">#8D49B849</color>
     <color name="black">#000000</color>
+    <color name="abandonBtn">#AF0000</color>
+
 
 </resources>
