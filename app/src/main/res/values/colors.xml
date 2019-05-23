@@ -8,6 +8,8 @@
     <color name="progressColor">#8D49B849</color>
     <color name="black">#000000</color>
     <color name="abandonBtn">#AF0000</color>
+    <color name="appToolbar">#424242</color>
+
 
 
 </resources>
