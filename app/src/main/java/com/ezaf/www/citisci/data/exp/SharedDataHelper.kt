@@ -9,4 +9,5 @@ object SharedDataHelper {
     lateinit var screenRes: Pair<Int, Int>
     var lightMode = LightMode.BRIGHT
     var magneticFieldValues = floatArrayOf()
+    var fromFeedPageCtx = true
 }

@@ -49,6 +49,9 @@ open class FeedPage : Fragment() {
     open fun setupRecycler(rootView: View, recyclerId: Int) {
         var fn = Throwable().stackTrace[0].methodName
 
+        //context called is FeedPage:
+        SharedDataHelper.fromFeedPageCtx = true
+
         if(SharedDataHelper.listOfAllExp.isEmpty()) {
             RemoteDbHandler.getAllExp()
                     .subscribeOn(Schedulers.io())

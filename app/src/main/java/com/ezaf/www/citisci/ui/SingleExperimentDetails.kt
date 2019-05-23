@@ -48,7 +48,6 @@ class SingleExperimentDetails : Fragment() {
         val greyColor= (Color.argb(220, 200, 200, 200))
         val participating = isUserParticipatingInThisExp(exp._id)
 
-
         if(participating){
             detExp_btnJoinExp.visibility = View.INVISIBLE
             detExp_tvBtnAbandonExp.visibility = View.VISIBLE
@@ -66,15 +65,13 @@ class SingleExperimentDetails : Fragment() {
             detExp_expName.text = name
             detExp_descriptionText.text = description
             detExp_guideText.text = guide
+            detExp_samplesRequiredText.text = getSamplesStatusString()
 
             greyOutSensors(greyColor, exp.getUniqueParticipatingSensorType())
             greyOutExpType(greyColor, automatic)
 
             if(automatic){
-                detExp_samplesRequiredText.visibility = View.INVISIBLE
-                detExp_samplesRequiredTitle.visibility = View.INVISIBLE
                 detExp_captureBtn.visibility = View.INVISIBLE
-
             }
             else {
                 if(!participating){
@@ -85,6 +82,16 @@ class SingleExperimentDetails : Fragment() {
         }
 
         addActionViews(exp.actions)
+    }
+
+    private fun getSamplesStatusString(): String {
+        val delim = "/"
+        val collected = exp.getSamplesForDisplay().first.toString()
+        val total = exp.getSamplesForDisplay().second.toString()
+        return if(!SharedDataHelper.fromFeedPageCtx)
+            collected + delim + total
+        else
+            total
     }
 
     private fun isUserParticipatingInThisExp(id: String): Boolean {

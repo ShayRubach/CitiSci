@@ -45,6 +45,9 @@ class MyExperiments : FeedPage() {
     override fun setupRecycler(rootView: View, recyclerId: Int) {
         var fn = Throwable().stackTrace[0].methodName
 
+        //context called is MyExperiment, not FeedPage:
+        SharedDataHelper.fromFeedPageCtx = false
+
         if(SharedDataHelper.listOfMyExp.isEmpty()) {
             RemoteDbHandler.getMyExp()
                     .subscribeOn(Schedulers.io())
