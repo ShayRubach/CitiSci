@@ -167,13 +167,13 @@
 
         <ImageView
             android:id="@+id/myExp_notifImage"
-            android:layout_width="143dp"
-            android:layout_height="116dp"
+            android:layout_width="71dp"
+            android:layout_height="62dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:visibility="invisible"
             android:fontFamily="@font/roboto"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/myExp_expName"
             app:layout_constraintEnd_toEndOf="@+id/myExp_samplesAcquired"
             app:layout_constraintStart_toStartOf="parent"
