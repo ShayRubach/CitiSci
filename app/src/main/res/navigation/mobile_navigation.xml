@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/destination_feed_page"
         android:name="com.ezaf.www.citisci.ui.FeedPage"
-        android:label="feed_page_fragment"
+        android:label=""
         tools:layout="@layout/feed_page_fragment">
         <action
             android:id="@+id/next_action"
@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/destination_detailed_experiment"
         android:name="com.ezaf.www.citisci.ui.SingleExperimentDetails"
-        android:label="single_experiment_details_fragment"
+        android:label=""
         tools:layout="@layout/single_experiment_details_fragment" >
         <action
             android:id="@+id/next_action"
@@ -28,13 +28,13 @@
     <fragment
         android:id="@+id/destination_manual_capturing"
         android:name="com.ezaf.www.citisci.ui.ManualCapturing"
-        android:label="manual_capturing_fragment"
+        android:label=""
         tools:layout="@layout/manual_capturing_fragment"/>
 
     <fragment
         android:id="@+id/destination_my_experiments"
         android:name="com.ezaf.www.citisci.ui.MyExperiments"
-        android:label="my_experiments_fragment"
+        android:label=""
         tools:layout="@layout/my_experiments_fragment" >
         <action
             android:id="@+id/next_action"

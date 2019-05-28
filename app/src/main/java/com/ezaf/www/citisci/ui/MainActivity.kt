@@ -13,6 +13,7 @@ import android.content.pm.PackageManager
 import android.graphics.Point
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
@@ -62,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 
         publishScreenRes()
         setSupportActionBar(toolbar)
+        hideStatusBar()
 
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 
@@ -81,6 +83,14 @@ class MainActivity : AppCompatActivity() {
         expDao = localDbHandler.experimentDao()
         expActionDao = localDbHandler.expActionsDao()
 //        testDbInsertionAndSelection()
+    }
+
+    private fun hideStatusBar() {
+        // Hide the status bar.
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        // Remember that you should never show the action bar if the
+        // status bar is hidden, so hide that too if necessary.
+        actionBar?.hide()
     }
 
     private fun setupBottomNavMenu(navController: NavController) {
