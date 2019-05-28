@@ -65,6 +65,7 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
             mProgress.text = String.format("%.1f", percentageCompleted * 100)+"%"
             mSamplesAcquired.text = toFixedSamplesAcquiredDisplay(samplesStatus)
             setExpTypeImageResource(mType, automatic)
+            mProgress.visibility = View.VISIBLE
         }
 
         mLayout.setBackgroundColor(Color.rgb(255,255,255))
@@ -76,6 +77,7 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
             mNotifImage.setImageResource(R.drawable.ic_warning)
             mNotifImage.visibility = View.VISIBLE
             mProgressRect.visibility = View.INVISIBLE
+            mProgress.visibility = View.INVISIBLE
         }
         else {
             mProgressRect.visibility = View.VISIBLE
@@ -85,8 +87,9 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
         if(exp.actions[0].allSamplesWereCollected()){
             mLayout.setBackgroundColor(Color.argb(85,178,255,204))
             mNotifImage.setImageResource(R.drawable.ic_completed_verbose)
-            mProgressRect.visibility = View.INVISIBLE
             mNotifImage.visibility = View.VISIBLE
+            mProgressRect.visibility = View.INVISIBLE
+            mProgress.visibility = View.INVISIBLE
         }
 
         setSensorImageResouce(mSensors, exp.getUniqueParticipatingSensorType())

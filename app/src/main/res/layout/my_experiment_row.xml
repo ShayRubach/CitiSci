@@ -91,6 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:adjustViewBounds="true"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
@@ -106,6 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
             android:adjustViewBounds="true"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
@@ -144,7 +146,7 @@
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="@+id/myExp_expName"
             app:layout_constraintEnd_toStartOf="@+id/myExp_sensorType2"
-            app:layout_constraintHorizontal_bias="0.959"
+            app:layout_constraintHorizontal_bias="0.965"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
@@ -167,8 +169,8 @@
 
         <ImageView
             android:id="@+id/myExp_notifImage"
-            android:layout_width="71dp"
-            android:layout_height="62dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -176,8 +178,10 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/myExp_expName"
             app:layout_constraintEnd_toEndOf="@+id/myExp_samplesAcquired"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/myExp_expName"
+            app:layout_constraintVertical_bias="0.054"
             app:srcCompat="@drawable/ic_completed_verbose" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
