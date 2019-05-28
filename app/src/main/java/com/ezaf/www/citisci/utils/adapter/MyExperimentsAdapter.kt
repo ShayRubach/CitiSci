@@ -72,7 +72,7 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
 
         val condCheck: (ExpCondition) -> Boolean = { it.isConditionMet() }
         if(!exp.actions[0].condsList.all(condCheck)){
-            mLayout.setBackgroundColor(Color.argb(100,255,203,57))
+            mLayout.setBackgroundColor(Color.argb(40,255,203,57))
             mNotifImage.setImageResource(R.drawable.ic_warning)
             mNotifImage.visibility = View.VISIBLE
             mProgressRect.visibility = View.INVISIBLE
@@ -83,8 +83,9 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
         }
 
         if(exp.actions[0].allSamplesWereCollected()){
-            mLayout.setBackgroundColor(Color.argb(150,178,255,204))
+            mLayout.setBackgroundColor(Color.argb(85,178,255,204))
             mNotifImage.setImageResource(R.drawable.ic_completed_verbose)
+            mProgressRect.visibility = View.INVISIBLE
             mNotifImage.visibility = View.VISIBLE
         }
 
