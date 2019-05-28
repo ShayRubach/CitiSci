@@ -14,6 +14,7 @@ import android.graphics.Point
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         setupBottomNavMenu(navController)
         setupSideNavigationMenu(navController)
         setupActionBar(navController)
-
+        setMainHomeBtnListener()
 
         if(checkPermissions()){
             requestPermissions()
@@ -83,6 +84,10 @@ class MainActivity : AppCompatActivity() {
         expDao = localDbHandler.experimentDao()
         expActionDao = localDbHandler.expActionsDao()
 //        testDbInsertionAndSelection()
+    }
+
+    private fun setMainHomeBtnListener() {
+        mainHomeBtn.setOnClickListener {}
     }
 
     private fun hideStatusBar() {
