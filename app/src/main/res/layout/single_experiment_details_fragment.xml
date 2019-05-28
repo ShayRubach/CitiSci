@@ -30,7 +30,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="40sp"
-                android:textStyle="bold" />
+                android:textStyle="normal" />
 
             <Button
                 android:id="@+id/detExp_captureBtn"
