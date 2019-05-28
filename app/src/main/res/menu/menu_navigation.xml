@@ -10,6 +10,6 @@
         android:id="@+id/destination_my_experiments"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:fontFamily="@font/roboto"
-        android:title="Experiments" />
+        android:title="My Experiments" />
 
 </menu>
