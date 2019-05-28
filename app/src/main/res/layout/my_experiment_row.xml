@@ -21,6 +21,7 @@
             android:layout_width="12dp"
             android:layout_height="wrap_content"
             android:background="@color/progressColor"
+            android:fontFamily="@font/roboto"
             app:layout_constraintStart_toStartOf="@+id/myExp_samplesAcquired"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,6 +34,7 @@
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="30sp"
+            android:fontFamily="@font/roboto"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="0dp" />
 
@@ -43,9 +45,9 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/exp_percentage_completed"
-
             android:textAlignment="center"
             android:textSize="15sp"
+            android:fontFamily="@font/roboto"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,6 +64,7 @@
             android:textAlignment="textStart"
             android:textColor="#000000"
             android:textSize="15sp"
+            android:fontFamily="@font/roboto"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -157,6 +160,7 @@
             android:text="@{viewModel.samplesAcquired}"
             android:textAlignment="center"
             android:textSize="25sp"
+            android:fontFamily="@font/roboto"
             app:layout_constraintBottom_toBottomOf="@+id/myExp_expName"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="0dp" />
@@ -169,6 +173,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:visibility="invisible"
+            android:fontFamily="@font/roboto"
             app:layout_constraintBottom_toBottomOf="@+id/myExp_expName"
             app:layout_constraintEnd_toEndOf="@+id/myExp_samplesAcquired"
             app:layout_constraintStart_toStartOf="parent"

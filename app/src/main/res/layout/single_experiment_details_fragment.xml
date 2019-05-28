@@ -37,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Collect New Sample"
+                android:fontFamily="@font/roboto"
                 android:textSize="26sp" />
 
             <TextView
@@ -45,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:text="One or more of the required conditions do not meet!"
                 android:textAlignment="center"
+                android:fontFamily="@font/roboto"
                 android:textColor="@color/design_default_color_error"
                 android:visibility="invisible" />
 
@@ -116,6 +118,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="30sp"
+                android:fontFamily="@font/roboto"
                 android:textStyle="bold" />
 
             <TextView
@@ -124,6 +127,7 @@
                 android:layout_height="wrap_content"
                 android:hint="0/100"
                 android:textAlignment="center"
+                android:fontFamily="@font/roboto"
                 android:textSize="30sp" />
 
             <TextView
@@ -135,6 +139,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="30sp"
+                android:fontFamily="@font/roboto"
                 android:textStyle="bold" />
 
             <TextView
@@ -145,6 +150,7 @@
                 android:paddingTop="15sp"
                 android:textAlignment="center"
                 android:textSize="20sp"
+                android:fontFamily="@font/roboto"
                 android:textStyle="italic" />
 
             <TextView
@@ -156,6 +162,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="30sp"
+                android:fontFamily="@font/roboto"
                 android:textStyle="bold" />
 
             <TextView
@@ -169,6 +176,7 @@
                 android:paddingBottom="10dp"
                 android:textAlignment="textStart"
                 android:textSize="20sp"
+                android:fontFamily="@font/roboto"
                 android:textStyle="italic" />
 
             <TextView
@@ -180,6 +188,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="30sp"
+                android:fontFamily="@font/roboto"
                 android:textStyle="bold" />
 
 
@@ -205,6 +214,7 @@
                 android:textColor="@color/design_default_color_background"
                 android:textSize="26sp"
                 android:textStyle="bold"
+                android:fontFamily="@font/roboto"
                 android:visibility="invisible" />
 
         </LinearLayout>

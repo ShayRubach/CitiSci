@@ -4,10 +4,12 @@
     <item
         android:id="@+id/destination_feed_page"
         android:icon="@drawable/ic_explore_3"
+        android:fontFamily="@font/roboto"
         android:title="Explore" />
     <item
         android:id="@+id/destination_my_experiments"
         android:icon="@drawable/ic_dashboard_black_24dp"
+        android:fontFamily="@font/roboto"
         android:title="Experiments" />
 
 </menu>
