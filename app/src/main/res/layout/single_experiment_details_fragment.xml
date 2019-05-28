@@ -36,139 +36,113 @@
                 android:id="@+id/detExp_captureBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Collect New Sample"
                 android:fontFamily="@font/roboto"
+                android:text="Collect New Sample"
                 android:textSize="26sp" />
 
             <TextView
                 android:id="@+id/detExp_condNotification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
                 android:text="One or more of the required conditions do not meet!"
                 android:textAlignment="center"
-                android:fontFamily="@font/roboto"
                 android:textColor="@color/design_default_color_error"
                 android:visibility="invisible" />
 
-            <LinearLayout
-                android:id="@+id/detExp_sensorsLinearLayout"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="76dp"
-                android:orientation="horizontal"
-                android:paddingTop="15sp"
-                android:paddingBottom="15sp">
+                android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/detExp_sensorCam"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/detExp_expType"
+                    android:layout_width="78dp"
+                    android:layout_height="63dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_sensor_cam" />
-
-                <ImageView
-                    android:id="@+id/detExp_sensorMagneticField"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_sensor_magnetic_field" />
-
-                <ImageView
-                    android:id="@+id/detExp_sensorGps"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_sensor_gps" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/detExp_typeLinearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="76dp"
-                android:orientation="horizontal"
-                android:paddingTop="15sp"
-                android:paddingBottom="15sp">
-
-                <ImageView
-                    android:id="@+id/detExp_automatic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
-                    android:layout_weight="1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_automatic2" />
 
                 <ImageView
-                    android:id="@+id/detExp_manual"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="100dp"
+                    android:id="@+id/detExp_sensorType"
+                    android:layout_width="78dp"
+                    android:layout_height="63dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_manual" />
-
-
-            </LinearLayout>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_sensor_gps" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             <TextView
                 android:id="@+id/detExp_samplesRequiredTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
                 android:paddingTop="15sp"
                 android:text="Samples Required"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="30sp"
-                android:fontFamily="@font/roboto"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/detExp_samplesRequiredText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
                 android:hint="0/100"
                 android:textAlignment="center"
-                android:fontFamily="@font/roboto"
                 android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/detExp_descriptionTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
                 android:paddingTop="15sp"
                 android:text="Description"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="30sp"
-                android:fontFamily="@font/roboto"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/detExp_descriptionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
                 android:hint="this is where we describe our experiment in few sentences. no more than 3 or so"
                 android:paddingTop="15sp"
                 android:textAlignment="center"
                 android:textSize="20sp"
-                android:fontFamily="@font/roboto"
                 android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/detExp_guideTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
                 android:paddingTop="15sp"
                 android:text="Guide"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="30sp"
-                android:fontFamily="@font/roboto"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/detExp_guideText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
                 android:hint="1. do this\n2. do that\n3. do more things\n4. capture this"
                 android:paddingStart="25sp"
                 android:paddingTop="15sp"
@@ -176,19 +150,18 @@
                 android:paddingBottom="10dp"
                 android:textAlignment="textStart"
                 android:textSize="20sp"
-                android:fontFamily="@font/roboto"
                 android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/detExp_actionsTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
                 android:paddingTop="15sp"
                 android:text="Actions"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="30sp"
-                android:fontFamily="@font/roboto"
                 android:textStyle="bold" />
 
 
@@ -207,6 +180,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="85dp"
                 android:background="@color/abandonBtn"
+                android:fontFamily="@font/roboto"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:text="ABANDON EXPERIMENT"
@@ -214,7 +188,6 @@
                 android:textColor="@color/design_default_color_background"
                 android:textSize="26sp"
                 android:textStyle="bold"
-                android:fontFamily="@font/roboto"
                 android:visibility="invisible" />
 
         </LinearLayout>

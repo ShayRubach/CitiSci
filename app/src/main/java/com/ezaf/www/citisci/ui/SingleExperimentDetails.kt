@@ -45,7 +45,6 @@ class SingleExperimentDetails : Fragment() {
     }
 
     private fun fillExpDetails() {
-        val greyColor= (Color.argb(220, 200, 200, 200))
         val participating = isUserParticipatingInThisExp(exp._id)
 
         if(participating){
@@ -67,8 +66,8 @@ class SingleExperimentDetails : Fragment() {
             detExp_guideText.text = guide
             detExp_samplesRequiredText.text = getSamplesStatusString()
 
-            greyOutSensors(greyColor, exp.getUniqueParticipatingSensorType())
-            greyOutExpType(greyColor, automatic)
+            setSensorTypeImg(exp.getUniqueParticipatingSensorType())
+            setExpTypeImg(automatic)
 
             if(automatic){
                 detExp_captureBtn.visibility = View.INVISIBLE
@@ -113,23 +112,27 @@ class SingleExperimentDetails : Fragment() {
         }
     }
 
-    private fun greyOutExpType(greyColor: Int, automatic: Boolean) {
+    private fun setExpTypeImg(automatic: Boolean) {
 
         if(automatic) {
-            detExp_manual.setColorFilter(greyColor)
+            detExp_expType.setImageResource(R.drawable.ic_automatic2)
         }
         else{
-            detExp_automatic.setColorFilter(greyColor)
+            detExp_expType.setImageResource(R.drawable.ic_manual)
         }
     }
 
-    private fun greyOutSensors(greyColor: Int, sensors: MutableSet<SensorType>) {
-        if(!sensors.contains(SensorType.MAGNETIC_FIELD))
-            detExp_sensorMagneticField.setColorFilter(greyColor)
-        if(!sensors.contains(SensorType.Camera))
-            detExp_sensorCam.setColorFilter(greyColor)
-        if(!sensors.contains(SensorType.GPS))
-            detExp_sensorGps.setColorFilter(greyColor)
+    private fun setSensorTypeImg(sensors: MutableSet<SensorType>) {
+        var sensorTypeId = 0
+
+        if(sensors.contains(SensorType.MAGNETIC_FIELD))
+            sensorTypeId = R.drawable.ic_sensor_magnetic_field
+        if(sensors.contains(SensorType.Camera))
+            sensorTypeId = R.drawable.ic_sensor_cam
+        if(sensors.contains(SensorType.GPS))
+            sensorTypeId = R.drawable.ic_sensor_gps
+
+        detExp_sensorType.setImageResource(sensorTypeId)
     }
 
     private val notifyUserWithSuccessJoin: (String) -> Unit  = {
