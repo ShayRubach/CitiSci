@@ -42,7 +42,7 @@ class MagneticFieldUpdateService : Service(), SensorEventListener {
         var fn = Throwable().stackTrace[0].methodName
 
         if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE) {
-            return
+            Logger.log(VerboseLevel.LOCATION, "SENSOR_STATUS_UNRELIABLE MAG\n")
         }
 
         SharedDataHelper.magneticFieldValues = event.values.clone()
@@ -59,7 +59,7 @@ class MagneticFieldUpdateService : Service(), SensorEventListener {
     override fun onRebind(intent: Intent?) {
         // Register a listener for the sensor.
         super.onRebind(intent)
-        sensorManager.registerListener(this, magneticField, SensorManager.SENSOR_DELAY_NORMAL)
+        sensorManager.registerListener(this, magneticField, SensorManager.SENSOR_DELAY_FASTEST)
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
