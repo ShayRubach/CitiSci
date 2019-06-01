@@ -8,7 +8,7 @@ import com.ezaf.www.citisci.utils.VerboseLevel
 import java.time.Instant
 import java.time.LocalTime
 
-class TimeExpCondition (private val after: String, private val before: String) : ExpCondition {
+class TimeExpCondition (val after: String, val before: String) : ExpCondition {
 
     private val delim = ":"
     private val HOURS_IDX = 0

@@ -7,6 +7,7 @@ import com.ezaf.www.citisci.utils.service.LightMode
 import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
+import java.lang.StringBuilder
 import java.time.Instant
 
 const val EMPTY_JSON = "null"
@@ -181,6 +182,7 @@ object ParserUtil {
 
     fun actionParametersToText(action: ExpAction): String {
 
+        val conditionsStr = conditionsParametersToText(action)
         var baseStr: String
         return when(action.sensorType){
             SensorType.GPS -> {
@@ -195,7 +197,7 @@ object ParserUtil {
                     baseStr = baseStr.replace(samples, action.samplesRequired.toString())
                     baseStr = baseStr.replace(sensor, "GPS coordinates")
                 }
-                baseStr
+                baseStr + conditionsStr
             }
             SensorType.MAGNETIC_FIELD -> {
                 if(action.duration != DURATION_IGNORABLE){
@@ -209,13 +211,63 @@ object ParserUtil {
                     baseStr = baseStr.replace(samples, action.samplesRequired.toString())
                     baseStr = baseStr.replace(sensor, "magnetic field")
                 }
-                baseStr
+                baseStr + conditionsStr
             }
             SensorType.Camera -> {
                 baseStr = camBaseStr
-                baseStr .replace(samples, action.samplesRequired.toString())
+                baseStr .replace(samples, action.samplesRequired.toString()) + conditionsStr
             }
             else -> ""
         }
+    }
+
+    private fun conditionsParametersToText(action: ExpAction): Any {
+        val baseCondStr = mutableListOf("\n\nConditions:\n")
+        val sb = StringBuilder("\n\nRestrictions:\n")
+        var condStr = "No conditions."
+
+        action.condsList.forEach {
+            sb.append(buildConditionStr(it))
+        }
+
+        return sb
+    }
+
+    private fun buildConditionStr(cond: ExpCondition): String {
+
+        val todBefore = "{BEFORE}"
+        val todAfter = "{AFTER}"
+        val gpsRadius = "{RD}"
+        val gpsBaseCoord = "{BC}"
+        val emf = "{EMF}"
+        val modeOfLight = "{MOL}"
+
+        val baseCondGpsStr = "- Location in radius of $gpsRadius meters from  base point ($gpsBaseCoord) \n"
+        val baseCondMagStr = "- EMF value (x,y,z) around the device: $emf \n"
+        val baseCondTimeStr = "- Time of day: $todAfter - $todBefore \n"
+        val baseCondLightStr = "- Light mode around the device: $modeOfLight \n"
+
+
+        if(cond is GpsExpCondition){
+            val gpsCond = cond as GpsExpCondition
+            return baseCondGpsStr.replace(gpsRadius, gpsCond.maxRadius.toString()).replace(gpsBaseCoord, gpsCond.baseCoord.first.toString() +" , "+ gpsCond.baseCoord.second.toString())
+        }
+
+        if(cond is LightExpCondition){
+            val lightCond = cond as LightExpCondition
+            return baseCondLightStr.replace(modeOfLight, if(lightCond.mode.ordinal == 0) "Dark" else "Bright")
+        }
+
+        if(cond is MagneticFieldExpCondition){
+            val magCond = cond as MagneticFieldExpCondition
+            return baseCondMagStr.replace(emf, magCond.toString())
+        }
+
+        if(cond is TimeExpCondition){
+            val timeCond = cond as TimeExpCondition
+            return baseCondTimeStr.replace(todAfter, timeCond.after).replace(todBefore,timeCond.before)
+        }
+
+        return "NONE"
     }
 }

@@ -6,8 +6,8 @@ import com.ezaf.www.citisci.utils.service.LocationUpdateService
 import com.ezaf.www.citisci.utils.Logger.log
 import com.ezaf.www.citisci.utils.VerboseLevel
 
-class GpsExpCondition(private val baseCoord: Pair<Double,Double>,
-                      private val maxRadius: Double) : ExpCondition
+class GpsExpCondition(val baseCoord: Pair<Double,Double>,
+                      val maxRadius: Double) : ExpCondition
 {
 
     override fun isConditionMet(): Boolean {

@@ -24,8 +24,7 @@ class MagneticFieldExpCondition(private val minX: Float, private val maxX: Float
     }
 
     override fun toString(): String {
-        return "magnetic field ranges = " +
-                "[$minX, $maxX]," +
+        return "[$minX, $maxX]," +
                 "[$minY, $maxY]," +
                 "[$minZ, $maxZ]\n"
     }
