@@ -50,11 +50,11 @@ class LightUpdateService : Service(), SensorEventListener {
 
         if(sensorData in 8.0..9.0 ){
             SharedDataHelper.lightMode = LightMode.DARK
-            Logger.log(VerboseLevel.LOCATION, "$fn: dark mode")
+//            Logger.log(VerboseLevel.LOCATION, "$fn: dark mode")
         }
         else{
             SharedDataHelper.lightMode = LightMode.BRIGHT
-            Logger.log(VerboseLevel.LOCATION, "$fn: bright mode")
+//            Logger.log(VerboseLevel.LOCATION, "$fn: bright mode")
         }
 
     }

@@ -46,7 +46,7 @@ class LocationUpdateService : Service() {
                 var fn = Throwable().stackTrace[0].methodName
                 lastLocationCaptured.latitude = locationResult.lastLocation.latitude
                 lastLocationCaptured.longitude = locationResult.lastLocation.longitude
-                Logger.log(LOCATION, "$fn: lastLocation=${locationResult.lastLocation.latitude}, ${locationResult.lastLocation.longitude}")
+//                Logger.log(LOCATION, "$fn: lastLocation=${locationResult.lastLocation.latitude}, ${locationResult.lastLocation.longitude}")
             }
         }
     }

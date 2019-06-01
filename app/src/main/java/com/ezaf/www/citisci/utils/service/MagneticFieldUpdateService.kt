@@ -42,7 +42,7 @@ class MagneticFieldUpdateService : Service(), SensorEventListener {
         var fn = Throwable().stackTrace[0].methodName
 
         if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE) {
-            Logger.log(VerboseLevel.LOCATION, "SENSOR_STATUS_UNRELIABLE MAG\n")
+//            Logger.log(VerboseLevel.LOCATION, "SENSOR_STATUS_UNRELIABLE MAG\n")
         }
 
         SharedDataHelper.magneticFieldValues = event.values.clone()
