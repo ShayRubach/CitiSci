@@ -27,7 +27,7 @@ class ExpAction (
 
     private fun fixSamplesRequiredValueForAutomaticAction() {
         if(duration != DURATION_IGNORABLE && captureInterval > 0){
-            samplesRequired = (duration / captureInterval).toInt()
+            samplesRequired = (duration / captureInterval*60).toInt()
         }
         log(INFO_ERR, "samplesRequired = $samplesRequired")
     }

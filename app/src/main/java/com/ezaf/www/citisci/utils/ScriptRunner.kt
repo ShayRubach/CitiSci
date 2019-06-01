@@ -73,6 +73,8 @@ class ScriptRunner(
                     log(INFO,"$fn: calling data collector.")
                     var magneticFieldValues = DataCollector.collect(sensorType) as FloatArray
 
+                    log(INFO,"$fn: magneticFieldValues = ${magneticFieldValues[0]},${magneticFieldValues[1]},${magneticFieldValues[2]} ")
+
                     val sampleList = ExpSampleList()
                     val sample = ExpSample(action.expId, action._id, "participant@gmail.com",
                             MagneticFields(
