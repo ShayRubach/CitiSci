@@ -16,6 +16,7 @@ import com.ezaf.www.citisci.utils.Logger
 import com.ezaf.www.citisci.utils.VerboseLevel
 import com.ezaf.www.citisci.utils.VerboseLevel.INFO_ERR
 import com.ezaf.www.citisci.utils.db.RemoteDbHandler
+import com.ezaf.www.citisci.utils.db.RemoteDbHandler.MsgType.SEND_CAM_SAMPLE
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -101,10 +102,10 @@ class CameraActivity : AppCompatActivity() {
             val imageBitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, photoURI)
 //            val imageBitmap = rotateImageIfNeeded(MediaStore.Images.Media.getBitmap(this.contentResolver, photoURI))
             photoImgView.setImageBitmap(imageBitmap)
-            toBase64(imageBitmap)
-
-            RemoteDbHandler.sendMsg(RemoteDbHandler.MsgType.SEND_MAGNETIC_FIELD_SAMPLE, prepareImageSample(imageBitmap)).
-                    doOnNext{
+            val sampleList = prepareImageSample(imageBitmap)
+//            Logger.log(INFO_ERR,"$sampleList")
+            RemoteDbHandler.sendMsg(SEND_CAM_SAMPLE, sampleList)
+                    .doOnNext{
                         it.enqueue(object : Callback<ExpSampleList> {
                             override fun onResponse(call: Call<ExpSampleList>, response: Response<ExpSampleList>) {
                                 Logger.log(VerboseLevel.INFO, "$fn: SEND_CAM_SAMPLE successfully sent.")
@@ -123,23 +124,17 @@ class CameraActivity : AppCompatActivity() {
 
     private fun prepareImageSample(imageBitmap: Bitmap): ExpSampleList {
         val sampleList = ExpSampleList()
-        sampleList.addSample(ExpSample(exp._id, exp.actions[0]._id, "participant@gmail.com", toBase64(imageBitmap)))
+        sampleList.addSample(ExpSample(exp._id, exp.actions[0]._id, "participant@gmail.com", ImageBase64(toBase64(imageBitmap))))
         return sampleList
     }
 
-    private fun toBase64(imageBitmap: Bitmap?) {
-
-        Observable.fromCallable {
-            ByteArrayOutputStream()
-        }.doOnNext{
-            imageBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, it) //bm is the bitmap object
-            val b = it.toByteArray()
-            val encodedImage = Base64.getEncoder().encodeToString(b)
-            Logger.log(INFO_ERR,"base64pic [$encodedImage]")
-        }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
+    private fun toBase64(imageBitmap: Bitmap?) : String {
+        val os = ByteArrayOutputStream()
+        imageBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, os) //bm is the bitmap object
+        val b = os.toByteArray()
+            val encodedImg = Base64.getEncoder().encodeToString(b)
+//        Logger.log(VerboseLevel.INFO, "encoded Image: \n $encodedImg\n\n")
+        return encodedImg
 
     }
 

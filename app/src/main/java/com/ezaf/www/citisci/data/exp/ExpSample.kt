@@ -12,3 +12,10 @@ class ExpSample(val experimentID: String,
 class LatLong(val latitude: Double, val longitude: Double)
 
 class MagneticFields(val x: Float, val y: Float, val z: Float)
+
+class ImageBase64(val file: String) {
+    override fun toString(): String {
+        return file
+    }
+}
+
