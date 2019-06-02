@@ -22,6 +22,7 @@ import com.ezaf.www.citisci.utils.viewmodel.MyExperimentsViewModel
 import com.google.gson.JsonElement
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.my_experiments_fragment.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -81,6 +82,17 @@ class MyExperiments : FeedPage() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MyExperimentsViewModel::class.java)
         // TODO: Use the ViewModel
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initFilterCheckboxStatus()
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun initFilterCheckboxStatus() {
+        filter_cbRunning.isChecked = true
+        filter_cbCompleted.isChecked = true
+        filter_cbPaused.isChecked = true
     }
 
 }
