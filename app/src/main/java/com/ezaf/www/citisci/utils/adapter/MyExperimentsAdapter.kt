@@ -84,7 +84,14 @@ class MyExperimentViewHolder (view: View) : FeedPageViewHolder(view) {
             mProgressRect.layoutParams = ConstraintLayout.LayoutParams((SharedDataHelper.screenRes.first * percentageCompleted).toInt(), ConstraintLayout.LayoutParams.WRAP_CONTENT)
         }
 
-        if(exp.actions[0].allSamplesWereCollected()){
+        var completedExp = true
+        exp.actions.forEach {
+            if(!it.allSamplesWereCollected()){
+                completedExp = false
+            }
+        }
+
+        if(completedExp){
             mLayout.setBackgroundColor(Color.argb(85,178,255,204))
             mNotifImage.setImageResource(R.drawable.ic_completed_verbose)
             mNotifImage.visibility = View.VISIBLE

@@ -52,7 +52,14 @@ class SingleExperimentDetails : Fragment() {
             detExp_tvBtnAbandonExp.visibility = View.VISIBLE
 
             val condCheck: (ExpCondition) -> Boolean = { it.isConditionMet() }
-            if(!exp.actions[0].condsList.all(condCheck)){
+            var allConditionsMet = true
+            exp.actions.forEach {
+                if(!it.condsList.all(condCheck)){
+                    allConditionsMet = false
+                }
+            }
+
+            if(!allConditionsMet){
                 detExp_captureBtn.isClickable = false
                 detExp_captureBtn.text = UNAVAILABLE
                 detExp_condNotification.visibility = View.VISIBLE
