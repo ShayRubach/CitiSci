@@ -222,18 +222,17 @@ object ParserUtil {
     }
 
     private fun conditionsParametersToText(action: ExpAction): Any {
-        val baseCondStr = mutableListOf("\n\nConditions:\n")
-        val sb = StringBuilder("\n\nRestrictions:\n")
-        var condStr = "No conditions."
+        val sb = StringBuilder("\n\nConditions:\n")
+        var num = 1
 
         action.condsList.forEach {
-            sb.append(buildConditionStr(it))
+            sb.append(buildConditionStr(it, num++))
         }
 
         return sb
     }
 
-    private fun buildConditionStr(cond: ExpCondition): String {
+    private fun buildConditionStr(cond: ExpCondition, num: Int): String {
 
         val todBefore = "{BEFORE}"
         val todAfter = "{AFTER}"
@@ -242,10 +241,10 @@ object ParserUtil {
         val emf = "{EMF}"
         val modeOfLight = "{MOL}"
 
-        val baseCondGpsStr = "- Location in radius of $gpsRadius meters from  base point ($gpsBaseCoord) \n"
-        val baseCondMagStr = "- EMF value (x,y,z) around the device: $emf \n"
-        val baseCondTimeStr = "- Time of day: $todAfter - $todBefore \n"
-        val baseCondLightStr = "- Light mode around the device: $modeOfLight \n"
+        val baseCondGpsStr = "$num. Location in radius of $gpsRadius meters from  base point ($gpsBaseCoord) \n"
+        val baseCondMagStr = "$num. EMF value (x,y,z) around the device: $emf \n"
+        val baseCondTimeStr = "$num. Time of day: $todAfter - $todBefore \n"
+        val baseCondLightStr = "$num. Light mode around the device: $modeOfLight \n"
 
 
         if(cond is GpsExpCondition){
