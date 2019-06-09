@@ -135,7 +135,7 @@ object ParserUtil {
                 return TemperatureExpCondition(strArray[1].toDouble(),strArray[2].toDouble())
             }
             if(isOfType(SensorType.Time.toString(),this)){
-                return TimeExpCondition(strArray[1],strArray[2])
+                return TimeExpCondition(strArray[1].replace(":",""),strArray[2].replace(":",""))
             }
             if(isOfType(SensorType.Light.toString(),this)){
                 val mode = if (strArray[1] == LightMode.DARK.ordinal.toString()) LightMode.DARK else LightMode.BRIGHT
