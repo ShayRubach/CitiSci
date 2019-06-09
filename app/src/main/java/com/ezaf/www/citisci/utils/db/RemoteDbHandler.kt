@@ -68,13 +68,13 @@ object RemoteDbHandler
         Logger.log(VerboseLevel.INFO, "$fn: called.")
 
         return Observable.fromCallable {
-            service.getMyExperiments("participant@gmail.com")
+            service.getMyExperiments(SharedDataHelper.currUser)
         }
     }
 
     fun joinExp(expId: String): Observable<Call<JoinExpRequest>>{
         return Observable.fromCallable {
-            service.joinExp(JoinExpRequest(expId),"participant@gmail.com")
+            service.joinExp(JoinExpRequest(expId),SharedDataHelper.currUser)
         }
     }
 

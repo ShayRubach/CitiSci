@@ -26,34 +26,19 @@ class ScriptRunner(
         val fn = Throwable().stackTrace[0].methodName
         log(INFO,"$fn: called. [sensorType = ${action.sensorType}]")
 
-        when(action.sensorType){
-            SensorType.GPS -> {
+        Interpreter.observablesManager.add(
+                Observable.interval(action.captureInterval.toLong(), TimeUnit.SECONDS)
+                        .timeInterval()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe{
 
-                Interpreter.observablesManager.add(
-                        Observable.interval(action.captureInterval.toLong(), TimeUnit.SECONDS)
-                                .timeInterval()
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe{
-                                    playGpsScript(action, startTime)
-                                }
-                )
-
-            }
-            SensorType.MAGNETIC_FIELD -> {
-                Interpreter.observablesManager.add(
-                        Observable.interval(action.captureInterval.toLong(), TimeUnit.SECONDS)
-                                .timeInterval()
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe{
-                                    playMagneticFieldScript(action, startTime)
-                                }
-                )
-            }
-
-            else -> return
-        }
+                            when(action.sensorType) {
+                                SensorType.GPS -> playGpsScript(action, startTime)
+                                SensorType.MAGNETIC_FIELD -> playMagneticFieldScript(action, startTime)
+                            }
+                        }
+        )
     }
 
     private fun playMagneticFieldScript(action: ExpAction, startTime: Instant) {
@@ -76,7 +61,7 @@ class ScriptRunner(
                     log(INFO,"$fn: magneticFieldValues = ${magneticFieldValues[0]},${magneticFieldValues[1]},${magneticFieldValues[2]} ")
 
                     val sampleList = ExpSampleList()
-                    val sample = ExpSample(action.expId, action._id, "participant@gmail.com",
+                    val sample = ExpSample(action.expId, action._id, SharedDataHelper.currUser,
                             MagneticFields(
                                     magneticFieldValues[0],
                                     magneticFieldValues[1],
@@ -132,7 +117,7 @@ class ScriptRunner(
                     var location = DataCollector.collect(sensorType) as Location
 
                     val sampleList = ExpSampleList()
-                    val sample = ExpSample(action.expId, action._id, "participant@gmail.com", LatLong(location.latitude, location.longitude))
+                    val sample = ExpSample(action.expId, action._id, SharedDataHelper.currUser, LatLong(location.latitude, location.longitude))
 
                     sampleList.addSample(sample)
 

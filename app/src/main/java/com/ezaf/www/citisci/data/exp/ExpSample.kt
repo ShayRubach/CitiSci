@@ -2,7 +2,7 @@ package com.ezaf.www.citisci.data.exp
 
 class ExpSample(val experimentID: String,
                 val actionID: String,
-                val participantEmail: String = "participant@gmail.com",
+                val participantEmail: String = SharedDataHelper.currUser,
                 val sample: Any){
     override fun toString(): String {
         return "$experimentID, $actionID, $participantEmail, $sample"

@@ -10,4 +10,5 @@ object SharedDataHelper {
     var lightMode = LightMode.BRIGHT
     var magneticFieldValues = floatArrayOf(0.0f, 0.0f, 0.0f)
     var fromFeedPageCtx = true
+    var currUser = "participant@gmail.com"
 }

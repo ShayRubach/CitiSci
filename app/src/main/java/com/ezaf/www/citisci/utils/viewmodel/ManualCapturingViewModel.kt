@@ -48,11 +48,11 @@ class ManualCapturingViewModel : ViewModel() {
         when(sensorType){
             SensorType.GPS -> {
                 val location = DataCollector.collect(sensorType) as Location
-                sample = ExpSample(thisAction.expId, thisAction._id, "participant@gmail.com", LatLong(location.latitude, location.longitude))
+                sample = ExpSample(thisAction.expId, thisAction._id, SharedDataHelper.currUser, LatLong(location.latitude, location.longitude))
             }
 
             SensorType.MAGNETIC_FIELD -> {
-                sample = ExpSample(thisAction.expId, thisAction._id, "participant@gmail.com",
+                sample = ExpSample(thisAction.expId, thisAction._id, SharedDataHelper.currUser,
                         MagneticFields(
                                 SharedDataHelper.magneticFieldValues[0],
                                 SharedDataHelper.magneticFieldValues[1],

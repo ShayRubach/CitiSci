@@ -124,7 +124,7 @@ class CameraActivity : AppCompatActivity() {
 
     private fun prepareImageSample(imageBitmap: Bitmap): ExpSampleList {
         val sampleList = ExpSampleList()
-        sampleList.addSample(ExpSample(exp._id, exp.actions[0]._id, "participant@gmail.com", ImageBase64(toBase64(imageBitmap))))
+        sampleList.addSample(ExpSample(exp._id, exp.actions[0]._id, SharedDataHelper.currUser, ImageBase64(toBase64(imageBitmap))))
         return sampleList
     }
 
