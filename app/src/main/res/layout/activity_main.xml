@@ -34,7 +34,7 @@
             app:layout_constraintHorizontal_bias="0.51"
             app:layout_constraintStart_toStartOf="@+id/toolbar"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_citisci_logo_no_handle" />
+            app:srcCompat="@drawable/ic_citisci_logo_no_handle_white" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
