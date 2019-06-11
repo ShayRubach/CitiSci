@@ -264,7 +264,10 @@ object ParserUtil {
 
         if(cond is TimeExpCondition){
             val timeCond = cond as TimeExpCondition
-            return baseCondTimeStr.replace(todAfter, timeCond.after).replace(todBefore,timeCond.before)
+            val afterFixedStr = "${timeCond.after.substring(0,2)}:${timeCond.after.substring(2)}"
+            val beforeFixedStr = "${timeCond.before.substring(0,2)}:${timeCond.before.substring(2)}"
+
+            return baseCondTimeStr.replace(todAfter, afterFixedStr).replace(todBefore, beforeFixedStr)
         }
 
         return "NONE"
