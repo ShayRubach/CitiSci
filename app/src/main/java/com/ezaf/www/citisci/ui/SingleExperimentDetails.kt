@@ -36,7 +36,11 @@ class SingleExperimentDetails : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        detExp_btnJoinExp.setOnClickListener { viewModel.joinExp(exp, notifyUserWithSuccessJoin(exp.basicData.name)) }
+        detExp_btnJoinExp.setOnClickListener {
+            viewModel.joinExp(exp, notifyUserWithSuccessJoin(exp.basicData.name))
+            detExp_btnJoinExp.visibility = View.INVISIBLE
+        }
+
         detExp_captureBtn.setOnClickListener { moveToCaptureScreen(it) }
         detExp_tvBtnAbandonExp.setOnClickListener { promptAbandonDialog(it) }
         viewModel = ViewModelProviders.of(this).get(SingleExperimentDetailsViewModel::class.java)
