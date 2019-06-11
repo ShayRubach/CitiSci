@@ -122,7 +122,8 @@
                 android:fontFamily="@font/roboto"
                 android:hint="this is where we describe our experiment in few sentences. no more than 3 or so"
                 android:paddingTop="15sp"
-                android:textAlignment="center"
+                android:paddingStart="15sp"
+                android:textAlignment="textStart"
                 android:textSize="20sp"
                 android:textStyle="italic" />
 
